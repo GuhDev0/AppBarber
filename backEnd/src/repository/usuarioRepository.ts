@@ -1,23 +1,39 @@
 import { PrismaClient } from "../../generated/prisma/index.js";
-import type UsuarioDto from '../Dtos/usuarioDto.js';
+import bcrypt from "bcrypt";
+import type UsuarioDto from "../Dtos/usuarioDto.js";
+
 const prisma = new PrismaClient();
 
 export default class repositoryUsuario {
-     registrarUsuario  = async (usuarioDto: UsuarioDto) =>{
-        const user = await prisma.usuario.create(
-            {
-                data: {
-                    nomeCompleto: usuarioDto.nomeCompleto,
-                    email: usuarioDto.email,
-                    senha: usuarioDto.senha,
-                    telefone: usuarioDto.telefone,
-                    cpf: usuarioDto.cpf,
-                    tipoDaConta: usuarioDto.tipoDaConta
-                }
-            }
+  registrarUsuario = async (usuarioDto: UsuarioDto, empresaId: number) => {
+    try {
+      
+      const SALT = 10;
+      const senhaCriptografada = await bcrypt.hash(usuarioDto.senha, SALT);
 
-        )
-        return user
+      
+      const user = await prisma.usuario.create({
+        data: {
+          nomeCompleto: usuarioDto.nomeCompleto,
+          email: usuarioDto.email,
+          senha: senhaCriptografada,
+          telefone: usuarioDto.telefone,
+          cpf: usuarioDto.cpf,
+          tipoDaConta: usuarioDto.tipoDaConta,
+          empresa: {
+            connect: { id: empresaId },
+          },
+        },
+        include: {
+          empresa: true, 
+        },
+      });
+ 
+      return user;
+
+    } catch (error) {
+      
+      throw new Error(`Erro ao registrar usuário: ${error}`);
     }
+  };
 }
-

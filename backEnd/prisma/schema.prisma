@@ -8,17 +8,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Usuario {
+  id           Int       @id @default(autoincrement())
+  nomeCompleto String
+  email        String    @unique
+  senha        String
+  telefone     String
+  cpf          String    @unique
+  tipoDaConta  Role
+  empresaId    Int
+  empresa      Empresa   @relation(fields: [empresaId], references: [id])
+}
+
+model Servico {
+  id             Int      @id @default(autoincrement())
+  valorDoServico Decimal  @db.Decimal(10, 2)
+  tipoDoServico  String
+  barbeiro       String
+  data           DateTime
+  hora           String
+  criadoEm       DateTime @default(now())
+}
+
+model Empresa {
+  id            Int       @id @default(autoincrement())
+  nomeDaEmpresa String    @unique
+  cnpj          String    @unique
+  email         String
+  telefone      String
+  endereco      String
+  clietes       Cliente[]
+  usuarios      Usuario[]
+}
+
+model Cliente {
+  id          Int     @id @default(autoincrement())
+  nomeCliente String
+  email       String
+  telefone    String
+  empresaId   Int
+  empresa     Empresa @relation(fields: [empresaId], references: [id])
+}
+
 enum Role {
   USER
   ADMIN
-}
-
-model Usuario {
-  id           Int    @id @default(autoincrement())
-  nomeCompleto String
-  email        String @unique
-  senha        String
-  telefone     String
-  cpf          String @unique
-  tipoDaConta  Role
 }
