@@ -18,17 +18,23 @@ model Usuario {
   tipoDaConta  Role
   empresaId    Int
   empresa      Empresa   @relation(fields: [empresaId], references: [id])
+  servico Servico[]
 }
 
 model Servico {
-  id             Int      @id @default(autoincrement())
-  valorDoServico Decimal  @db.Decimal(10, 2)
-  tipoDoServico  String
-  barbeiro       String
-  data           DateTime
-  hora           String
-  criadoEm       DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  tipoDoServico String
+  valorDoServico Float
+  barbeiro      String      
+  data          DateTime
+  hora          String
+  empresaId     Int
+  usuarioId     Int
+  empresa       Empresa  @relation(fields: [empresaId], references: [id])
+  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
 }
+
+
 
 model Empresa {
   id            Int       @id @default(autoincrement())
@@ -39,6 +45,7 @@ model Empresa {
   endereco      String
   clietes       Cliente[]
   usuarios      Usuario[]
+  servico Servico[]
 }
 
 model Cliente {

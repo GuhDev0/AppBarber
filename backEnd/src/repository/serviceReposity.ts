@@ -4,7 +4,7 @@ const prisma =  new PrismaClient()
 
 export class ServiceRepository{
     
-    createdServiceRepository  = async (serviceDTO:serviceDTO) => {
+    createdServiceRepository  = async (serviceDTO:serviceDTO,empresaId:number,usuarioId:number) => {
         const saveServiceDB  = await prisma.servico.create(
            {
             data:{
@@ -12,7 +12,9 @@ export class ServiceRepository{
                 valorDoServico:serviceDTO.valorDoServico,
                 barbeiro:serviceDTO.barbeiro,
                 data:new Date(serviceDTO.data),
-                hora:serviceDTO.hora
+                hora:serviceDTO.hora,
+                empresaId: empresaId,
+                usuarioId: usuarioId
             }
            }
         )
@@ -20,12 +22,7 @@ export class ServiceRepository{
         
     }
     findListService = async () =>{
-        const list = await prisma.servico.findMany({
-            include:{
-                usuarioId:true,
-                empresaId:true,
-            },
-        });    
+        const list = await prisma.servico.findMany   
     }
    
 }

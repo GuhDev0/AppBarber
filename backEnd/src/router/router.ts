@@ -13,9 +13,9 @@ const router = Router();
 
 router.post('/registrarUsuario', userController.postCreateUser)
 router.post('/login', loginController.login)
-router.get("/dashboart",autheController.authetication)
+router.get("/dashboart",autheController.authentication)
 router.post("/createEmpresa",empresaController.empresaCreate)
 router.get('/findByEmpresaId/:id', empresaController.buscarPeloId)
-router.post('/serviceSave',serviceControler.saveService)
+router.post('/serviceSave', autheController.authentication,serviceControler.saveService)
 
 export default router
