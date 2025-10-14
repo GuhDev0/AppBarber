@@ -17,24 +17,35 @@ model Usuario {
   cpf          String    @unique
   tipoDaConta  Role
   empresaId    Int
+  servico      Servico[]
   empresa      Empresa   @relation(fields: [empresaId], references: [id])
-  servico Servico[]
+}
+
+model ControleDeEntrada {
+  id                  Int      @id @default(autoincrement())
+  data                DateTime @default(now())
+  hora                String
+  descricao           String
+  formaDePagamento    String
+  barbeiroResponsavel String?
+  valor               Float
+  servicoAssociadoId  Int?
+  servicoAssociado    Servico? @relation(fields: [servicoAssociadoId], references: [id])
 }
 
 model Servico {
-  id            Int      @id @default(autoincrement())
-  tipoDoServico String
-  valorDoServico Float
-  barbeiro      String      
-  data          DateTime
-  hora          String
-  empresaId     Int
-  usuarioId     Int
-  empresa       Empresa  @relation(fields: [empresaId], references: [id])
-  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
+  id                Int                 @id @default(autoincrement())
+  tipoDoServico     String
+  valorDoServico    Float
+  barbeiro          String
+  data              DateTime
+  hora              String
+  empresaId         Int
+  usuarioId         Int
+  ControleDeEntrada ControleDeEntrada[]
+  empresa           Empresa             @relation(fields: [empresaId], references: [id])
+  usuario           Usuario             @relation(fields: [usuarioId], references: [id])
 }
-
-
 
 model Empresa {
   id            Int       @id @default(autoincrement())
@@ -44,8 +55,8 @@ model Empresa {
   telefone      String
   endereco      String
   clietes       Cliente[]
+  servico       Servico[]
   usuarios      Usuario[]
-  servico Servico[]
 }
 
 model Cliente {
