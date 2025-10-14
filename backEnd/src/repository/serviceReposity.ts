@@ -21,9 +21,19 @@ export class ServiceRepository{
         return saveServiceDB
         
     }
-    findListService = async () =>{
-        const list = await prisma.servico.findMany   
+    findListService = async (empresaId:number) =>{
+        const list = await prisma.servico.findMany(
+            {
+                where:{
+                    empresaId:empresaId
+                }
+            }
+        )
+        return list
     }
    
+
 }
+
+
 

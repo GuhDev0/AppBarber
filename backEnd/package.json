@@ -16,11 +16,12 @@
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^24.3.1",
+    "@types/node": "^24.7.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "prisma": "^6.16.0",
-    "typescript": "^5.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@prisma/client": "^6.16.0",

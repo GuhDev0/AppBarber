@@ -1,11 +1,11 @@
 import { ServiceService } from "../services/ServiceService.js";
 import type { Request, Response } from "express";
-const serviceService = new ServiceService
 
+const serviceService = new ServiceService
 
 export class ServiceController {
 
-    //registrar servico
+
     saveService = async (req: Request, res: Response) => {
         if (!req.user) {
             return res.status(401).json({ mensagem: "Usuário não autenticado" });
@@ -18,7 +18,9 @@ export class ServiceController {
             res.status(201).json(serviceSave)
 
         } catch (error:any) {
+            console.error(error);
             res.status(500).json({mensagem:"Error no servidor", detalhe:error.message})
         }
     }
+    
 }
