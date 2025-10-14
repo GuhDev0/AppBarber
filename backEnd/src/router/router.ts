@@ -17,5 +17,6 @@ router.get("/dashboart",autheController.authentication)
 router.post("/createEmpresa",empresaController.empresaCreate)
 router.get('/findByEmpresaId/:id', empresaController.buscarPeloId)
 router.post('/serviceSave', autheController.authentication,serviceControler.saveService)
-
+router.get('/findListServices', autheController.authentication, serviceControler.findByIdListService)
+router.delete('/deleteService/:id',serviceControler.deleteServiceController)
 export default router

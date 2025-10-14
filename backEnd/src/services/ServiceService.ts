@@ -9,6 +9,17 @@ export class ServiceService {
         console.log(save)
         return save
     }
+    findListService = async (empresaId:number) =>{
+        const data = await serviceReposity.findListService(empresaId)
+        return data
+    }
 
+    deleteService = async ( serviceId:number) =>{
+        const deleteService = await serviceReposity.deleteService(serviceId)
+        if(!deleteService){
+             throw new Error("service não encontrado")  
+        }
+        return deleteService
+    }
     
 }
