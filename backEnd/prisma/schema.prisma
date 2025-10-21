@@ -57,6 +57,7 @@ model Empresa {
   clietes       Cliente[]
   servico       Servico[]
   usuarios      Usuario[]
+  colaboradores Colaborador[]
 }
 
 model Cliente {
@@ -66,6 +67,17 @@ model Cliente {
   telefone    String
   empresaId   Int
   empresa     Empresa @relation(fields: [empresaId], references: [id])
+}
+model Colaborador{
+  id Int @id @default(autoincrement())
+  nomeCompleto String
+  dataDeNascimento DateTime
+  email String @unique
+  tel String
+  senha String?
+  avatar String?
+  empresaId Int
+  empresa Empresa @relation(fields: [empresaId],references: [id])
 }
 
 enum Role {

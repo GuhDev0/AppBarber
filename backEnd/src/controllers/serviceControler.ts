@@ -10,8 +10,6 @@ export class ServiceController {
         if (!req.user) {
             return res.status(401).json({ mensagem: "Usuário não autenticado" });
         }
-        console.log(req.user.id)
-        console.log(req.user.empresaId)
         const reqData = req.body
         try {
             const serviceSave = await serviceService.saveServiceService(reqData, req.user.empresaId, req.user.id)
