@@ -25,10 +25,24 @@ export class ColaboradorDB {
 };
 
 
-  buscarColaborador = async (empresaId: number) => {
+  buscarListaDeColaboradores = async (empresaId: number) => {
     const data = await prisma.colaborador.findMany({
       where: { empresaId: empresaId },
     });
     return data;
   };
+ // src/repository/colaboradorRepository.ts
+
+
+
+  async buscarColaboradorId(id: number) {
+    const colaborador = await prisma.colaborador.findUnique({
+      where: { id },
+    });
+
+    return colaborador;
+  }
+
+
 }
+

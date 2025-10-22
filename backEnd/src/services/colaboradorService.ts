@@ -39,9 +39,9 @@ export class ColaboradorService {
     }
   };
 
-  buscarColaboradorService = async (empresaId: number) => {
+buscarListaDeColaboradoresService = async (empresaId: number) => {
     try {
-      const list = await colaboradorDB.buscarColaborador(empresaId);
+      const list = await colaboradorDB.buscarListaDeColaboradores(empresaId);
       if (!list) throw new Error("Erro ao buscar Lista");
       return list;
     } catch (error: any) {
@@ -49,4 +49,16 @@ export class ColaboradorService {
       throw new Error(error.message);
     }
   };
+  buscarColaboradorId = async (id:number) =>{
+    try{
+      const colaborador = await colaboradorDB.buscarColaboradorId(id)
+      if(!colaborador){
+        throw new Error("Colaborador não encontrado")
+      }
+      return colaborador
+    }catch(error:any){
+      console.error("Error ao buscar colaborador" , error.message)
+      throw new Error(error.message)
+    }
+  }
 }

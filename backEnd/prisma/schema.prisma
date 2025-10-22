@@ -37,27 +37,28 @@ model Servico {
   id                Int                 @id @default(autoincrement())
   tipoDoServico     String
   valorDoServico    Float
-  barbeiro          String
   data              DateTime
   hora              String
   empresaId         Int
   usuarioId         Int
+  colaboradorId     Int
   ControleDeEntrada ControleDeEntrada[]
+  colaborador       Colaborador         @relation(fields: [colaboradorId], references: [id])
   empresa           Empresa             @relation(fields: [empresaId], references: [id])
   usuario           Usuario             @relation(fields: [usuarioId], references: [id])
 }
 
 model Empresa {
-  id            Int       @id @default(autoincrement())
-  nomeDaEmpresa String    @unique
-  cnpj          String    @unique
+  id            Int           @id @default(autoincrement())
+  nomeDaEmpresa String        @unique
+  cnpj          String        @unique
   email         String
   telefone      String
   endereco      String
   clietes       Cliente[]
+  colaboradores Colaborador[]
   servico       Servico[]
   usuarios      Usuario[]
-  colaboradores Colaborador[]
 }
 
 model Cliente {
@@ -68,16 +69,18 @@ model Cliente {
   empresaId   Int
   empresa     Empresa @relation(fields: [empresaId], references: [id])
 }
-model Colaborador{
-  id Int @id @default(autoincrement())
-  nomeCompleto String
+
+model Colaborador {
+  id               Int       @id @default(autoincrement())
+  nomeCompleto     String
   dataDeNascimento DateTime
-  email String @unique
-  tel String
-  senha String?
-  avatar String?
-  empresaId Int
-  empresa Empresa @relation(fields: [empresaId],references: [id])
+  email            String    @unique
+  tel              String
+  senha            String?
+  empresaId        Int
+  avatar           String?
+  empresa          Empresa   @relation(fields: [empresaId], references: [id])
+  servicos         Servico[]
 }
 
 enum Role {

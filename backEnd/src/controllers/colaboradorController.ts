@@ -25,7 +25,7 @@ export class ColaboradorController {
             return res.status(401).json({ mensagem: "Usuário não autenticado" });
         }
         try {
-            const list = await colaboradorService.buscarColaboradorService(req.user.empresaId)
+            const list = await colaboradorService.buscarListaDeColaboradoresService(req.user.empresaId)
             res.status(200).json({
                 mensagem: "Lista de colaboradores encontrada com sucesso",
                 colaboradores: list

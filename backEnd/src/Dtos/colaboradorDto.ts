@@ -5,4 +5,5 @@ export interface ColaboradorDto{
     tel:string;
     senha:string;    
     avatar:string; 
+    
 }

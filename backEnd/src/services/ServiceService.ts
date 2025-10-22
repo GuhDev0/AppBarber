@@ -4,8 +4,8 @@ const serviceReposity = new ServiceRepository()
 
 
 export class ServiceService {
-     saveServiceService  = async (serviceDTO:serviceDTO ,empresaId:number,usuarioId:number) =>{
-        const save =  await serviceReposity.createdServiceRepository(serviceDTO,empresaId,usuarioId)
+     saveServiceService  = async (serviceDTO:serviceDTO ,empresaId:number,usuarioId:number,colaboradorId:number) =>{
+        const save =  await serviceReposity.createdServiceRepository(serviceDTO,empresaId,usuarioId,colaboradorId)
         console.log(save)
         return save
     }
