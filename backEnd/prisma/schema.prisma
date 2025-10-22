@@ -21,31 +21,60 @@ model Usuario {
   empresa      Empresa   @relation(fields: [empresaId], references: [id])
 }
 
-model ControleDeEntrada {
-  id                  Int      @id @default(autoincrement())
-  data                DateTime @default(now())
-  hora                String
-  descricao           String
-  formaDePagamento    String
-  barbeiroResponsavel String?
-  valor               Float
-  servicoAssociadoId  Int?
-  servicoAssociado    Servico? @relation(fields: [servicoAssociadoId], references: [id])
+enum TipoFinanceiro {
+  ENTRADA
+  SAIDA
 }
 
+enum FormaPagamento {
+  PIX
+  DINHEIRO
+  CARTAO
+}
+
+model GestaoFinanceira {
+  id        Int      @id @default(autoincrement())
+  descricao String
+  data      DateTime @default(now())
+  hora      String
+  formaDePagamento FormaPagamento
+  valor     Float
+  tipo      TipoFinanceiro
+
+  categoriaId Int?
+  categoria   Categoria? @relation(fields: [categoriaId], references: [id])
+
+  colaboradorId Int?
+  colaborador   Colaborador? @relation(fields: [colaboradorId], references: [id])
+
+  servicoAssociadoId Int?
+  servicoAssociado   Servico? @relation(fields: [servicoAssociadoId], references: [id])
+
+  empresaId Int
+  empresa Empresa @relation(fields: [empresaId], references: [id])
+}
+
+
+model Categoria {
+  id               Int                @id @default(autoincrement())
+  nomeCategoria    String
+  gestaoFinanceira GestaoFinanceira[]
+}
+
+
 model Servico {
-  id                Int                 @id @default(autoincrement())
-  tipoDoServico     String
-  valorDoServico    Float
-  data              DateTime
-  hora              String
-  empresaId         Int
-  usuarioId         Int
-  colaboradorId     Int
-  ControleDeEntrada ControleDeEntrada[]
-  colaborador       Colaborador         @relation(fields: [colaboradorId], references: [id])
-  empresa           Empresa             @relation(fields: [empresaId], references: [id])
-  usuario           Usuario             @relation(fields: [usuarioId], references: [id])
+  id               Int                @id @default(autoincrement())
+  tipoDoServico    String
+  valorDoServico   Float
+  data             DateTime
+  hora             String
+  empresaId        Int
+  usuarioId        Int
+  colaboradorId    Int
+  gestaoFinanceira GestaoFinanceira[]
+  colaborador      Colaborador        @relation(fields: [colaboradorId], references: [id])
+  empresa          Empresa            @relation(fields: [empresaId], references: [id])
+  usuario          Usuario            @relation(fields: [usuarioId], references: [id])
 }
 
 model Empresa {
@@ -59,6 +88,7 @@ model Empresa {
   colaboradores Colaborador[]
   servico       Servico[]
   usuarios      Usuario[]
+  gestaoFinanceira GestaoFinanceira[]
 }
 
 model Cliente {
@@ -71,16 +101,17 @@ model Cliente {
 }
 
 model Colaborador {
-  id               Int       @id @default(autoincrement())
+  id               Int                @id @default(autoincrement())
   nomeCompleto     String
   dataDeNascimento DateTime
-  email            String    @unique
+  email            String             @unique
   tel              String
   senha            String?
   empresaId        Int
   avatar           String?
-  empresa          Empresa   @relation(fields: [empresaId], references: [id])
+  empresa          Empresa            @relation(fields: [empresaId], references: [id])
   servicos         Servico[]
+  GestaoFinanceira GestaoFinanceira[]
 }
 
 enum Role {

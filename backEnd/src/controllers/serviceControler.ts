@@ -29,7 +29,6 @@ export class ServiceController {
         }
         try {
             const services = await serviceService.findListService(req.user.empresaId);
-
             res.status(200).json({ services })
         } catch (error: any) {
             console.error(error.message)

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export class ColaboradorDB {
   saveColaborador = async (colaboradorDto: ColaboradorDto, empresaId: number) => {
-  console.log("🧾 Dados recebidos no Repository:", colaboradorDto);
+  console.log(" Dados recebidos no Repository:", colaboradorDto);
 
   const save = await prisma.colaborador.create({
     data: {
@@ -31,7 +31,7 @@ export class ColaboradorDB {
     });
     return data;
   };
- // src/repository/colaboradorRepository.ts
+ 
 
 
 

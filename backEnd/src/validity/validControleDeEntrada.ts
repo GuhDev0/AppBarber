@@ -1,4 +1,4 @@
-import type { ControleDeEntradaDTO } from "../Dtos/controleDeEntrada.js";
+import type { ControleDeEntradaDTO } from "../Dtos/gestaoFinanceiraDto.js";
 
 
 export class ValidControleDeEntrada{

@@ -1,0 +1,45 @@
+import { GestaoFinanceiraDB } from "../repository/gestaoFinanceiraRepository.js";
+import type { gestaoFinanceiraDto } from "../Dtos/gestaoFinanceiraDto.js";
+import { PrismaClient } from "../../generated/prisma/index.js";
+
+const prisma = new PrismaClient();
+const gestaoFinanceiraDB = new GestaoFinanceiraDB();
+
+export class GestaoFinanceiraService {
+  saveLancamentoService = async (gtDto: gestaoFinanceiraDto, empresaId: number) => {
+    try {
+      
+      let categoria = await prisma.categoria.findFirst({
+        where: { nomeCategoria: gtDto.nomeCategoria }
+      });
+
+     
+      if (!categoria) {
+        categoria = await prisma.categoria.create({
+          data: { nomeCategoria: gtDto.nomeCategoria }
+        });
+      }
+
+      
+      const saveLancamentoDB = await gestaoFinanceiraDB.criarLancamento(gtDto, empresaId, categoria.id);
+
+      if (!saveLancamentoDB) {
+        throw new Error("Dados não foram salvos");
+      }
+
+      return saveLancamentoDB;
+    } catch (error: any) {
+      console.error("Erro em saveLancamentoService:", error);
+      throw new Error("Erro ao salvar lançamento financeiro");
+    }
+  };
+  buscarListaDelancamentosService = async (empresaId:number) =>{
+    try{
+        const list = await gestaoFinanceiraDB.listaDeLancamentos(empresaId)
+        return list
+    }catch(error:any){
+        console.error("Erro ao buscar Lista no banco " , error.message)
+        throw new Error(error.message)
+    }
+  }
+}
