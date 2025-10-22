@@ -30,5 +30,5 @@ router.get("/listColaboradores",autheController.authentication,colaboradorContro
 router.get("/listaDeLancamento",autheController.authentication,gestaoFinanceiraController.listLancamento)
 
 router.delete('/deleteService/:id',serviceControler.deleteServiceController)
-
+router.delete("/deleteLancamento/:id",autheController.authentication,gestaoFinanceiraController.deleteLancamento)
 export default router

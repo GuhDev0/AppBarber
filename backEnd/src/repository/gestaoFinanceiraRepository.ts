@@ -18,19 +18,34 @@ export class GestaoFinanceiraDB {
         colaboradorId: gtGto.colaboradorId ?? null,
         servicoAssociadoId: gtGto.servicoAssociadoId ?? null,
       },
+      include:{
+        categoria:true,
+      }
     });
 
     return createDB;
   };
-  listaDeLancamentos = async(empresaId:number) =>{
-    const list = await prisma.gestaoFinanceira.findMany(
-      {
-        where:{
-          empresaId:empresaId
-        }
+  listaDeLancamentos = async (empresaId: number) => {
+  const list = await prisma.gestaoFinanceira.findMany({
+    where: { empresaId },
+    include: { categoria: true },
+  });
+
+  
+  return list.map(item => ({
+    ...item,
+    nomeCategoria: item.categoria?.nomeCategoria ?? "Sem Categoria"
+  }));
+};
+
+  deleteLancamento = async(id:number)=>{
+    const deleteLancamento = await prisma.gestaoFinanceira.delete({
+      where:{
+        id:id
       }
-    )
-    return list
+    })
+    return deleteLancamento
   }
+
 }
 
