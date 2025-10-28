@@ -61,4 +61,17 @@ buscarListaDeColaboradoresService = async (empresaId: number) => {
       throw new Error(error.message)
     }
   }
+
+  deleteColaboradorService = async (empresaId:number,colaboradorId:number) =>{
+    try{
+       const deleteDB = await colaboradorDB.deleteColaboradorId(empresaId,colaboradorId)
+      if(!deleteDB){
+        throw new Error("Nao foi possivel deletar colaborador ")
+      }
+      return deleteDB
+      }catch(error:any){
+      console.error("Erro ao deleta ", error.message)
+      throw new Error(error.message)
+    }
+  }
 }

@@ -9,7 +9,7 @@ export class ColaboradorDB {
 
   const save = await prisma.colaborador.create({
     data: {
-      nomeCompleto: colaboradorDto.nome,
+      nomeCompleto: colaboradorDto.nomeCompleto,
       email: colaboradorDto.email,
       dataDeNascimento: new Date(colaboradorDto.dataNascimento),
       tel: colaboradorDto.tel,
@@ -28,6 +28,9 @@ export class ColaboradorDB {
   buscarListaDeColaboradores = async (empresaId: number) => {
     const data = await prisma.colaborador.findMany({
       where: { empresaId: empresaId },
+      include:{
+        servicos:true
+      }
     });
     return data;
   };
@@ -35,14 +38,35 @@ export class ColaboradorDB {
 
 
 
-  async buscarColaboradorId(id: number) {
+   buscarColaboradorId = async(id: number)=> {
     const colaborador = await prisma.colaborador.findUnique({
       where: { id },
+      include:{
+        servicos:true
+      }
     });
 
     return colaborador;
   }
 
+  deleteColaboradorId = async (empresaId:number,id:number) =>{
+    const colaborador = await prisma.colaborador.findFirst({
+      where:{
+          id,
+        empresaId,
+      
+      }
+    })
+    if(!colaborador){
+       throw new Error("Usuario não pertece a essa empresa")
+    }
 
+    const deleteColaborador =   await prisma.colaborador.delete({
+      where:{
+        id
+      }
+    }) 
+    return deleteColaborador
+  }
 }
 

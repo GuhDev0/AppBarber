@@ -29,6 +29,7 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.2",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.546.0",
     "ts-node-dev": "^2.0.0"
   }
 }

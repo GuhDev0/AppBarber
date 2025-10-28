@@ -16,7 +16,7 @@ export class GestaoFinanceiraService {
 
             if (!categoria) {
                 categoria = await prisma.categoria.create({
-                    data: { nomeCategoria: gtDto.nomeCategoria }
+                    data: { nomeCategoria: gtDto.nomeCategoria,empresaId:empresaId }
                 });
             }
 

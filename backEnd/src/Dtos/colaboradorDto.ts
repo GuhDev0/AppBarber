@@ -1,5 +1,5 @@
 export interface ColaboradorDto{
-    nome: string;
+    nomeCompleto: string;
     dataNascimento:string;
     email:string;
     tel:string;

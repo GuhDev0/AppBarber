@@ -33,7 +33,7 @@ export class LoginService {
             
             }
             
-            const token = jwt.sign(payload, cs, { expiresIn: "5min" })
+            const token = jwt.sign(payload, cs, { expiresIn: "1h" })
             const {senha, ...usuarioSemSenha} = usuario;
             return{token, usuario:usuarioSemSenha}    
         }catch(error:any){
