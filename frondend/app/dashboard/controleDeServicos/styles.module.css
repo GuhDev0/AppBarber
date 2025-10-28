@@ -1,0 +1,137 @@
+.containerServicoHeader {
+  display: flex;            
+  justify-content: space-between; 
+  align-items: center;      
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.actions button {
+  padding: 8px 16px;
+  background-color: #ff6a00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #e65c00;
+}
+
+    .formCompact {
+    max-width: 400px; 
+    padding: 12px; 
+    gap: 8px; 
+    }
+
+    .formCompact input,
+    .formCompact select {
+    padding: 6px; 
+    font-size: 0.9rem;
+    }
+
+
+    .primaryBtn, .secondaryBtn {
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    }
+
+    .primaryBtn {
+    background-color: #ff6a00;
+    color: white;
+    }
+
+    .primaryBtn:hover {
+    background-color: #e65c00;
+    }
+
+.secondaryBtn {
+  background-color: #ddd;
+  color: #333;
+  margin-left: 10px;
+}
+
+.secondaryBtn:hover {
+  background-color: #ccc;
+}
+
+.filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filtros input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form input, .form select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.formBtns {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.table th, .table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.table th {
+  height: 50px;
+  color: #f3f3f3;
+  background-color: #14171d;
+  font-weight: 600;
+}
+
+.deleteBtn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.deleteBtn:hover {
+  background-color: #c0392b;
+}
