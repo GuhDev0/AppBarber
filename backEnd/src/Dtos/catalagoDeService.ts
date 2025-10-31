@@ -1,6 +1,7 @@
 export interface catalagoServiceDto {
   nome: string;        
-  tipo: "Pacote" | "Simples";         
+  tipo: "Pacote" | "Simples" | "Combo";
+           
   preco: number;       
   comissao: number;     
 }

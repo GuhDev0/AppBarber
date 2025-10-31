@@ -5,7 +5,7 @@ export interface gestaoFinanceiraDto {
   formaDePagamento: "PIX" |
                     "DINHEIRO"|
                     "CARTAO";
-  tipo: "ENTRADA" | "SAIDA"
+  tipo:   "SAIDA"
   colaboradorId?: number;
   valor: number;
   servicoAssociadoId?: number;

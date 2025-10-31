@@ -8,6 +8,7 @@ import { GestaoFinanceiraController } from "../controllers/gestaoFinanceiraContr
 import { ColaboradorController } from "../controllers/colaboradorController.js";
 import { CategoriaController } from "../controllers/categoriaController.js";
 import {ServicoConfigController} from "../controllers/servicoConfigController.js"
+import { ClienteController } from "../controllers/clienteController.js";
 const userController = new UserController(); 
 const loginController = new LoginController();
 const empresaController = new EmpresaController();
@@ -17,6 +18,7 @@ const gestaoFinanceiraController = new GestaoFinanceiraController()
 const colaboradorController = new ColaboradorController()
 const categoriaController = new CategoriaController()
 const servicoConfigController = new ServicoConfigController();
+const clienteController  = new ClienteController();
 const router = Router();
 
 router.post('/registrarUsuario', userController.postCreateUser)
@@ -26,7 +28,7 @@ router.post('/serviceSave', autheController.authentication,serviceControler.save
 router.post('/saveLancamento',autheController.authentication,gestaoFinanceiraController.saveLancamento)
 router.post("/saveColaborador",autheController.authentication,colaboradorController.saveColaborador)
 router.post("/registraCatalagoService", autheController.authentication,servicoConfigController.registraCatalagoServicoControler)
-
+router.post("/cadastroDeCliente",autheController.authentication,clienteController.criarClienteController)
 
 
 router.get("/dashboart",autheController.authentication)
@@ -36,10 +38,11 @@ router.get("/listColaboradores",autheController.authentication,colaboradorContro
 router.get("/listaDeLancamento",autheController.authentication,gestaoFinanceiraController.listLancamento)
 router.get("/listCATEGORIA",autheController.authentication,categoriaController.listCategoriaController )
 router.get("/listDeCatalagoDeServico",autheController.authentication,servicoConfigController.buscarListaDeControler)
-
+router.get("/listaDeClientes",autheController.authentication,clienteController.listaDeClienteController)
 
 router.delete('/deleteService/:id',serviceControler.deleteServiceController)
 router.delete("/deleteLancamento/:id",autheController.authentication,gestaoFinanceiraController.deleteLancamento)
 router.delete("/deleteColaborador/:id",autheController.authentication,colaboradorController.deleteColaboradorId)
 router.delete("/deletaServico/:id",autheController.authentication,servicoConfigController.deleteServicoControler)
+router.delete("/deletarCliente/:id",autheController.authentication,clienteController.deleteClientePeloId)
 export default router

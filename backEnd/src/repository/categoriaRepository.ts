@@ -4,6 +4,7 @@ const prisma = new PrismaClient()
 
 
 export class CategoriaRepository {
+    
     listDeCategoria = async (empresaId:number) => {
         try{
             const list = await prisma.categoria.findMany(

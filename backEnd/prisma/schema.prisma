@@ -22,7 +22,6 @@ model Usuario {
 }
 
 enum TipoFinanceiro {
-  ENTRADA
   SAIDA
 }
 
@@ -30,6 +29,18 @@ enum FormaPagamento {
   PIX
   DINHEIRO
   CARTAO
+}
+
+model Cliente {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  sobrenome String
+  telefone  String
+  email     String @unique
+  empresaId Int
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+  servico Servico[]
+  
 }
 
 model GestaoFinanceira {
@@ -75,8 +86,11 @@ model Servico {
   colaborador      Colaborador        @relation(fields: [colaboradorId], references: [id])
   empresa          Empresa            @relation(fields: [empresaId], references: [id])
   usuario          Usuario            @relation(fields: [usuarioId], references: [id])
-  servicoConfigId  Int?
+  servicoConfigId  Int
   servicoConfig    ServicoConfig?     @relation(fields: [servicoConfigId], references: [id])
+
+  clienteId Int
+  cliente Cliente @relation(fields: [clienteId],references: [id])
 }
 
 model Empresa {
@@ -95,15 +109,6 @@ model Empresa {
   ServicoConfig    ServicoConfig[]
 }
 
-model Cliente {
-  id          Int     @id @default(autoincrement())
-  nomeCliente String
-  email       String
-  telefone    String
-  empresaId   Int
-  empresa     Empresa @relation(fields: [empresaId], references: [id])
-}
-
 model Colaborador {
   id               Int                @id @default(autoincrement())
   nomeCompleto     String
@@ -119,12 +124,12 @@ model Colaborador {
 }
 
 model ServicoConfig {
-  id         Int           @id @default(autoincrement())
-  nome       String        @unique
-  tipo       TipoDeServico
-  preco      Float
-  ativo      Boolean       @default(true)
-  comissao   Float
+  id       Int           @id @default(autoincrement())
+  nome     String        @unique
+  tipo     TipoDeServico
+  preco    Float
+  ativo    Boolean       @default(true)
+  comissao Float
 
   empresaId Int
   empresa   Empresa @relation(fields: [empresaId], references: [id])
@@ -135,6 +140,7 @@ model ServicoConfig {
 enum TipoDeServico {
   Pacote
   Simples
+  Combo
 }
 
 enum Role {

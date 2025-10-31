@@ -22,6 +22,17 @@
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+
+    // Allow TS to find .ts files as modules
+    "resolveJsonModule": true
+  },
+
+  // ✅ ESSENCIAL PARA ES MODULES COM ts-node
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true
+  },
+
+  "include": ["src"]
 }

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export class ServiceRepository {
 
-  createdServiceRepository = async (serviceDTO: serviceDTO, empresaId: number, usuarioId: number, colaboradorId: number) => {
+  createdServiceRepository = async (serviceDTO: serviceDTO, empresaId: number, usuarioId: number, colaboradorId: number,) => {
     const saveServiceDB = await prisma.servico.create({
       data: {
         tipoDoServico: serviceDTO.tipoDoServico,
@@ -14,7 +14,11 @@ export class ServiceRepository {
         hora: serviceDTO.hora,
         empresaId,
         usuarioId,
-        colaboradorId
+        colaboradorId,
+        servicoConfigId:serviceDTO.servicoConfigId,
+        clienteId:serviceDTO.clienteId
+      },include:{
+        servicoConfig:true
       }
     });
     return saveServiceDB;
@@ -26,6 +30,7 @@ export class ServiceRepository {
         where: { empresaId },
         include: {
           colaborador: true,
+          servicoConfig:true
         },
       });
 
