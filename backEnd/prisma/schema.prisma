@@ -1,149 +1,165 @@
-generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
-}
+  generator client {
+    provider = "prisma-client-js"
+    output   = "../generated/prisma"
+  }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
 
-model Usuario {
-  id           Int       @id @default(autoincrement())
-  nomeCompleto String
-  email        String    @unique
-  senha        String
-  telefone     String
-  cpf          String    @unique
-  tipoDaConta  Role
-  empresaId    Int
-  servico      Servico[]
-  empresa      Empresa   @relation(fields: [empresaId], references: [id])
-}
+  model Usuario {
+    id           Int       @id @default(autoincrement())
+    nomeCompleto String
+    email        String    @unique
+    senha        String
+    telefone     String
+    cpf          String    @unique
+    tipoDaConta  Role
+    empresaId    Int
+    servico      Servico[]
+    empresa      Empresa   @relation(fields: [empresaId], references: [id])
+  }
 
-enum TipoFinanceiro {
-  SAIDA
-}
+  model Cliente {
+    id        Int       @id @default(autoincrement())
+    email     String    @unique
+    telefone  String
+    empresaId Int
+    nome      String
+    sobrenome String
+    empresa   Empresa   @relation(fields: [empresaId], references: [id])
+    servico   Servico[]
+  }
 
-enum FormaPagamento {
-  PIX
-  DINHEIRO
-  CARTAO
-}
+  model GestaoFinanceira {
+    id                 Int            @id @default(autoincrement())
+    data               DateTime       @default(now())
+    hora               String
+    descricao          String
+    valor              Float
+    colaboradorId      Int?
+    servicoAssociadoId Int?
+    categoriaId        Int?
+    empresaId          Int
+    formaDePagamento   FormaPagamento
+    tipo               TipoFinanceiro
+    categoria          Categoria?     @relation(fields: [categoriaId], references: [id])
+    colaborador        Colaborador?   @relation(fields: [colaboradorId], references: [id])
+    empresa            Empresa        @relation(fields: [empresaId], references: [id])
+    servicoAssociado   Servico?       @relation(fields: [servicoAssociadoId], references: [id])
+  }
 
-model Cliente {
-  id        Int     @id @default(autoincrement())
-  nome      String
-  sobrenome String
-  telefone  String
-  email     String @unique
-  empresaId Int
-  empresa   Empresa @relation(fields: [empresaId], references: [id])
-  servico Servico[]
-  
-}
+  model Categoria {
+    id               Int                @id @default(autoincrement())
+    nomeCategoria    String
+    empresaId        Int
+    empresa          Empresa            @relation(fields: [empresaId], references: [id])
+    gestaoFinanceira GestaoFinanceira[]
+  }
 
-model GestaoFinanceira {
-  id               Int            @id @default(autoincrement())
-  descricao        String
-  data             DateTime       @default(now())
-  hora             String
-  formaDePagamento FormaPagamento
-  valor            Float
-  tipo             TipoFinanceiro
+  model Servico {
+    id               Int                @id @default(autoincrement())
+    tipoDoServico    String
+    valorDoServico   Float
+    data             DateTime
+    hora             String
+    empresaId        Int
+    usuarioId        Int
+    colaboradorId    Int
+    clienteId        Int
+    servicoConfigId  Int
+    gestaoFinanceira GestaoFinanceira[]
+    pagamentos  Pagamento[]
 
-  categoriaId Int?
-  categoria   Categoria? @relation(fields: [categoriaId], references: [id])
+    cliente          Cliente            @relation(fields: [clienteId], references: [id])
+    colaborador      Colaborador        @relation(fields: [colaboradorId], references: [id])
+    empresa          Empresa            @relation(fields: [empresaId], references: [id])
+    servicoConfig    ServicoConfig      @relation(fields: [servicoConfigId], references: [id])
+    usuario          Usuario            @relation(fields: [usuarioId], references: [id])
+  }
 
-  colaboradorId Int?
-  colaborador   Colaborador? @relation(fields: [colaboradorId], references: [id])
+  model Empresa {
+    id               Int                @id @default(autoincrement())
+    nomeDaEmpresa    String             @unique
+    cnpj             String             @unique
+    email            String
+    telefone         String
+    endereco         String
+    categorias       Categoria[]
+    clietes          Cliente[]
+    colaboradores    Colaborador[]
+    gestaoFinanceira GestaoFinanceira[]
+    servico          Servico[]
+    ServicoConfig    ServicoConfig[]
+    usuarios         Usuario[]
+    pagamento        Pagamento[] 
+  }
 
-  servicoAssociadoId Int?
-  servicoAssociado   Servico? @relation(fields: [servicoAssociadoId], references: [id])
+  model Colaborador {
+    id               Int                @id @default(autoincrement())
+    nomeCompleto     String
+    dataDeNascimento DateTime
+    email            String             @unique
+    tel              String
+    senha            String?
+    empresaId        Int
+    avatar           String?
+    empresa          Empresa            @relation(fields: [empresaId], references: [id])
+    GestaoFinanceira GestaoFinanceira[]
+    servicos         Servico[]
+    pagamento     Pagamento[]
+  }
 
-  empresaId Int
-  empresa   Empresa @relation(fields: [empresaId], references: [id])
-}
+  model ServicoConfig {
+    id                 Int           @id @default(autoincrement())
+    nome               String        @unique
+    tipo               TipoDeServico
+    preco              Float
+    ativo              Boolean       @default(true)
+    comissao           Float
+    empresaId          Int
+    servicosRealizados Servico[]
+    empresa            Empresa       @relation(fields: [empresaId], references: [id])
+  }
 
-model Categoria {
-  id               Int                @id @default(autoincrement())
-  nomeCategoria    String
-  gestaoFinanceira GestaoFinanceira[]
-  empresaId        Int
-  empresa          Empresa            @relation(fields: [empresaId], references: [id])
-}
+  enum TipoFinanceiro {
+    SAIDA
+  }
 
-model Servico {
-  id               Int                @id @default(autoincrement())
-  tipoDoServico    String
-  valorDoServico   Float
-  data             DateTime
-  hora             String
-  empresaId        Int
-  usuarioId        Int
-  colaboradorId    Int
-  gestaoFinanceira GestaoFinanceira[]
-  colaborador      Colaborador        @relation(fields: [colaboradorId], references: [id])
-  empresa          Empresa            @relation(fields: [empresaId], references: [id])
-  usuario          Usuario            @relation(fields: [usuarioId], references: [id])
-  servicoConfigId  Int
-  servicoConfig    ServicoConfig?     @relation(fields: [servicoConfigId], references: [id])
+  enum FormaPagamento {
+    PIX
+    DINHEIRO
+    CARTAO
+  }
 
-  clienteId Int
-  cliente Cliente @relation(fields: [clienteId],references: [id])
-}
+  enum TipoDeServico {
+    Pacote
+    Simples
+    Combo
+  }
+  model Pagamento {
+    id             String   @id @default(uuid())
+    servicoId      Int
+    status         StatusPagamento          
+    dataPagamento  DateTime
+    observacoes    String?
+    empresaId Int
+    colaboradorId Int
+    
+    colaborador Colaborador @relation(fields: [colaboradorId],references: [id])
+    empresa Empresa @relation(fields: [empresaId],references: [id])
+    servico Servico @relation(fields: [servicoId],references: [id])
+  }
 
-model Empresa {
-  id               Int                @id @default(autoincrement())
-  nomeDaEmpresa    String             @unique
-  cnpj             String             @unique
-  email            String
-  telefone         String
-  endereco         String
-  clietes          Cliente[]
-  colaboradores    Colaborador[]
-  servico          Servico[]
-  usuarios         Usuario[]
-  gestaoFinanceira GestaoFinanceira[]
-  categorias       Categoria[]
-  ServicoConfig    ServicoConfig[]
-}
 
-model Colaborador {
-  id               Int                @id @default(autoincrement())
-  nomeCompleto     String
-  dataDeNascimento DateTime
-  email            String             @unique
-  tel              String
-  senha            String?
-  empresaId        Int
-  avatar           String?
-  empresa          Empresa            @relation(fields: [empresaId], references: [id])
-  servicos         Servico[]
-  GestaoFinanceira GestaoFinanceira[]
-}
+  enum StatusPagamento{
+    PENDENTE
+    CANCELADO
+    PAGO
+  }
 
-model ServicoConfig {
-  id       Int           @id @default(autoincrement())
-  nome     String        @unique
-  tipo     TipoDeServico
-  preco    Float
-  ativo    Boolean       @default(true)
-  comissao Float
-
-  empresaId Int
-  empresa   Empresa @relation(fields: [empresaId], references: [id])
-
-  servicosRealizados Servico[]
-}
-
-enum TipoDeServico {
-  Pacote
-  Simples
-  Combo
-}
-
-enum Role {
-  USER
-  ADMIN
-}
+  enum Role {
+    USER
+    ADMIN
+  }

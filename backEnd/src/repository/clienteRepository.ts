@@ -22,6 +22,8 @@ export class ClienteRepository {
     const lista = await prisma.cliente.findMany({
       where: {
         empresaId: empresaId
+      },include:{
+        servico:true
       }
     })
     return lista

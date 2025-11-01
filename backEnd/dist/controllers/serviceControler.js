@@ -4,12 +4,13 @@ const serviceService = new ServiceService();
 const colaboradorService = new ColaboradorService();
 export class ServiceController {
     saveService = async (req, res) => {
+        const { colaboradorId } = req.body;
+        const reqData = req.body;
         if (!req.user) {
             return res.status(401).json({ mensagem: "Usuário não autenticado" });
         }
-        const reqData = req.body;
         try {
-            const serviceSave = await serviceService.saveServiceService(reqData, req.user.empresaId, req.user.id, 1);
+            const serviceSave = await serviceService.saveServiceService(reqData, req.user.empresaId, req.user.id, colaboradorId);
             res.status(201).json(serviceSave);
         }
         catch (error) {

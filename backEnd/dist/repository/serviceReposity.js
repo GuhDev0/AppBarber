@@ -6,12 +6,15 @@ export class ServiceRepository {
             data: {
                 tipoDoServico: serviceDTO.tipoDoServico,
                 valorDoServico: serviceDTO.valorDoServico,
-                barbeiro: serviceDTO.barbeiro,
                 data: new Date(serviceDTO.data),
                 hora: serviceDTO.hora,
                 empresaId,
                 usuarioId,
-                colaboradorId
+                colaboradorId,
+                servicoConfigId: serviceDTO.servicoConfigId,
+                clienteId: serviceDTO.clienteId
+            }, include: {
+                servicoConfig: true
             }
         });
         return saveServiceDB;
@@ -19,7 +22,11 @@ export class ServiceRepository {
     findListService = async (empresaId) => {
         try {
             const list = await prisma.servico.findMany({
-                where: { empresaId }
+                where: { empresaId },
+                include: {
+                    colaborador: true,
+                    servicoConfig: true
+                },
             });
             return list;
         }

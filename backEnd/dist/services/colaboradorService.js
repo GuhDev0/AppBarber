@@ -37,5 +37,31 @@ export class ColaboradorService {
             throw new Error(error.message);
         }
     };
+    buscarColaboradorId = async (id) => {
+        try {
+            const colaborador = await colaboradorDB.buscarColaboradorId(id);
+            if (!colaborador) {
+                throw new Error("Colaborador não encontrado");
+            }
+            return colaborador;
+        }
+        catch (error) {
+            console.error("Error ao buscar colaborador", error.message);
+            throw new Error(error.message);
+        }
+    };
+    deleteColaboradorService = async (empresaId, colaboradorId) => {
+        try {
+            const deleteDB = await colaboradorDB.deleteColaboradorId(empresaId, colaboradorId);
+            if (!deleteDB) {
+                throw new Error("Nao foi possivel deletar colaborador ");
+            }
+            return deleteDB;
+        }
+        catch (error) {
+            console.error("Erro ao deleta ", error.message);
+            throw new Error(error.message);
+        }
+    };
 }
 //# sourceMappingURL=colaboradorService.js.map

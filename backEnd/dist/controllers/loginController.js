@@ -10,7 +10,8 @@ export class LoginController {
             res.status(200).json(usuarioService);
         }
         catch (error) {
-            res.status(500).json({ mensangem: error.message });
+            console.error('Erro no login:', error.message);
+            return res.status(500).json({ message: 'Erro interno do servidor', error: error.message });
         }
     };
 }

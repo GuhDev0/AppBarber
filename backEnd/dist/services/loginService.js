@@ -26,7 +26,7 @@ export class LoginService {
                 empresaId: usuario.empresaId,
                 nameEmpresa: usuario.empresa.nomeDaEmpresa,
             };
-            const token = jwt.sign(payload, cs, { expiresIn: "5min" });
+            const token = jwt.sign(payload, cs, { expiresIn: "1h" });
             const { senha, ...usuarioSemSenha } = usuario;
             return { token, usuario: usuarioSemSenha };
         }

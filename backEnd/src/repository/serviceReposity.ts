@@ -15,10 +15,10 @@ export class ServiceRepository {
         empresaId,
         usuarioId,
         colaboradorId,
-        servicoConfigId:serviceDTO.servicoConfigId,
-        clienteId:serviceDTO.clienteId
-      },include:{
-        servicoConfig:true
+        servicoConfigId: serviceDTO.servicoConfigId,
+        clienteId: serviceDTO.clienteId
+      }, include: {
+        servicoConfig: true
       }
     });
     return saveServiceDB;
@@ -30,7 +30,7 @@ export class ServiceRepository {
         where: { empresaId },
         include: {
           colaborador: true,
-          servicoConfig:true
+          servicoConfig: true
         },
       });
 
@@ -52,5 +52,9 @@ export class ServiceRepository {
     )
     return deleteService
   }
-  
+
+
+
+
 }
+

@@ -9,8 +9,7 @@ export class ColaboradorController {
         try {
             const save = await colaboradorService.saveColaboradorService(reqBody, req.user.empresaId);
             res.status(201).json({
-                mensagem: "Registrado com sucesso",
-                colaborador: save
+                mensagem: "Registrado com sucesso"
             });
         }
         catch (error) {
@@ -24,12 +23,28 @@ export class ColaboradorController {
         try {
             const list = await colaboradorService.buscarListaDeColaboradoresService(req.user.empresaId);
             res.status(200).json({
-                mensagem: "Lista de colaboradores encontrada com sucesso",
-                colaboradores: list
+                list
             });
         }
         catch (error) {
             res.status(500).json("não foi possivel encontra a lista de colaborador");
+        }
+    };
+    deleteColaboradorId = async (req, res) => {
+        if (!req.user) {
+            return res.status(401).json({ mensagem: "token inválido" });
+        }
+        const empresaId = req.user.empresaId;
+        const idReq = Number(req.params.id);
+        if (isNaN(idReq)) {
+            return res.status(400).json({ mensagem: "ID inválido" });
+        }
+        try {
+            const deletado = await colaboradorService.deleteColaboradorService(empresaId, idReq);
+            return res.status(200).json({ mensagem: "Colaborador deletado com sucesso", deletado });
+        }
+        catch (erro) {
+            return res.status(500).json({ mensagem: "Erro ao deletar colaborador", erro });
         }
     };
 }
