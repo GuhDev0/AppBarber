@@ -4,5 +4,5 @@ const analise = new Analise()
 const pagamentoRepository = new PagamentoRepository()
 
 
-pagamentoRepository.gerenciarPagamento(1)
+pagamentoRepository.gerenciarPagamentoPorId(1,1)
 

@@ -4,22 +4,33 @@ const serviceReposity = new ServiceRepository()
 
 
 export class ServiceService {
-     saveServiceService  = async (serviceDTO:serviceDTO ,empresaId:number,usuarioId:number,colaboradorId:number) =>{
-        const save =  await serviceReposity.createdServiceRepository(serviceDTO,empresaId,usuarioId,colaboradorId)
-        console.log(save)
-        return save
+    saveServiceService = async (serviceDTO: serviceDTO, empresaId: number, usuarioId: number, colaboradorId: number) => {
+        try {
+            const save = await serviceReposity.createdServiceRepository(serviceDTO, empresaId, usuarioId, colaboradorId);
+
+            if (!save?.id) {
+                throw new Error("Serviço não foi salvo corretamente.");
+            }
+
+            console.log(save);
+            return save;
+        } catch (error) {
+            console.error("Erro ao salvar serviço ou registrar pagamento:", error);
+            throw error;
+        }
+
     }
-    findListService = async (empresaId:number) =>{
+    findListService = async (empresaId: number) => {
         const data = await serviceReposity.findListService(empresaId)
         return data
     }
 
-    deleteService = async ( serviceId:number) =>{
+    deleteService = async (serviceId: number) => {
         const deleteService = await serviceReposity.deleteService(serviceId)
-        if(!deleteService){
-             throw new Error("service não encontrado")  
+        if (!deleteService) {
+            throw new Error("service não encontrado")
         }
         return deleteService
     }
-    
+
 }
