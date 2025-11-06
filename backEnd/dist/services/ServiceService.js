@@ -1,7 +1,5 @@
 import { ServiceRepository } from "../repository/serviceReposity.js";
-import { PagamentoRepository } from "../repository/pagamentoRepository.js";
 const serviceReposity = new ServiceRepository();
-const pagamentoDB = new PagamentoRepository();
 export class ServiceService {
     saveServiceService = async (serviceDTO, empresaId, usuarioId, colaboradorId) => {
         try {
@@ -9,7 +7,6 @@ export class ServiceService {
             if (!save?.id) {
                 throw new Error("Serviço não foi salvo corretamente.");
             }
-            await pagamentoDB.registrarPagamento(empresaId, colaboradorId, save.id);
             console.log(save);
             return save;
         }
