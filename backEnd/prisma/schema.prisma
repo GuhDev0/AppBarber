@@ -87,6 +87,8 @@ model Pagamento {
   dataPagamento   DateTime
   observacoes     String
   servicoId       Int
+
+  
   servico         Servico @relation(fields: [servicoId],references: [id])
   colaborador     Colaborador     @relation(fields: [colaboradorId], references: [id])
   empresa         Empresa         @relation(fields: [empresaId],references: [id])
