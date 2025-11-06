@@ -1,0 +1,135 @@
+/* Seção de serviços */
+.ListaDeServicos {
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+/* Título da seção */
+.ListaDeServicos h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color:#fff;
+  margin-bottom: 1rem;
+}
+
+/* Cabeçalho do formulário */
+.cabecalho_AdicionarServico {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Formulário */
+.ListaDeServicos form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ListaDeServicos label {
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.ListaDeServicos input {
+  padding: 10px;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Botões do formulário */
+.ListaDeServicos button[type="submit"],
+.ListaDeServicos button {
+  grid-column: span 2;
+  padding: 10px 16px;
+  background-color: #e65c00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.ListaDeServicos button:hover {
+  opacity: 0.85;
+}
+
+/* Tabela de serviços */
+.ListaDeServicos table {
+  width: 500px;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.ListaDeServicos th,
+.ListaDeServicos td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.ListaDeServicos th {
+  background-color: #14171d;
+  color: #f3f3f3;
+  height: 30px;
+  font-weight: 600;
+}
+
+/* Botões de ação na tabela */
+.ListaDeServicos td button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: 0.2s;
+}
+
+.ListaDeServicos td button:first-child {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.ListaDeServicos td button:last-child {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .ListaDeServicos form {
+    grid-template-columns: 1fr;
+  }
+
+  .cabecalho_AdicionarServico {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ListaDeServicos table {
+    display: block;
+    overflow-x: auto;
+  }
+}

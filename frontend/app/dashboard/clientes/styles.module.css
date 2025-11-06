@@ -1,0 +1,146 @@
+/* Container principal */
+.containerFinanceiro {
+  padding: 20px;
+  
+}
+
+/* Header com título e ações */
+.containerFinanceiroHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.titleFinanceiro {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.actionsFinanceiro button {
+  padding: 8px 16px;
+  background-color: #ff6a00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.actionsFinanceiro button:hover {
+  background-color: #e65c00;
+}
+
+/* Formulário */
+.formFinanceiro {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.formFinanceiro input,
+.formFinanceiro select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* Botões do formulário */
+.formBtnsFinanceiro {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.primaryBtnFinanceiro {
+  background-color: #ff6a00;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.primaryBtnFinanceiro:hover {
+  background-color: #e65c00;
+}
+
+.secondaryBtnFinanceiro {
+  background-color: #ddd;
+  color: #333;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.secondaryBtnFinanceiro:hover {
+  background-color: #ccc;
+}
+
+/* Tabela */
+.tableFinanceiro {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  color: black;
+  border-radius: 10px ;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.tableFinanceiro th,
+.tableFinanceiro td {
+  color: #fff;
+  padding: 10px 12px;
+  text-align: left;
+  
+}
+.tableFinanceiro td {
+  color: black;
+}
+.tableFinanceiro th {
+  height: 50px;
+  color: #f3f3f3;
+  background-color: #14171d;
+  font-weight: 600;
+}
+
+/* Botão de deletar */
+.deleteBtnFinanceiro {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.deleteBtnFinanceiro:hover {
+  background-color: #c0392b;
+}
+
+/* Inputs de filtro (se quiser adicionar depois) */
+.filtrosFinanceiroContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filtrosFinanceiroContainer input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}

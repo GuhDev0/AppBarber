@@ -1,0 +1,123 @@
+    .cardAnalytics {
+        background-color: #0d0d0d;
+        width: 300px;
+        border-radius: 20px;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        /* distribui melhor os blocos */
+        gap: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease;
+    }
+
+    .cardAnalytics:hover {
+        transform: translateY(-4px);
+    }
+
+    .headerAnalytics {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .informationAnalytics {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        color: #a6a6a6;
+    }
+
+    .informationAnalytics i {
+        color: #57d219;
+        font-size: 1.1rem;
+    }
+
+    .containerCardAnalytics {
+        display: flex;
+        flex-wrap: wrap;
+       gap:20px;
+     
+
+        width: 100%;
+    }
+
+    /* Gráficos em grid para melhor layout */
+    .containerGraficos {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 20px;
+        width: 100%;
+        
+    }
+
+    .containerGraficos>div {
+        border: 1px solid #ffffff3e;
+        background: #1a1d23;
+        color: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        min-width: 250px;
+    }
+
+    .containerGraficos>div.pizza {
+        align-items: center;
+    }
+
+    .pizza_container_title,
+    .linha_container_title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .container_tilte,
+    .linha_title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .container_tilte h3,
+    .linha_title h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .pizza_container_title p,
+    .linha_container_title p {
+        font-size: 14px;
+        color: #a6a6a6;
+        margin: 5px 0 0 0;
+    }
+
+    /* Responsividade */
+    @media (max-width: 900px) {
+        .containerGraficos {
+            grid-template-columns: 1fr;
+            /* empilha os gráficos */
+        }
+
+        .containerCardAnalytics {
+            justify-content: center;
+        }
+    }
+
+    .dashboard_Title h1 {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .dashboard_Title p {
+        color: #a6a6a6;
+    }

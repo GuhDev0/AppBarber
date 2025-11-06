@@ -1,0 +1,80 @@
+/* CardAnalytics.module.css */
+
+.cardAnalytics {
+  background-color: #1a1d23;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  border:1px solid  #ffffff3e ;
+  width: 100%;
+  max-width: 250px;
+  height: 200px;
+  margin-bottom: 10px;
+  display: flex;
+  
+  flex-direction: column; 
+  transition: transform 0.2s ease;
+}
+.cardAnalytics i{
+  background-color: #13161b;
+  text-align: center;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: 30%;
+  margin-bottom: 10px;
+}
+.cardAnalytics:hover {
+  transform: translateY(-4px);
+}
+
+/* Header (título + subtítulo) */
+.header {
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.text {
+  font-size: 1.2rem;
+  color: #fff;
+  margin: 0;
+}
+
+.subText {
+  font-size: 0.85rem;
+  color: #a6a6a6;
+  margin: 0;
+}
+
+/* Valor central */
+.valor {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: left; 
+  margin: 10px 0;
+  flex: 1; 
+  display: flex;
+  align-items: center;
+}
+
+/* Rodapé com informações adicionais */
+.informationAnalytics {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.informationAnalytics i {
+  color: #ff5e00;
+  font-size: 1.5rem;
+}
+
+.informationAnalytics p {
+  color: #a6a6a6;
+  margin: 0;
+}
