@@ -14,7 +14,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3003/appBarber/login", {
+      const response = await fetch("https://appbarber-backend.onrender.com/appBarber/findListServices", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ loginEmail: email, loginSenha: password })
