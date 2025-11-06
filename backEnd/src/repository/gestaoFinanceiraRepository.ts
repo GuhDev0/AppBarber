@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import type { GestaoFinanceira, Categoria } from "@prisma/client";
-
 import type { gestaoFinanceiraDto } from "../Dtos/gestaoFinanceiraDto.js";
 
 const prisma = new PrismaClient();
