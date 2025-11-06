@@ -48,4 +48,3 @@ export class GestaoFinanceiraService {
         }
     };
 }
-//# sourceMappingURL=gestaoFinanceiraService.js.map

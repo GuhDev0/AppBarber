@@ -1,4 +1,3 @@
-import { Empresa } from "../repository/EmpresaRepository.js";
 import { GestaoFinanceiraService } from "../services/gestaoFinanceiraService.js";
 const gestaoFinanceiraService = new GestaoFinanceiraService();
 export class GestaoFinanceiraController {
@@ -55,4 +54,3 @@ export class GestaoFinanceiraController {
         }
     };
 }
-//# sourceMappingURL=gestaoFinanceiraController.js.map

@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/prisma/index.js";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 export class ColaboradorDB {
     saveColaborador = async (colaboradorDto, empresaId) => {
@@ -52,4 +52,3 @@ export class ColaboradorDB {
         return deleteColaborador;
     };
 }
-//# sourceMappingURL=colaboradorRepository.js.map

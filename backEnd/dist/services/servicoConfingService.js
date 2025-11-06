@@ -1,5 +1,4 @@
 import { ServicoConfingRepository } from "../repository/servicoConfigRepository.js";
-import { Empresa } from "../repository/EmpresaRepository.js";
 const servicoConfigRepository = new ServicoConfingRepository;
 export class ServicoConfigService {
     registraServiceCatalago = async (catalaoServiceDto, empresaId) => {
@@ -38,4 +37,3 @@ export class ServicoConfigService {
         }
     };
 }
-//# sourceMappingURL=servicoConfingService.js.map

@@ -27,4 +27,3 @@ export class ServiceService {
         return deleteService;
     };
 }
-//# sourceMappingURL=ServiceService.js.map

@@ -16,4 +16,3 @@ export class CategoriaController {
         }
     };
 }
-//# sourceMappingURL=categoriaController.js.map

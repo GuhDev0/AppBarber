@@ -1,46 +1,47 @@
-import { PrismaClient } from "../../generated/prisma/index.js";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 export class Analise {
-    analiseCompletaPorColaborador = async (empresaId, colaboradorId) => {
+    async analiseCompletaPorColaborador(empresaId, colaboradorId) {
         try {
             const list = await prisma.servico.findMany({
-                where: {
-                    empresaId: empresaId,
-                    colaboradorId: colaboradorId
-                }, select: {
+                where: { empresaId, colaboradorId },
+                select: {
                     id: true,
                     valorDoServico: true,
                     clienteId: true,
                     data: true,
-                    colaborador: {
-                        select: {
-                            nomeCompleto: true,
-                        }
-                    },
-                    servicoConfig: {
-                        select: {
-                            comissao: true
-                        }
-                    }
+                    colaborador: { select: { nomeCompleto: true } },
+                    servicoConfig: { select: { comissao: true } },
                 },
             });
+            if (list.length === 0) {
+                return [
+                    {
+                        nomeDoColaborador: "Sem serviços",
+                        valorTotal: 0,
+                        valorTotalComissao: 0,
+                        totalDeServicoRealizado: 0,
+                    },
+                ];
+            }
             const receitaTotal = list.reduce((c, s) => c + s.valorDoServico, 0);
             const receitaTotalComComissao = list.reduce((c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100), 0);
             const total_de_Servico = list.length;
-            const nome = list[0]?.colaborador.nomeCompleto;
-            const analisePorColaborador = [
+            const nome = list[0]?.colaborador?.nomeCompleto;
+            return [
                 {
                     nomeDoColaborador: nome,
                     valorTotal: receitaTotal,
                     valorTotalComissao: receitaTotalComComissao,
-                    totalDeServicoRealizado: total_de_Servico
+                    totalDeServicoRealizado: total_de_Servico,
                 },
             ];
-            return analisePorColaborador;
         }
         catch (error) {
-            console.error(error.message);
+            if (error instanceof Error) {
+                console.error("Erro na análise:", error.message);
+            }
+            return [];
         }
-    };
+    }
 }
-//# sourceMappingURL=analise.js.map

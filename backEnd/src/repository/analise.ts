@@ -1,55 +1,71 @@
-import { PrismaClient } from "../../generated/prisma/index.js";
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-export class Analise{
+type AnaliseColaborador = {
+  nomeDoColaborador: string | undefined;
+  valorTotal: number;
+  valorTotalComissao: number;
+  totalDeServicoRealizado: number;
+};
 
-    analiseCompletaPorColaborador = async (empresaId: number, colaboradorId: number) => {
+export class Analise {
+  async analiseCompletaPorColaborador(
+    empresaId: number,
+    colaboradorId: number
+  ): Promise<AnaliseColaborador[]> {
     try {
-      const list = await prisma.servico.findMany(
-        {
-          where: {
-            empresaId: empresaId,
-            colaboradorId: colaboradorId
-          }, select: {
-            id: true,
-            valorDoServico: true,
-            clienteId: true,
-            data: true,
-            colaborador:{
-              select:{
-                nomeCompleto:true,
-              }
-            },
-            servicoConfig:{
-              select:{
-                comissao:true
-              }
-              
-            }
-          },
-        }
-      )
-      const receitaTotal = list.reduce((c, s) => c + s.valorDoServico, 0)
-      const receitaTotalComComissao = list.reduce((c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100),0 )
-      const total_de_Servico = list.length  
-      const nome = list[0]?.colaborador.nomeCompleto
-      
-      const  analisePorColaborador = [
-        {
-          nomeDoColaborador:nome,
-          valorTotal: receitaTotal,
-          valorTotalComissao:receitaTotalComComissao,
-          totalDeServicoRealizado:total_de_Servico
+      const list = await prisma.servico.findMany({
+        where: { empresaId, colaboradorId },
+        select: {
+          id: true,
+          valorDoServico: true,
+          clienteId: true,
+          data: true,
+          colaborador: { select: { nomeCompleto: true } },
+          servicoConfig: { select: { comissao: true } },
         },
-      ]
-         
-      
-      return analisePorColaborador
-    } catch (error: any) {
-      console.error(error.message)
+      });
+
+      if (list.length === 0) {
+        return [
+          {
+            nomeDoColaborador: "Sem serviços",
+            valorTotal: 0,
+            valorTotalComissao: 0,
+            totalDeServicoRealizado: 0,
+          },
+        ];
+      }
+
+    const receitaTotal = list.reduce(
+  (c: number, s: { valorDoServico: number }) => c + s.valorDoServico,
+  0
+);
+
+const receitaTotalComComissao = list.reduce(
+  (c: number, s: { valorDoServico: number; servicoConfig: { comissao: number } }) =>
+    c + s.valorDoServico * (s.servicoConfig.comissao / 100),
+  0
+);
+
+
+      const total_de_Servico = list.length;
+      const nome = list[0]?.colaborador?.nomeCompleto;
+
+      return [
+        {
+          nomeDoColaborador: nome,
+          valorTotal: receitaTotal,
+          valorTotalComissao: receitaTotalComComissao,
+          totalDeServicoRealizado: total_de_Servico,
+        },
+      ];
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Erro na análise:", error.message);
+      }
+      return [];
     }
   }
-  
-  
 }

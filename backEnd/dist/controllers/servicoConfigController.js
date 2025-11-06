@@ -54,4 +54,3 @@ export class ServicoConfigController {
         }
     }
 }
-//# sourceMappingURL=servicoConfigController.js.map

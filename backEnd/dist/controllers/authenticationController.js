@@ -20,4 +20,3 @@ export class AutheController {
         }
     };
 }
-//# sourceMappingURL=authenticationController.js.map

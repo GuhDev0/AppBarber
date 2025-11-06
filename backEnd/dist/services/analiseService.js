@@ -12,4 +12,3 @@ export class AnaliseService {
         }
     };
 }
-//# sourceMappingURL=analiseService.js.map

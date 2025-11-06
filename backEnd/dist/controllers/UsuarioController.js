@@ -14,4 +14,3 @@ export class UserController {
         }
     };
 }
-//# sourceMappingURL=UsuarioController.js.map

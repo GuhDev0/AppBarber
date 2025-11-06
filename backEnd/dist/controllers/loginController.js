@@ -1,6 +1,4 @@
 import { LoginService } from "../services/loginService.js";
-import jwt from "jsonwebtoken";
-import { UsuarioService } from "../services/usuarioService.js";
 const loginService = new LoginService();
 export class LoginController {
     login = async (req, res) => {
@@ -15,4 +13,3 @@ export class LoginController {
         }
     };
 }
-//# sourceMappingURL=loginController.js.map

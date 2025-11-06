@@ -1,7 +1,8 @@
-import { PrismaClient } from "../../generated/prisma/index.js";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 export class GestaoFinanceiraDB {
-    criarLancamento = async (gtGto, empresaId, categoriaId) => {
+    // Criar lançamento
+    async criarLancamento(gtGto, empresaId, categoriaId) {
         const createDB = await prisma.gestaoFinanceira.create({
             data: {
                 descricao: gtGto.descricao,
@@ -17,27 +18,26 @@ export class GestaoFinanceiraDB {
             },
             include: {
                 categoria: true,
-            }
+            },
         });
         return createDB;
-    };
-    listaDeLancamentos = async (empresaId) => {
+    }
+    // Listar lançamentos
+    async listaDeLancamentos(empresaId) {
         const list = await prisma.gestaoFinanceira.findMany({
             where: { empresaId },
             include: { categoria: true },
         });
-        return list.map(item => ({
+        return list.map((item) => ({
             ...item,
-            nomeCategoria: item.categoria?.nomeCategoria ?? "Sem Categoria"
+            nomeCategoria: item.categoria?.nomeCategoria ?? "Sem Categoria",
         }));
-    };
-    deleteLancamento = async (id) => {
+    }
+    // Deletar lançamento
+    async deleteLancamento(id) {
         const deleteLancamento = await prisma.gestaoFinanceira.delete({
-            where: {
-                id: id
-            }
+            where: { id },
         });
         return deleteLancamento;
-    };
+    }
 }
-//# sourceMappingURL=gestaoFinanceiraRepository.js.map

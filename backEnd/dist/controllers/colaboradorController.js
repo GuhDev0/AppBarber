@@ -48,4 +48,3 @@ export class ColaboradorController {
         }
     };
 }
-//# sourceMappingURL=colaboradorController.js.map

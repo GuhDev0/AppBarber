@@ -46,4 +46,3 @@ export class ServiceController {
         }
     };
 }
-//# sourceMappingURL=serviceControler.js.map

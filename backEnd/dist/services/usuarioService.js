@@ -1,5 +1,4 @@
 import UsuarioRepository from "../repository/usuarioRepository.js";
-import { Empresa } from "../repository/EmpresaRepository.js";
 import { EmpresaService } from "./EmpresaService.js";
 const usuarioDb = new UsuarioRepository();
 const empresaServicee = new EmpresaService();
@@ -9,4 +8,3 @@ export class UsuarioService {
         return user;
     };
 }
-//# sourceMappingURL=usuarioService.js.map

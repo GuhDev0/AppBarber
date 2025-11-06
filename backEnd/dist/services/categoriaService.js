@@ -18,4 +18,3 @@ export class CategoriaService {
         }
     };
 }
-//# sourceMappingURL=categoriaService.js.map

@@ -1,5 +1,4 @@
-import { PrismaClient } from "../../generated/prisma/index.js";
-import { Empresa } from "./EmpresaRepository.js";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 export class ServicoConfingRepository {
     registraServiceCatalago = async (dto, empresaId) => {
@@ -45,4 +44,3 @@ export class ServicoConfingRepository {
         });
     };
 }
-//# sourceMappingURL=servicoConfigRepository.js.map

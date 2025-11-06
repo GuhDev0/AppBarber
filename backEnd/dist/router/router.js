@@ -42,4 +42,3 @@ router.delete("/deleteColaborador/:id", autheController.authentication, colabora
 router.delete("/deletaServico/:id", autheController.authentication, servicoConfigController.deleteServicoControler);
 router.delete("/deletarCliente/:id", autheController.authentication, clienteController.deleteClientePeloId);
 export default router;
-//# sourceMappingURL=router.js.map

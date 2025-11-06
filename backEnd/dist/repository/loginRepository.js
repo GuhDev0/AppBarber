@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/prisma/index.js";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 export class LoginRepository {
     findByEmail = async (loginDto) => {
@@ -12,4 +12,3 @@ export class LoginRepository {
         return usuario;
     };
 }
-//# sourceMappingURL=loginRepository.js.map
