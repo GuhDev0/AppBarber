@@ -1,0 +1,28 @@
+{
+  "name": "appbarber",
+  "version": "1.0.0",
+  "description": "Projeto AppBarber - executa backend, frontend e analise juntos",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "concurrently -n BACKEND,FRONTEND,ANALISE -c green,cyan,yellow \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\" \"cd analise && py main.py\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuhDev0/AppBarber.git"
+  },
+  "keywords": [], 
+  "author": "Gustavo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuhDev0/AppBarber/issues"
+  },
+  "homepage": "https://github.com/GuhDev0/AppBarber#readme",
+  "dependencies": {
+    "lucide-react": "^0.546.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
