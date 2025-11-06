@@ -6,10 +6,11 @@
   "type": "module",
 
   "scripts": {
-    "dev": "set \"NODE_OPTIONS=--loader ts-node/esm\" && node src/app.ts",
-    "build": "tsc",
-    "start": "node ./dist/app.js"
-  }
+  "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+  "build": "tsc",
+  "start": "npm run build && node dist/app.js"
+}
+
 
 ,
   "keywords": [],
