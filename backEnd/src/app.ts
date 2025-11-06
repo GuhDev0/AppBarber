@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(cors())
 dotenv.config();
 
-const port = 3003;
+const port = process.env.PORT || 3000;
 
 app.use("/appBarber", router)
 app.get("/", (_req: Request, res: Response) => {
