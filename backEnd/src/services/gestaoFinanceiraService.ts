@@ -1,6 +1,6 @@
 import { GestaoFinanceiraDB } from "../repository/gestaoFinanceiraRepository.js";
 import type { gestaoFinanceiraDto } from "../Dtos/gestaoFinanceiraDto.js";
-import { PrismaClient } from "../../generated/prisma/index.js";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 const gestaoFinanceiraDB = new GestaoFinanceiraDB();

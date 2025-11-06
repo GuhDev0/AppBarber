@@ -4,6 +4,9 @@ export class AnaliseService {
     analiseCompletaPorColaborador = async (empresaId, colaboradorId) => {
         try {
             const analisePorColaborador = await analiseDB.analiseCompletaPorColaborador(empresaId, colaboradorId);
+            if (!analisePorColaborador) {
+                throw new Error("Não foi possivel");
+            }
             return analisePorColaborador;
         }
         catch (error) {
