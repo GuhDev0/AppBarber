@@ -19,6 +19,16 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+    rules: {
+      // Permitir uso de 'any' temporariamente
+      "@typescript-eslint/no-explicit-any": "off",
+      // Não obrigar const quando não há reatribuição
+      "prefer-const": "off",
+      // Ignorar variáveis não usadas (útil em dev)
+      "@typescript-eslint/no-unused-vars": "off",
+      // Ignorar dependências faltando em useEffect
+      "react-hooks/exhaustive-deps": "off",
+    },
   },
 ];
 

@@ -28,11 +28,11 @@ interface Colaborador {
 }
 
 export default function AbaEntradas() {
-  const URLSAVE = "http://localhost:3003/appBarber/saveLancamento";
-  const URLLIST = "http://localhost:3003/appBarber/listaDeLancamento";
-  const URLDELETE = "http://localhost:3003/appBarber/deleteLancamento";
-  const URLCATEGORIAS = "http://localhost:3003/appBarber/listCATEGORIA";
-  const URLCOLABORADORES = "http://localhost:3003/appBarber/listColaboradores";
+  const URLSAVE = "https://gestorappbarber.onrender.com/saveLancamento";
+  const URLLIST = "https://gestorappbarber.onrender.com/listaDeLancamento";
+  const URLDELETE = "https://gestorappbarber.onrender.com/deleteLancamento";
+  const URLCATEGORIAS = "https://gestorappbarber.onrender.com/appBarber/listCATEGORIA";
+  const URLCOLABORADORES = "https://gestorappbarber.onrender.com/appBarber/listColaboradores";
 
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [entradas, setEntradas] = useState<EntradaFinanceira[]>([]);
