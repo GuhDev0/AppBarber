@@ -2,7 +2,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -70,7 +69,7 @@ model Servico {
   clienteId        Int
   servicoConfigId  Int
   gestaoFinanceira GestaoFinanceira[]
-  pagamento         Pagamento[]
+  pagamento        Pagamento[]
   cliente          Cliente            @relation(fields: [clienteId], references: [id])
   colaborador      Colaborador        @relation(fields: [colaboradorId], references: [id])
   empresa          Empresa            @relation(fields: [empresaId], references: [id])
@@ -79,19 +78,12 @@ model Servico {
 }
 
 model Pagamento {
-  id              Int             @unique @default(autoincrement())
-  colaboradorId   Int
-  empresaId       Int
-  statusPagamento StatusPagamento
-  valorTotal      Float
-  dataPagamento   DateTime
-  observacoes     String
-  servicoId       Int
-
-  
-  servico         Servico @relation(fields: [servicoId],references: [id])
-  colaborador     Colaborador     @relation(fields: [colaboradorId], references: [id])
-  empresa         Empresa         @relation(fields: [empresaId],references: [id])
+  id            String          @id
+  servicoId     Int
+  status        StatusPagamento
+  dataPagamento DateTime
+  observacoes   String?
+  servico       Servico         @relation(fields: [servicoId], references: [id])
 }
 
 model Empresa {
@@ -108,7 +100,6 @@ model Empresa {
   servico          Servico[]
   ServicoConfig    ServicoConfig[]
   usuarios         Usuario[]
-  pagamento       Pagamento[]
 }
 
 model Colaborador {
@@ -123,7 +114,6 @@ model Colaborador {
   empresa          Empresa            @relation(fields: [empresaId], references: [id])
   GestaoFinanceira GestaoFinanceira[]
   servicos         Servico[]
-  pagamento        Pagamento[]
 }
 
 model ServicoConfig {
@@ -140,6 +130,7 @@ model ServicoConfig {
 
 enum StatusPagamento {
   PENDENTE
+  CANCELADO
   PAGO
 }
 
