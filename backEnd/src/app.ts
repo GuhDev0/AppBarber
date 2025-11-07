@@ -11,8 +11,10 @@ dotenv.config();
 
 const port = process.env.PORT || 3000;
 
+
 app.use("/appBarber", router)
 app.get("/", (_req: Request, res: Response) => {
+  console.log("DATABASE_URL em runtime:", process.env.DATABASE_URL);
   res.send("Backend online 🚀");
 });
 
