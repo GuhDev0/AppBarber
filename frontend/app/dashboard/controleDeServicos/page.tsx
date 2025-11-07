@@ -72,10 +72,10 @@ export default function ControleDeServicos() {
   const [filtroColaborador, setFiltroColaborador] = useState("");
   const [filtroData, setFiltroData] = useState("");
 
-  const URL_SAVE = "http://localhost:3003/appBarber/serviceSave";
-  const URL_LIST = "http://localhost:3003/appBarber/findListServices";
-  const URL_COLABS = "http://localhost:3003/appBarber/listColaboradores";
-  const URL_listDeServico = "http://localhost:3003/appBarber/listDeCatalagoDeServico";
+  const URL_SAVE = "https://gestorappbarber.onrender.com/appBarber/serviceSave";
+  const URL_LIST = "https://gestorappbarber.onrender.com/appBarber/findListServices";
+  const URL_COLABS = "https://gestorappbarber.onrender.com/appBarber/listColaboradores";
+  const URL_listDeServico = "https://gestorappbarber.onrender.com/appBarber/listDeCatalagoDeServico";
 
   // Função para buscar token e garantir que é string
   const getToken = (): string | null => {
