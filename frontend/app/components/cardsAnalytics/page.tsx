@@ -2,10 +2,10 @@ import { subtle } from "crypto";
 import styles from "./styles.module.css"
 
 interface CardAnalytics{
-    titulo:String;
-    subTitulo:String;
+    titulo:string;
+    subTitulo:string;
     valor:number | string;
-    descricao?:String;
+    descricao?:string;
     icon:React.ReactNode;
 
 }
