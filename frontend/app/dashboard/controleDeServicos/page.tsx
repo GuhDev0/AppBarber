@@ -293,7 +293,7 @@ export default function ControleDeServicos() {
     if (!token) return;
 
     try {
-      const response = await fetch("http://localhost:3003/appBarber/listaDeClientes", {
+      const response = await fetch("https://gestorappbarber.onrender.com/appBarber/listaDeClientes", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
