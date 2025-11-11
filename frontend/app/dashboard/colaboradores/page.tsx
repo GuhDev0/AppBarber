@@ -56,7 +56,7 @@ export default function AbaColaboradores() {
 
   const fetchColaboradores = async (token: string) => {
     try {
-      const response = await fetch(`http://localhost:3003/appBarber/listColaboradores`, {
+      const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/listColaboradores`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -111,7 +111,7 @@ export default function AbaColaboradores() {
     }
 
     try {
-      const response = await fetch("http://localhost:3003/appBarber/saveColaborador", {
+      const response = await fetch("https://gestorappbarber.onrender.com/appBarber/saveColaborador", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -158,7 +158,7 @@ export default function AbaColaboradores() {
     if (!token) return;
 
     try {
-      const response = await fetch(`http://localhost:3003/appBarber/deleteColaborador/${id}`, {
+      const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/deleteColaborador/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

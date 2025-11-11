@@ -25,7 +25,7 @@ export default function Pagamento() {
     if (!token) {
       throw new Error("Token invalido")
     }
-    const response = await fetch("http://localhost:3003/appBarber/pagamentoAnalise", {
+    const response = await fetch("https://gestorappbarber.onrender.com/appBarber/pagamentoAnalise", {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     }

@@ -26,7 +26,7 @@ export default function Clientes() {
   const fetchClientes = async () => {
     try {
      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-      const res = await fetch("http://localhost:3003/appBarber/listaDeClientes", {
+      const res = await fetch("https://gestorappbarber.onrender.com/appBarber/listaDeClientes", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,7 +51,7 @@ export default function Clientes() {
     e.preventDefault();
     try {
      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-      await fetch("http://localhost:3003/appBarber/cadastroDeCliente", {
+      await fetch("https://gestorappbarber.onrender.com/appBarber/cadastroDeCliente", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export default function Clientes() {
     try {
      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
 
-      await fetch(`http://localhost:3003/appBarber/deletarCliente/${id}`, {
+      await fetch(`https://gestorappbarber.onrender.com/appBarber/deletarCliente/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -50,7 +50,7 @@ export default function AdicionarServico() {
 
   // 🔹 Buscar lista ao carregar
   useEffect(() => {
-    fetch("http://localhost:3003/appBarber/listDeCatalagoDeServico", {
+    fetch("https://gestorappbarber.onrender.com/appBarber/listDeCatalagoDeServico", {
       headers: getAuthHeaders(),
     })
       .then((res) => res.json())
@@ -66,7 +66,7 @@ export default function AdicionarServico() {
     const novoServico: ServicoDto = { nome, tipo, preco, comissao };
 
     try {
-      const res = await fetch("http://localhost:3003/appBarber/registraCatalagoService", {
+      const res = await fetch("https://gestorappbarber.onrender.com/appBarber/registraCatalagoService", {
         method: "POST",
         headers: getAuthHeaders(),
         body: JSON.stringify(novoServico),
@@ -97,7 +97,7 @@ export default function AdicionarServico() {
     if (!id) return;
 
     try {
-      const res = await fetch(`http://localhost:3003/appBarber/deletaServico/${id}`, {
+      const res = await fetch(`https://gestorappbarber.onrender.com/appBarber/deletaServico/${id}`, {
         method: "DELETE",
         headers: getAuthHeaders(),
       });
