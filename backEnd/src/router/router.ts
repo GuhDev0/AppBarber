@@ -28,7 +28,7 @@ router.post('/login', loginController.login)
 router.post("/createEmpresa",empresaController.empresaCreate)
 router.post('/serviceSave', autheController.authentication,serviceControler.saveService)
 router.post('/saveLancamento',autheController.authentication,gestaoFinanceiraController.saveLancamento)
-router.post("/saveColaborador",autheController.authentication,colaboradorController.saveColaborador)
+router.post("/saveColaborador",colaboradorController.saveColaborador)
 router.post("/registraCatalagoService", autheController.authentication,servicoConfigController.registraCatalagoServicoControler)
 router.post("/cadastroDeCliente",autheController.authentication,clienteController.criarClienteController)
 
@@ -41,7 +41,7 @@ router.get("/listaDeLancamento",autheController.authentication,gestaoFinanceiraC
 router.get("/listCATEGORIA",autheController.authentication,categoriaController.listCategoriaController )
 router.get("/listDeCatalagoDeServico",autheController.authentication,servicoConfigController.buscarListaDeControler)
 router.get("/listaDeClientes",autheController.authentication,clienteController.listaDeClienteController)
-
+router.get("/listaDeEmpresas",empresaController.listaDeEmpresasController)
 
 router.delete('/deleteService/:id',serviceControler.deleteServiceController)
 router.delete("/deleteLancamento/:id",autheController.authentication,gestaoFinanceiraController.deleteLancamento)

@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from '../prisma.js';
 export class Empresa {
     RegistraEmpresa = async (empresaDto) => {
         const empresa = await prisma.empresa.create({
@@ -20,5 +19,22 @@ export class Empresa {
             }
         });
         return findId;
+    };
+    buscarListaDeEmpresas = async () => {
+        try {
+            const lista = await prisma.empresa.findMany({
+                select: {
+                    id: true,
+                    cnpj: true,
+                    nomeDaEmpresa: true,
+                    endereco: true,
+                }
+            });
+            return lista;
+        }
+        catch (error) {
+            throw new Error("Nao possivel buscar lista de empresa");
+            console.log(error.message);
+        }
     };
 }

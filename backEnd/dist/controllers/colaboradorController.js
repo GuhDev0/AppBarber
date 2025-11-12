@@ -1,19 +1,35 @@
 import { ColaboradorService } from "../services/colaboradorService.js";
-const colaboradorService = new ColaboradorService;
+const colaboradorService = new ColaboradorService();
 export class ColaboradorController {
     saveColaborador = async (req, res) => {
-        if (!req.user) {
-            return res.status(401).json({ mensagem: "Usuário não autenticado" });
-        }
         const reqBody = req.body;
+        // Basic validation to avoid calling Prisma with missing required fields
+        const empresaId = reqBody.empresaId ?? req.user?.empresaId;
+        if (!empresaId) {
+            return res.status(400).json({ mensagem: "empresaId é obrigatório" });
+        }
+        if (!reqBody.nomeCompleto || typeof reqBody.nomeCompleto !== 'string') {
+            return res.status(400).json({ mensagem: "nomeCompleto é obrigatório e deve ser uma string" });
+        }
+        if (!reqBody.email || typeof reqBody.email !== 'string') {
+            return res.status(400).json({ mensagem: "email é obrigatório e deve ser uma string" });
+        }
         try {
-            const save = await colaboradorService.saveColaboradorService(reqBody, req.user.empresaId);
-            res.status(201).json({
-                mensagem: "Registrado com sucesso"
-            });
+            // ensure empresaId is present in the payload passed to the service
+            const payload = { ...reqBody, empresaId };
+            // helpful debug log when a request fails validation/server error
+            console.debug('Salvar colaborador payload:', payload);
+            const save = await colaboradorService.saveColaboradorService(payload);
+            res.status(201).json({ mensagem: "Registrado com sucesso", colaborador: save });
         }
         catch (error) {
-            res.status(500).json(error.message);
+            console.error('Erro ao salvar colaborador (controller):', error?.message ?? error);
+            // If it's a validation-like message from service, return 400, else 500
+            const msg = error?.message ?? 'Erro interno';
+            if (msg.toLowerCase().includes('empresa não encontrada') || msg.toLowerCase().includes('obrigat')) {
+                return res.status(400).json({ mensagem: msg });
+            }
+            res.status(500).json({ mensagem: msg });
         }
     };
     buscaColaborador = async (req, res) => {

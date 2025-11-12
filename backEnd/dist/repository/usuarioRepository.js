@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-const prisma = new PrismaClient();
+import { prisma } from "../prisma.js";
 export default class repositoryUsuario {
     registrarUsuario = async (usuarioDto, empresaId) => {
         try {

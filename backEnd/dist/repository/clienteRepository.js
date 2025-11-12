@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "../prisma.js";
 export class ClienteRepository {
     criarCliente = async (clienteDto, empresaId) => {
         const cliente = await prisma.cliente.create({

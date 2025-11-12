@@ -14,5 +14,15 @@ export class EmpresaService  {
         return empresaId
     }
 
+    listaDeEmpresaService = async () =>{
+        try{
+            const listaDB = empresaDB.buscarListaDeEmpresas()
+            return listaDB
+        }catch(error:any){
+            throw new Error("Erro busca a lista de empresas no banco")    
+            console.error(error.message)
+        }
+        }
+
     
 }

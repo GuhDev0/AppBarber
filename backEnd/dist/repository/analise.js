@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "../prisma.js";
 export class Analise {
     async analiseCompletaPorColaborador(empresaId, colaboradorId) {
         try {

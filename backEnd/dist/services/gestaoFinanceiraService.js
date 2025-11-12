@@ -1,6 +1,5 @@
 import { GestaoFinanceiraDB } from "../repository/gestaoFinanceiraRepository.js";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "../prisma.js";
 const gestaoFinanceiraDB = new GestaoFinanceiraDB();
 export class GestaoFinanceiraService {
     saveLancamentoService = async (gtDto, empresaId) => {

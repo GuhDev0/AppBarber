@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "../prisma.js";
 export class ServiceRepository {
     createdServiceRepository = async (serviceDTO, empresaId, usuarioId, colaboradorId) => {
         const saveServiceDB = await prisma.servico.create({

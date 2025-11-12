@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import type { loginDto } from "../Dtos/loginDto.js";
-const prisma = new PrismaClient();
+import { prisma } from "../prisma.js";
 
 export class LoginRepository {
     findByEmail = async (loginDto: loginDto) => {

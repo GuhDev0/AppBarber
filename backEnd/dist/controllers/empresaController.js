@@ -28,4 +28,13 @@ export class EmpresaController {
             return res.status(500).json({ mensagem: error.message });
         }
     };
+    listaDeEmpresasController = async (req, res) => {
+        try {
+            const listaEmprestaService = await empresaService.listaDeEmpresaService();
+            res.status(200).json({ mensagem: listaEmprestaService });
+        }
+        catch (error) {
+            res.status(500).json({ error: error.mensagem });
+        }
+    };
 }

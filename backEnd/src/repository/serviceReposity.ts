@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import type { serviceDTO } from "../Dtos/ServiceDTO.js";
-
-const prisma = new PrismaClient();
+import { prisma } from "../prisma.js";
 
 export class ServiceRepository {
 

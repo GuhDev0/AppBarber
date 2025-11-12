@@ -1,6 +1,8 @@
 import { ColaboradorDB } from "../repository/colaboradorRepository.js";
+ import { Empresa } from "../repository/EmpresaRepository.js";
+const empresaDB = new Empresa();
 import type { ColaboradorDto } from "../Dtos/colaboradorDto.js";
-import bcrypt from "bcrypt"; // para criptografar a senha
+import bcrypt from "bcrypt"; 
 
 const colaboradorDB = new ColaboradorDB();
 
@@ -15,29 +17,37 @@ export class ColaboradorService {
     return senha;
   };
 
-  saveColaboradorService = async (colaboradorDto: ColaboradorDto, empresaId: number) => {
-    try {
-      
-      const senhaAleatoria = this.gerarSenhaAleatoria(10);
+ 
 
-      
-      const senhaCriptografada = await bcrypt.hash(senhaAleatoria, 10);
-
-      
-      const save = await colaboradorDB.saveColaborador(
-        { ...colaboradorDto, senha: senhaCriptografada },
-        empresaId
-      );
-
-      if (!save) throw new Error("Dados não fornecidos corretamente");
-
-      
-      return { ...save, senhaGerada: senhaAleatoria };
-    } catch (error: any) {
-      console.error("Erro ao salvar colaborador:", error.message);
-      throw new Error(error.message);
+saveColaboradorService = async (colaboradorDto: ColaboradorDto) => {
+  try {
+    // defensive validation: ensure required fields are present
+    if (!colaboradorDto.nomeCompleto || typeof colaboradorDto.nomeCompleto !== 'string') {
+      throw new Error('nomeCompleto é obrigatório');
     }
-  };
+    if (!colaboradorDto.email || typeof colaboradorDto.email !== 'string') {
+      throw new Error('email é obrigatório');
+    }
+    const empresaExiste = await empresaDB.findByIdEmpresa(colaboradorDto.empresaId);
+    if (!empresaExiste) throw new Error("Empresa não encontrada.");
+
+    const senhaAleatoria = this.gerarSenhaAleatoria(10);
+    const senhaCriptografada = await bcrypt.hash(senhaAleatoria, 10);
+
+    const save = await colaboradorDB.saveColaborador({
+      ...colaboradorDto,
+      senha: senhaCriptografada,
+    });
+
+    if (!save) throw new Error("Erro ao salvar colaborador.");
+
+    return { ...save, senhaGerada: senhaAleatoria };
+  } catch (error: any) {
+    console.error("Erro ao salvar colaborador:", error.message);
+    throw new Error(error.message);
+  }
+};
+
 
 buscarListaDeColaboradoresService = async (empresaId: number) => {
     try {

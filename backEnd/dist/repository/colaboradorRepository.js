@@ -1,54 +1,36 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "../prisma.js";
 export class ColaboradorDB {
-    saveColaborador = async (colaboradorDto, empresaId) => {
-        console.log(" Dados recebidos no Repository:", colaboradorDto);
-        const save = await prisma.colaborador.create({
+    saveColaborador = async (colaboradorDto) => {
+        return await prisma.colaborador.create({
             data: {
                 nomeCompleto: colaboradorDto.nomeCompleto,
                 email: colaboradorDto.email,
                 dataDeNascimento: new Date(colaboradorDto.dataNascimento),
                 tel: colaboradorDto.tel,
                 senha: colaboradorDto.senha,
-                empresaId: empresaId,
-                avatar: colaboradorDto.avatar
+                empresaId: colaboradorDto.empresaId,
+                avatar: colaboradorDto.avatar,
             },
         });
-        return save;
     };
     buscarListaDeColaboradores = async (empresaId) => {
-        const data = await prisma.colaborador.findMany({
-            where: { empresaId: empresaId },
-            include: {
-                servicos: true
-            }
+        return await prisma.colaborador.findMany({
+            where: { empresaId },
+            include: { servicos: true },
         });
-        return data;
     };
     buscarColaboradorId = async (id) => {
-        const colaborador = await prisma.colaborador.findUnique({
+        return await prisma.colaborador.findUnique({
             where: { id },
-            include: {
-                servicos: true
-            }
+            include: { servicos: true },
         });
-        return colaborador;
     };
     deleteColaboradorId = async (empresaId, id) => {
         const colaborador = await prisma.colaborador.findFirst({
-            where: {
-                id,
-                empresaId,
-            }
+            where: { id, empresaId },
         });
-        if (!colaborador) {
-            throw new Error("Usuario não pertece a essa empresa");
-        }
-        const deleteColaborador = await prisma.colaborador.delete({
-            where: {
-                id
-            }
-        });
-        return deleteColaborador;
+        if (!colaborador)
+            throw new Error("Usuário não pertence a essa empresa");
+        return await prisma.colaborador.delete({ where: { id } });
     };
 }

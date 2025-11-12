@@ -18,7 +18,10 @@ app.get("/", (_req: Request, res: Response) => {
   res.send("Backend online 🚀");
 });
 
-app.listen(port, () =>{
-    
-    console.log(`Servidor Aberto ! ${port}`)
-})
+try {
+  app.listen(3000, () => {
+    console.log("Servidor Aberto ! 3000");
+  });
+} catch (err) {
+  console.error("Erro ao iniciar servidor:", err);
+}
