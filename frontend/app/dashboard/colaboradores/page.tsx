@@ -15,16 +15,26 @@ interface Colaborador {
   avatar?: string;
 }
 
+interface ColaboradorDto {
+  nomeCompleto: string;
+  dataNascimento: string; 
+  email: string;
+  tel: string;
+  avatar?: string;
+  empresaId?: number;
+}
+
 export default function AbaColaboradores() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
   const [userData, setUserData] = useState<any>({});
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ColaboradorDto>({
     nomeCompleto: "",
     dataNascimento: "",
     email: "",
     tel: "",
     avatar: "",
+    empresaId: undefined,
   });
 
   const parseJwt = (token: string) => {
@@ -60,7 +70,6 @@ export default function AbaColaboradores() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
-
 
       const lista = Array.isArray(data.list) ? data.list : [];
       const colaboradoresNormalizados = lista.map((c: any) => ({
@@ -110,6 +119,16 @@ export default function AbaColaboradores() {
       return;
     }
 
+   
+    const payload: ColaboradorDto = {
+      nomeCompleto: formData.nomeCompleto,
+      dataNascimento: dataNascimentoObj.toISOString(),
+      email: formData.email,
+      tel: formData.tel,
+      avatar: formData.avatar,
+      empresaId: userData?.empresaId,
+    };
+
     try {
       const response = await fetch("https://gestorappbarber.onrender.com/appBarber/saveColaborador", {
         method: "POST",
@@ -117,36 +136,32 @@ export default function AbaColaboradores() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          nomeCompleto: formData.nomeCompleto,
-          dataNascimento: dataNascimentoObj,
-          email: formData.email,
-          tel: formData.tel,
-          avatar: formData.avatar,
-          empresaId: userData.empresaId,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
       if (!response.ok) {
         console.error("Erro ao registrar colaborador:", data);
-        alert(data.message || "Erro ao registrar colaborador");
+        alert(data.message || data.mensagem || "Erro ao registrar colaborador");
         return;
       }
 
+      // backend may return { colaborador: {...} } or the object directly
+      const saved: any = data.colaborador ?? data;
 
-      const novoColaborador = {
-        id: data.id,
-        nomeCompleto: data.nomeCompleto,
-        dataNascimento: data.dataNascimento,
-        email: data.email,
-        tel: data.tel,
-        avatar: data.avatar,
-        totalServicos: 0,
+      const novoColaborador: Colaborador = {
+        id: saved.id,
+        nomeCompleto: saved.nomeCompleto,
+        dataNascimento: saved.dataNascimento ?? payload.dataNascimento,
+        email: saved.email,
+        tel: saved.tel,
+        avatar: saved.avatar,
+        totalServicos: saved.totalServicos ?? 0,
       };
+
       setColaboradores((prev) => [...prev, novoColaborador]);
 
-      setFormData({ nomeCompleto: "", dataNascimento: "", email: "", tel: "", avatar: "" });
+      setFormData({ nomeCompleto: "", dataNascimento: "", email: "", tel: "", avatar: "", empresaId: undefined });
       setMostrarFormulario(false);
     } catch (error) {
       console.error("Erro no cadastro:", error);
@@ -266,9 +281,6 @@ export default function AbaColaboradores() {
                 ? c.tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3")
                 : "Sem telefone"}
             </p>
-
-
-
 
             <button className={styles.deleteBtn} onClick={() => handleDelete(c.id)}>
               Deletar

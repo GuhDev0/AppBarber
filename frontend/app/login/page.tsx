@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import styles from "./styles.module.css";
+import Login_Register from "../login_register/page";
+import Link from 'next/link';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -48,6 +50,7 @@ export default function Login() {
     
       <div className={styles.loginContainer}>
         <form className={styles.loginForm} onSubmit={handleLogin}>
+          <div className={styles.containerImgLogo}>✂️</div>
           <h2 className={styles.title}>Gestor<strong>PRO</strong></h2>
           <p>Sistema de Gestão Profissional</p>
           <div className={styles.formGroup}>
@@ -80,6 +83,11 @@ export default function Login() {
           <button type="submit" className={styles.primaryBtn} disabled={loading}>
             {loading ? "Entrando..." : "Entrar"}
           </button>
+          <p>
+            Não tem uma conta? <Link href={"/login_register"}>Registre aqui !</Link>
+         
+          </p>
+
         </form>
       </div>
     

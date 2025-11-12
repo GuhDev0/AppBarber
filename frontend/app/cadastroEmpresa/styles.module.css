@@ -1,0 +1,138 @@
+:root {
+  /* Paleta do projeto */
+  --brand-dark: #13161b;
+  --brand-accent: #f05626;
+  --white: #ffffff;
+  --text: #ffffff;
+  --muted: #b0b3b8;
+}
+
+/* Tela inteira */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--brand-dark);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Container principal */
+.container {
+  max-width: 820px;
+  margin: 64px auto;
+  background: #1b1e25;
+  padding: 32px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(240, 86, 38, 0.2);
+}
+
+/* Título */
+.title {
+  margin: 0 0 16px 0;
+  font-size: 22px;
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* Formulário */
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  align-items: start;
+}
+
+/* Campo */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Label */
+.label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Input */
+.input {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #2c3038;
+  background: #23262d;
+  color: var(--white);
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 3px rgba(240, 86, 38, 0.3);
+  border-color: var(--brand-accent);
+}
+
+/* Botões */
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.primaryBtn {
+  background: var(--brand-accent);
+  color: var(--white);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.primaryBtn:hover {
+  background: #ff6b3d;
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid #3a3f47;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.containerImgLogo {
+  background-color: rgba(240, 86, 38, 0.1);
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr);
+  font-size: 1.5rem;
+}
+
+
+.secondaryBtn:hover {
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+}
+
+/* Responsividade */
+@media (max-width: 680px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+  .actions { justify-content: stretch; }
+}
