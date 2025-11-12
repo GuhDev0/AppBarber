@@ -25,15 +25,34 @@ export default function Clientes() {
   // FUNÇÃO PARA BUSCAR CLIENTES
   const fetchClientes = async () => {
     try {
-     const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
+      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
+      if (!token) {
+        // No token available — user should log in
+        console.warn("Token ausente ao buscar clientes. Redirecionando para login.");
+        window.location.href = "/login";
+        return;
+      }
+
       const res = await fetch("https://gestorappbarber.onrender.com/appBarber/listaDeClientes", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      if (!res.ok) {
+        const errorBody = await res.json().catch(() => ({}));
+        console.error("Erro ao buscar clientes:", res.status, errorBody);
+        alert(errorBody.mensagem || "Erro ao carregar clientes");
+        return;
+      }
+
       const data = await res.json();
-      console.log(data)
-      setClientes(data);
+      console.log("listaDeClientes ->", data);
+      // Backend may return an array or an object; handle both shapes
+      if (Array.isArray(data)) setClientes(data);
+      else if (data.lista) setClientes(data.lista);
+      else if (data.clientes) setClientes(data.clientes);
+      else setClientes([]);
     } catch (err) {
       console.log("Erro ao carregar clientes:", err);
     }
@@ -50,35 +69,42 @@ export default function Clientes() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-     const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-      await fetch("https://gestorappbarber.onrender.com/appBarber/cadastroDeCliente", {
+      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
+      if (!token) {
+        alert("Sua sessão expirou. Faça login novamente.");
+        window.location.href = "/login";
+        return;
+      }
+
+      const res = await fetch("https://gestorappbarber.onrender.com/appBarber/cadastroDeCliente", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(
-          {
-            nome:formData.nome ,
-            Sobrenome: formData.sobrenome,
-            email: formData.email,
-            telefone: formData.telefone,
-            empresaId:userData.empresaId,
-            
-
-          }
-        ),
+        body: JSON.stringify({
+          nome: formData.nome,
+          Sobrenome: formData.sobrenome,
+          email: formData.email,
+          telefone: formData.telefone,
+        }),
       });
 
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        console.error("Erro ao registrar cliente:", res.status, err);
+        alert(err.mensagem || "Erro ao registrar cliente");
+        return;
+      }
+
+      const responseBody = await res.json().catch(() => ({}));
+      console.log("Cadastro de cliente resposta ->", responseBody);
+
+      // Only refresh and clear on success
       fetchClientes();
       setMostrarFormulario(false);
 
-      setFormData({
-        nome: "",
-        sobrenome: "",
-        telefone: "",
-        email: "",
-      });
+      setFormData({ nome: "", sobrenome: "", telefone: "", email: "" });
     } catch {
       alert("Erro ao registrar cliente");
     }
@@ -89,14 +115,25 @@ export default function Clientes() {
     if (!confirm("Deseja realmente excluir este cliente?")) return;
 
     try {
-     const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
+      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
+      if (!token) {
+        alert("Sua sessão expirou. Faça login novamente.");
+        window.location.href = "/login";
+        return;
+      }
 
-      await fetch(`https://gestorappbarber.onrender.com/appBarber/deletarCliente/${id}`, {
+      const res = await fetch(`https://gestorappbarber.onrender.com/appBarber/deletarCliente/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(err.mensagem || "Erro ao excluir cliente");
+        return;
+      }
 
       fetchClientes();
     } catch {
