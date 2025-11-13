@@ -46,15 +46,14 @@ export default function Clientes() {
         return;
       }
 
-      const data = await res.json();
-      console.log("listaDeClientes ->", data);
-      // Backend may return an array or an object; handle both shapes
-      if (Array.isArray(data)) setClientes(data);
-      else if (data.lista) setClientes(data.lista);
-      else if (data.clientes) setClientes(data.clientes);
-      else setClientes([]);
+  const data = await res.json();
+  // Backend may return an array or an object; handle both shapes
+  if (Array.isArray(data)) setClientes(data);
+  else if (data.lista) setClientes(data.lista);
+  else if (data.clientes) setClientes(data.clientes);
+  else setClientes([]);
     } catch (err) {
-      console.log("Erro ao carregar clientes:", err);
+      console.error("Erro ao carregar clientes");
     }
   };
 
@@ -96,9 +95,6 @@ export default function Clientes() {
         alert(err.mensagem || "Erro ao registrar cliente");
         return;
       }
-
-      const responseBody = await res.json().catch(() => ({}));
-      console.log("Cadastro de cliente resposta ->", responseBody);
 
       // Only refresh and clear on success
       fetchClientes();

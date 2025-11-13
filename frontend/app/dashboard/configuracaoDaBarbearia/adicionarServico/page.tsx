@@ -72,8 +72,7 @@ export default function AdicionarServico() {
         body: JSON.stringify(novoServico),
       });
 
-      const result = await res.json();
-      console.log("Resposta da API:", result);
+  const result = await res.json();
 
       if (res.ok) {
         setListaDeServicos((prev) => [...prev, result.dados]);

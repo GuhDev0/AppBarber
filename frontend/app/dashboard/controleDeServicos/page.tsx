@@ -132,7 +132,7 @@ export default function ControleDeServicos() {
         headers: { Authorization: `Bearer ${validToken}`, "Content-Type": "application/json" },
       });
 
-      console.log("[catálogo] status:", response.status, response.statusText);
+  // status info intentionally not logged to avoid leaking response details in production
 
       // tenta ler JSON; se falhar, loga o texto
       let data: any = null;
@@ -144,7 +144,7 @@ export default function ControleDeServicos() {
         throw new Error("Resposta do servidor não é JSON");
       }
 
-      console.log("[catálogo] body:", data);
+  // body intentionally not logged to avoid leaking potentially sensitive data
 
 
       const lista =
@@ -244,10 +244,7 @@ export default function ControleDeServicos() {
 
         setMostrarFormulario(false);
       } else {
-        console.log(formData)
-
         const errorData = await response.json().catch(() => ({}));
-
         alert(errorData.message || "Erro ao registrar serviço");
 
       }
@@ -302,9 +299,8 @@ export default function ControleDeServicos() {
         throw new Error(`Erro na requisição: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log("Clientes:", data);
-      setListaDeClientes(Array.isArray(data) ? data : data.list || []);
+  const data = await response.json();
+  setListaDeClientes(Array.isArray(data) ? data : data.list || []);
     } catch (error) {
       console.error("Erro ao buscar clientes:", error);
     }
