@@ -1,4 +1,4 @@
-import { prisma } from "../prisma.js";
+import { prisma } from "../prisma";
 
 type AnaliseColaborador = {
   nomeDoColaborador: string | undefined;
@@ -36,16 +36,16 @@ export class Analise {
         ];
       }
 
-    const receitaTotal = list.reduce(
-  (c: number, s: { valorDoServico: number }) => c + s.valorDoServico,
-  0
-);
+      const receitaTotal = list.reduce(
+        (c: number, s: { valorDoServico: number }) => c + s.valorDoServico,
+        0
+      );
 
-const receitaTotalComComissao = list.reduce(
-  (c: number, s: { valorDoServico: number; servicoConfig: { comissao: number } }) =>
-    c + s.valorDoServico * (s.servicoConfig.comissao / 100),
-  0
-);
+      const receitaTotalComComissao = list.reduce(
+        (c: number, s: { valorDoServico: number; servicoConfig: { comissao: number } }) =>
+          c + s.valorDoServico * (s.servicoConfig.comissao / 100),
+        0
+      );
 
 
       const total_de_Servico = list.length;
@@ -66,4 +66,60 @@ const receitaTotalComComissao = list.reduce(
       return [];
     }
   }
+
+  analiseCompletaDoEstabelecimento = async (empresaId: number) => {
+    try {
+      const list = await prisma.servico.findMany({
+        where: { empresaId },
+        select: {
+          id: true,
+          valorDoServico: true,
+          data: true,
+          tipoDoServico: true,
+          hora: true,
+        }
+      })
+
+      function formatDate(days: number) {
+        const date = new Date();
+        date.setDate(date.getDate() - days);
+        date.setHours(0, 0, 0, 0);
+        return date;
+      }
+
+      const date30days = formatDate(30);
+      const listaDoultimos30DSerivcos = list.filter(servico => {
+        const servicoDate = new Date(servico.data);
+        return servicoDate >= date30days;
+      });
+
+
+
+      const totalDeServico30D = listaDoultimos30DSerivcos.length;
+
+
+      const receitaTotal30D = listaDoultimos30DSerivcos.reduce(
+        (c: number, s: { valorDoServico: number }) => c + s.valorDoServico,
+        0
+      );
+
+
+      const total_de_Servico = list.length;
+      console.log("Serviços dos últimos 30 dias:", totalDeServico30D);
+      console.log("Total de Serviços:", total_de_Servico);
+      console.log("Receita Total:", receitaTotal30D);
+      return {
+        totalDeServico30D,
+        receitaTotal30D,
+        total_de_Servico,
+        list
+
+      }
+
+    } catch (error: any) {
+      console.error("Não foi possivel realizar a analise do estabelecimento", error.message)
+      throw new Error(error.message)
+    }
+  }
+
 }

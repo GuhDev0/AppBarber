@@ -1,4 +1,4 @@
-import { ServicoConfigService } from "../services/servicoConfingService.js";
+import { ServicoConfigService } from "../services/servicoConfingService";
 import type { Response, Request } from "express";
 
 const servicoConfigService = new ServicoConfigService();

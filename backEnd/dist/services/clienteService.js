@@ -1,6 +1,9 @@
-import { ClienteRepository } from "../repository/clienteRepository.js";
-const clienteRepositoryDB = new ClienteRepository();
-export class ClienteService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ClienteService = void 0;
+const clienteRepository_1 = require("../repository/clienteRepository");
+const clienteRepositoryDB = new clienteRepository_1.ClienteRepository();
+class ClienteService {
     criarCliente = async (clienteDto, empresaId) => {
         try {
             const criarClienteNoDB = await clienteRepositoryDB.criarCliente(clienteDto, empresaId);
@@ -36,3 +39,4 @@ export class ClienteService {
         return deleteClienteNoDB;
     };
 }
+exports.ClienteService = ClienteService;

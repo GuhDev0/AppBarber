@@ -1,7 +1,10 @@
-import { prisma } from '../prisma.js';
-export class Empresa {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Empresa = void 0;
+const prisma_1 = require("../prisma");
+class Empresa {
     RegistraEmpresa = async (empresaDto) => {
-        const empresa = await prisma.empresa.create({
+        const empresa = await prisma_1.prisma.empresa.create({
             data: {
                 nomeDaEmpresa: empresaDto.nomeDaEmpresa,
                 cnpj: empresaDto.cnpj,
@@ -13,7 +16,7 @@ export class Empresa {
         return empresa;
     };
     findByIdEmpresa = async (idParam) => {
-        const findId = await prisma.empresa.findUnique({
+        const findId = await prisma_1.prisma.empresa.findUnique({
             where: {
                 id: idParam
             }
@@ -22,7 +25,7 @@ export class Empresa {
     };
     buscarListaDeEmpresas = async () => {
         try {
-            const lista = await prisma.empresa.findMany({
+            const lista = await prisma_1.prisma.empresa.findMany({
                 select: {
                     id: true,
                     cnpj: true,
@@ -38,3 +41,4 @@ export class Empresa {
         }
     };
 }
+exports.Empresa = Empresa;

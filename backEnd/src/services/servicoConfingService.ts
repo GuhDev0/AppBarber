@@ -1,6 +1,6 @@
-import { ServicoConfingRepository } from "../repository/servicoConfigRepository.js";
-import type{ catalagoServiceDto } from "../Dtos/catalagoDeService.js";
-import { Empresa } from "../repository/EmpresaRepository.js";
+import { ServicoConfingRepository } from "../repository/servicoConfigRepository";
+import type{ catalagoServiceDto } from "../Dtos/catalagoDeService";
+import { Empresa } from "../repository/EmpresaRepository";
 const servicoConfigRepository = new ServicoConfingRepository
 
 export class ServicoConfigService {

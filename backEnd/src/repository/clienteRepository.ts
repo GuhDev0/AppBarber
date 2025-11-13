@@ -1,5 +1,5 @@
-import type { ClienteDto } from "../Dtos/clienteDto.js"
-import { prisma } from "../prisma.js";
+import type { ClienteDto } from "../Dtos/clienteDto"
+import { prisma } from "../prisma";
 
 export class ClienteRepository {
   criarCliente = async (clienteDto: ClienteDto, empresaId: number) => {

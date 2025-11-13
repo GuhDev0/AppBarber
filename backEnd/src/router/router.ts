@@ -1,14 +1,15 @@
 import { Router } from "express";
-import { UserController } from "../controllers/UsuarioController.js";
-import { LoginController } from "../controllers/loginController.js";
-import { AutheController } from "../controllers/authenticationController.js";
-import { EmpresaController } from "../controllers/empresaController.js";
-import { ServiceController } from "../controllers/serviceControler.js";
-import { GestaoFinanceiraController } from "../controllers/gestaoFinanceiraController.js";
-import { ColaboradorController } from "../controllers/colaboradorController.js";
-import { CategoriaController } from "../controllers/categoriaController.js";
-import {ServicoConfigController} from "../controllers/servicoConfigController.js"
-import { ClienteController } from "../controllers/clienteController.js";
+import { UserController } from "../controllers/UsuarioController";
+import { LoginController } from "../controllers/loginController";
+import { AutheController } from "../controllers/authenticationController";
+import { EmpresaController } from "../controllers/empresaController";
+import { ServiceController } from "../controllers/serviceControler";
+import { GestaoFinanceiraController } from "../controllers/gestaoFinanceiraController";
+import { ColaboradorController } from "../controllers/colaboradorController";
+import { CategoriaController } from "../controllers/categoriaController";
+import {ServicoConfigController} from "../controllers/servicoConfigController"
+import { ClienteController } from "../controllers/clienteController";
+import { AnaliseController } from "../controllers/analiseController";
 
 const userController = new UserController(); 
 const loginController = new LoginController();
@@ -20,7 +21,7 @@ const colaboradorController = new ColaboradorController()
 const categoriaController = new CategoriaController()
 const servicoConfigController = new ServicoConfigController();
 const clienteController  = new ClienteController();
-
+const analiseController = new AnaliseController();
 const router = Router();
 
 router.post('/registrarUsuario', userController.postCreateUser)
@@ -32,7 +33,7 @@ router.post("/saveColaborador",colaboradorController.saveColaborador)
 router.post("/registraCatalagoService", autheController.authentication,servicoConfigController.registraCatalagoServicoControler)
 router.post("/cadastroDeCliente",autheController.authentication,clienteController.criarClienteController)
 
-
+router.get('/buscarAnaliseEstabelecimento', autheController.authentication, analiseController.analisePorEmpresa)
 router.get("/dashboart",autheController.authentication)
 router.get('/findListServices', autheController.authentication, serviceControler.findByIdListService)
 router.get('/findByEmpresaId/:id', empresaController.buscarPeloId)
@@ -41,7 +42,7 @@ router.get("/listaDeLancamento",autheController.authentication,gestaoFinanceiraC
 router.get("/listCATEGORIA",autheController.authentication,categoriaController.listCategoriaController )
 router.get("/listDeCatalagoDeServico",autheController.authentication,servicoConfigController.buscarListaDeControler)
 router.get("/listaDeClientes",autheController.authentication,clienteController.listaDeClienteController)
-router.get("/listaDeEmpresas",empresaController.listaDeEmpresasController)
+router.get("/listaDeEmpresas", autheController.authentication , empresaController.listaDeEmpresasController)
 
 router.delete('/deleteService/:id',serviceControler.deleteServiceController)
 router.delete("/deleteLancamento/:id",autheController.authentication,gestaoFinanceiraController.deleteLancamento)

@@ -1,7 +1,10 @@
-import { prisma } from "../prisma.js";
-export class LoginRepository {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LoginRepository = void 0;
+const prisma_1 = require("../prisma");
+class LoginRepository {
     findByEmail = async (loginDto) => {
-        const usuario = await prisma.usuario.findUnique({
+        const usuario = await prisma_1.prisma.usuario.findUnique({
             where: { email: loginDto.loginEmail },
             include: { empresa: true },
         });
@@ -11,3 +14,4 @@ export class LoginRepository {
         return usuario;
     };
 }
+exports.LoginRepository = LoginRepository;

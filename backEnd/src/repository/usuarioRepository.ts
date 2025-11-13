@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import type UsuarioDto from "../Dtos/usuarioDto.js";
-import { prisma } from "../prisma.js";
+import type UsuarioDto from "../Dtos/usuarioDto";
+import { prisma } from "../prisma";
 
 export default class repositoryUsuario {
   registrarUsuario = async (usuarioDto: UsuarioDto, empresaId: number) => {

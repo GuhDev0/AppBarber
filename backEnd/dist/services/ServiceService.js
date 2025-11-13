@@ -1,6 +1,9 @@
-import { ServiceRepository } from "../repository/serviceReposity.js";
-const serviceReposity = new ServiceRepository();
-export class ServiceService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServiceService = void 0;
+const serviceReposity_1 = require("../repository/serviceReposity");
+const serviceReposity = new serviceReposity_1.ServiceRepository();
+class ServiceService {
     saveServiceService = async (serviceDTO, empresaId, usuarioId, colaboradorId) => {
         try {
             const save = await serviceReposity.createdServiceRepository(serviceDTO, empresaId, usuarioId, colaboradorId);
@@ -27,3 +30,4 @@ export class ServiceService {
         return deleteService;
     };
 }
+exports.ServiceService = ServiceService;

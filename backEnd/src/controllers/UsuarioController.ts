@@ -1,7 +1,7 @@
-import { UsuarioService} from "../services/usuarioService.js";
+import { UsuarioService} from "../services/usuarioService";
 import type { Request, Response } from "express";
-import type usuarioDto from "../Dtos/usuarioDto.js";
-import { EmpresaService } from "../services/EmpresaService.js";
+import type usuarioDto from "../Dtos/usuarioDto";
+import { EmpresaService } from "../services/EmpresaService";
 
 const userService = new UsuarioService()
 const empresaService = new EmpresaService() 

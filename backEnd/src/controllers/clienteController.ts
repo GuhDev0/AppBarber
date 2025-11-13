@@ -1,4 +1,4 @@
-import { ClienteService } from "../services/clienteService.js";
+import { ClienteService } from "../services/clienteService";
 import type{ Request,Response } from "express";
 
 const clienteService = new ClienteService()

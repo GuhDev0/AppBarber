@@ -1,6 +1,9 @@
-import { CategoriaService } from "../services/categoriaService.js";
-const categoriaService = new CategoriaService();
-export class CategoriaController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CategoriaController = void 0;
+const categoriaService_1 = require("../services/categoriaService");
+const categoriaService = new categoriaService_1.CategoriaService();
+class CategoriaController {
     listCategoriaController = async (req, res) => {
         if (!req.user) {
             return res.status(401).json({ mensagem: "Usuário não autenticado" });
@@ -16,3 +19,4 @@ export class CategoriaController {
         }
     };
 }
+exports.CategoriaController = CategoriaController;

@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "main": "dist/app.js",
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
         "dev": "ts-node-dev  src/app.ts",
         "build": "prisma generate && tsc",

@@ -1,5 +1,5 @@
-import { ServiceRepository } from "../repository/serviceReposity.js";
-import type { serviceDTO } from "../Dtos/ServiceDTO.js";
+import { ServiceRepository } from "../repository/serviceReposity";
+import type { serviceDTO } from "../Dtos/ServiceDTO";
 const serviceReposity = new ServiceRepository()
 
 

@@ -1,7 +1,7 @@
-import { LoginService } from "../services/loginService.js";
+import { LoginService } from "../services/loginService";
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { UsuarioService } from "../services/usuarioService.js";
+import { UsuarioService } from "../services/usuarioService";
 const loginService = new LoginService();
 
 

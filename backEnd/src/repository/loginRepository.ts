@@ -1,5 +1,5 @@
-import type { loginDto } from "../Dtos/loginDto.js";
-import { prisma } from "../prisma.js";
+import type { loginDto } from "../Dtos/loginDto";
+import { prisma } from "../prisma";
 
 export class LoginRepository {
     findByEmail = async (loginDto: loginDto) => {

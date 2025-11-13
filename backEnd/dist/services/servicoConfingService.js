@@ -1,6 +1,9 @@
-import { ServicoConfingRepository } from "../repository/servicoConfigRepository.js";
-const servicoConfigRepository = new ServicoConfingRepository;
-export class ServicoConfigService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServicoConfigService = void 0;
+const servicoConfigRepository_1 = require("../repository/servicoConfigRepository");
+const servicoConfigRepository = new servicoConfigRepository_1.ServicoConfingRepository;
+class ServicoConfigService {
     registraServiceCatalago = async (catalaoServiceDto, empresaId) => {
         try {
             const registraNoDB = await servicoConfigRepository.registraServiceCatalago(catalaoServiceDto, empresaId);
@@ -37,3 +40,4 @@ export class ServicoConfigService {
         }
     };
 }
+exports.ServicoConfigService = ServicoConfigService;

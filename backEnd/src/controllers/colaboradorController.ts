@@ -1,4 +1,4 @@
-import { ColaboradorService } from "../services/colaboradorService.js";
+import { ColaboradorService } from "../services/colaboradorService";
 import type { Request, Response } from "express";
 const colaboradorService = new ColaboradorService();
 

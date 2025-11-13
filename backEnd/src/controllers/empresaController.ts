@@ -1,4 +1,4 @@
-import { EmpresaService } from "../services/EmpresaService.js";
+import { EmpresaService } from "../services/EmpresaService";
 import type { Response, Request } from "express";
 const empresaService = new EmpresaService();
 

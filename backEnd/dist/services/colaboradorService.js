@@ -1,9 +1,15 @@
-import { ColaboradorDB } from "../repository/colaboradorRepository.js";
-import { Empresa } from "../repository/EmpresaRepository.js";
-const empresaDB = new Empresa();
-import bcrypt from "bcrypt";
-const colaboradorDB = new ColaboradorDB();
-export class ColaboradorService {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ColaboradorService = void 0;
+const colaboradorRepository_1 = require("../repository/colaboradorRepository");
+const EmpresaRepository_1 = require("../repository/EmpresaRepository");
+const empresaDB = new EmpresaRepository_1.Empresa();
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const colaboradorDB = new colaboradorRepository_1.ColaboradorDB();
+class ColaboradorService {
     gerarSenhaAleatoria = (tamanho = 8) => {
         const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
         let senha = "";
@@ -26,7 +32,7 @@ export class ColaboradorService {
             if (!empresaExiste)
                 throw new Error("Empresa não encontrada.");
             const senhaAleatoria = this.gerarSenhaAleatoria(10);
-            const senhaCriptografada = await bcrypt.hash(senhaAleatoria, 10);
+            const senhaCriptografada = await bcrypt_1.default.hash(senhaAleatoria, 10);
             const save = await colaboradorDB.saveColaborador({
                 ...colaboradorDto,
                 senha: senhaCriptografada,
@@ -79,3 +85,4 @@ export class ColaboradorService {
         }
     };
 }
+exports.ColaboradorService = ColaboradorService;

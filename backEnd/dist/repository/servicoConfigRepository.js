@@ -1,7 +1,10 @@
-import { prisma } from "../prisma.js";
-export class ServicoConfingRepository {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServicoConfingRepository = void 0;
+const prisma_1 = require("../prisma");
+class ServicoConfingRepository {
     registraServiceCatalago = async (dto, empresaId) => {
-        const registra = await prisma.servicoConfig.create({
+        const registra = await prisma_1.prisma.servicoConfig.create({
             data: {
                 nome: dto.nome,
                 preco: dto.preco,
@@ -16,7 +19,7 @@ export class ServicoConfingRepository {
         return registra;
     };
     buscarListaDeServico = async (empresaId) => {
-        const list = await prisma.servicoConfig.findMany({
+        const list = await prisma_1.prisma.servicoConfig.findMany({
             where: {
                 empresaId: empresaId,
             }
@@ -27,7 +30,7 @@ export class ServicoConfingRepository {
         return list;
     };
     deleteServico = async (empresaId, id) => {
-        const servico = await prisma.servicoConfig.findFirst({
+        const servico = await prisma_1.prisma.servicoConfig.findFirst({
             where: {
                 empresaId: empresaId,
                 id: id
@@ -36,10 +39,11 @@ export class ServicoConfingRepository {
         if (!servico) {
             throw new Error("Não possivel encontra este servico");
         }
-        return prisma.servicoConfig.delete({
+        return prisma_1.prisma.servicoConfig.delete({
             where: {
                 id: id
             }
         });
     };
 }
+exports.ServicoConfingRepository = ServicoConfingRepository;

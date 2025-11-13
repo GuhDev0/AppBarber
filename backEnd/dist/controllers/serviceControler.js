@@ -1,8 +1,11 @@
-import { ServiceService } from "../services/ServiceService.js";
-import { ColaboradorService } from "../services/colaboradorService.js";
-const serviceService = new ServiceService();
-const colaboradorService = new ColaboradorService();
-export class ServiceController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServiceController = void 0;
+const ServiceService_1 = require("../services/ServiceService");
+const colaboradorService_1 = require("../services/colaboradorService");
+const serviceService = new ServiceService_1.ServiceService();
+const colaboradorService = new colaboradorService_1.ColaboradorService();
+class ServiceController {
     saveService = async (req, res) => {
         const { colaboradorId } = req.body;
         const reqData = req.body;
@@ -46,3 +49,4 @@ export class ServiceController {
         }
     };
 }
+exports.ServiceController = ServiceController;

@@ -1,8 +1,11 @@
-import { prisma } from "../prisma.js";
-export class GestaoFinanceiraDB {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GestaoFinanceiraDB = void 0;
+const prisma_1 = require("../prisma");
+class GestaoFinanceiraDB {
     // Criar lançamento
     async criarLancamento(gtGto, empresaId, categoriaId) {
-        const createDB = await prisma.gestaoFinanceira.create({
+        const createDB = await prisma_1.prisma.gestaoFinanceira.create({
             data: {
                 descricao: gtGto.descricao,
                 valor: gtGto.valor,
@@ -23,7 +26,7 @@ export class GestaoFinanceiraDB {
     }
     // Listar lançamentos
     async listaDeLancamentos(empresaId) {
-        const list = await prisma.gestaoFinanceira.findMany({
+        const list = await prisma_1.prisma.gestaoFinanceira.findMany({
             where: { empresaId },
             include: { categoria: true },
         });
@@ -34,9 +37,10 @@ export class GestaoFinanceiraDB {
     }
     // Deletar lançamento
     async deleteLancamento(id) {
-        const deleteLancamento = await prisma.gestaoFinanceira.delete({
+        const deleteLancamento = await prisma_1.prisma.gestaoFinanceira.delete({
             where: { id },
         });
         return deleteLancamento;
     }
 }
+exports.GestaoFinanceiraDB = GestaoFinanceiraDB;

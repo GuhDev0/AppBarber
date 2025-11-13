@@ -1,8 +1,11 @@
-import { prisma } from "../prisma.js";
-export class Analise {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Analise = void 0;
+const prisma_1 = require("../prisma");
+class Analise {
     async analiseCompletaPorColaborador(empresaId, colaboradorId) {
         try {
-            const list = await prisma.servico.findMany({
+            const list = await prisma_1.prisma.servico.findMany({
                 where: { empresaId, colaboradorId },
                 select: {
                     id: true,
@@ -43,4 +46,43 @@ export class Analise {
             return [];
         }
     }
+    analiseCompletaDoEstabelecimento = async (empresaId) => {
+        try {
+            const list = await prisma_1.prisma.servico.findMany({
+                where: { empresaId },
+                select: {
+                    id: true,
+                    valorDoServico: true,
+                    data: true
+                }
+            });
+            function formatDate(days) {
+                const date = new Date();
+                date.setDate(date.getDate() - days);
+                date.setHours(0, 0, 0, 0);
+                return date;
+            }
+            const date30days = formatDate(30);
+            const listaDoultimos30DSerivcos = list.filter(servico => {
+                const servicoDate = new Date(servico.data);
+                return servicoDate >= date30days;
+            });
+            const totalDeServico30D = listaDoultimos30DSerivcos.length;
+            const receitaTotal30D = listaDoultimos30DSerivcos.reduce((c, s) => c + s.valorDoServico, 0);
+            const total_de_Servico = list.length;
+            console.log("Serviços dos últimos 30 dias:", totalDeServico30D);
+            console.log("Total de Serviços:", total_de_Servico);
+            console.log("Receita Total:", receitaTotal30D);
+            return {
+                totalDeServico30D,
+                receitaTotal30D,
+                total_de_Servico
+            };
+        }
+        catch (error) {
+            console.error("Não foi possivel realizar a analise do estabelecimento", error.message);
+            throw new Error(error.message);
+        }
+    };
 }
+exports.Analise = Analise;

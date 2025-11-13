@@ -1,6 +1,6 @@
-import type { catalagoServiceDto } from "../Dtos/catalagoDeService.js";
-import { Empresa } from "./EmpresaRepository.js";
-import { prisma } from "../prisma.js";
+import type { catalagoServiceDto } from "../Dtos/catalagoDeService";
+import { Empresa } from "./EmpresaRepository";
+import { prisma } from "../prisma";
 
 
 export class ServicoConfingRepository{

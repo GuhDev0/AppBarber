@@ -1,11 +1,16 @@
-import bcrypt from "bcrypt";
-import { prisma } from "../prisma.js";
-export default class repositoryUsuario {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const prisma_1 = require("../prisma");
+class repositoryUsuario {
     registrarUsuario = async (usuarioDto, empresaId) => {
         try {
             const SALT = 10;
-            const senhaCriptografada = await bcrypt.hash(usuarioDto.senha, SALT);
-            const user = await prisma.usuario.create({
+            const senhaCriptografada = await bcrypt_1.default.hash(usuarioDto.senha, SALT);
+            const user = await prisma_1.prisma.usuario.create({
                 data: {
                     nomeCompleto: usuarioDto.nomeCompleto,
                     email: usuarioDto.email,
@@ -28,3 +33,4 @@ export default class repositoryUsuario {
         }
     };
 }
+exports.default = repositoryUsuario;

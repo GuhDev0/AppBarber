@@ -1,6 +1,9 @@
-import { CategoriaRepository } from "../repository/categoriaRepository.js";
-const categoriaDB = new CategoriaRepository;
-export class CategoriaService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CategoriaService = void 0;
+const categoriaRepository_1 = require("../repository/categoriaRepository");
+const categoriaDB = new categoriaRepository_1.CategoriaRepository;
+class CategoriaService {
     listCategoriaService = async (empresaId) => {
         try {
             if (!empresaId) {
@@ -18,3 +21,4 @@ export class CategoriaService {
         }
     };
 }
+exports.CategoriaService = CategoriaService;

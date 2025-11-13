@@ -1,6 +1,6 @@
 import type { GestaoFinanceira, Categoria } from "@prisma/client";
-import type { gestaoFinanceiraDto } from "../Dtos/gestaoFinanceiraDto.js";
-import { prisma } from "../prisma.js";
+import type { gestaoFinanceiraDto } from "../Dtos/gestaoFinanceiraDto";
+import { prisma } from "../prisma";
 
 export class GestaoFinanceiraDB {
   // Criar lançamento

@@ -1,6 +1,9 @@
-import { ServicoConfigService } from "../services/servicoConfingService.js";
-const servicoConfigService = new ServicoConfigService();
-export class ServicoConfigController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServicoConfigController = void 0;
+const servicoConfingService_1 = require("../services/servicoConfingService");
+const servicoConfigService = new servicoConfingService_1.ServicoConfigService();
+class ServicoConfigController {
     async registraCatalagoServicoControler(req, res) {
         if (!req.user) {
             return res.status(401).json({ mensagem: "Token inválido" });
@@ -54,3 +57,4 @@ export class ServicoConfigController {
         }
     }
 }
+exports.ServicoConfigController = ServicoConfigController;

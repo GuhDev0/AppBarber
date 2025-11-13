@@ -1,4 +1,4 @@
-import { CategoriaService } from "../services/categoriaService.js";
+import { CategoriaService } from "../services/categoriaService";
 import type { Request, Response } from "express";
 
 const categoriaService = new CategoriaService();

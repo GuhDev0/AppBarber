@@ -1,6 +1,9 @@
-import { ColaboradorService } from "../services/colaboradorService.js";
-const colaboradorService = new ColaboradorService();
-export class ColaboradorController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ColaboradorController = void 0;
+const colaboradorService_1 = require("../services/colaboradorService");
+const colaboradorService = new colaboradorService_1.ColaboradorService();
+class ColaboradorController {
     saveColaborador = async (req, res) => {
         const reqBody = req.body;
         // Basic validation to avoid calling Prisma with missing required fields
@@ -64,3 +67,4 @@ export class ColaboradorController {
         }
     };
 }
+exports.ColaboradorController = ColaboradorController;

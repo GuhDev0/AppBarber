@@ -1,7 +1,10 @@
-import { prisma } from "../prisma.js";
-export class ClienteRepository {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ClienteRepository = void 0;
+const prisma_1 = require("../prisma");
+class ClienteRepository {
     criarCliente = async (clienteDto, empresaId) => {
-        const cliente = await prisma.cliente.create({
+        const cliente = await prisma_1.prisma.cliente.create({
             data: {
                 nome: clienteDto.nome,
                 sobrenome: clienteDto.Sobrenome,
@@ -13,7 +16,7 @@ export class ClienteRepository {
         return cliente;
     };
     buscarListaDeClientes = async (empresaId) => {
-        const lista = await prisma.cliente.findMany({
+        const lista = await prisma_1.prisma.cliente.findMany({
             where: {
                 empresaId: empresaId
             }, include: {
@@ -24,13 +27,13 @@ export class ClienteRepository {
     };
     async deleteClientePeloId(empresaId, id) {
         try {
-            const cliente = await prisma.cliente.findFirst({
+            const cliente = await prisma_1.prisma.cliente.findFirst({
                 where: { empresaId, id: id }
             });
             if (!cliente) {
                 throw new Error("Cliente não encontrado para esta empresa.");
             }
-            await prisma.cliente.delete({
+            await prisma_1.prisma.cliente.delete({
                 where: { id: id }
             });
             return { mensagem: "Cliente deletado com sucesso." };
@@ -40,3 +43,4 @@ export class ClienteRepository {
         }
     }
 }
+exports.ClienteRepository = ClienteRepository;

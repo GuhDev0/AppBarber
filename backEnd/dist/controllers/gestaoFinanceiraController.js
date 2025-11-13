@@ -1,6 +1,9 @@
-import { GestaoFinanceiraService } from "../services/gestaoFinanceiraService.js";
-const gestaoFinanceiraService = new GestaoFinanceiraService();
-export class GestaoFinanceiraController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GestaoFinanceiraController = void 0;
+const gestaoFinanceiraService_1 = require("../services/gestaoFinanceiraService");
+const gestaoFinanceiraService = new gestaoFinanceiraService_1.GestaoFinanceiraService();
+class GestaoFinanceiraController {
     saveLancamento = async (req, res) => {
         if (!req.user) {
             return res.status(401).json({ mensagem: "Token invalido" });
@@ -54,3 +57,4 @@ export class GestaoFinanceiraController {
         }
     };
 }
+exports.GestaoFinanceiraController = GestaoFinanceiraController;

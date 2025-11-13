@@ -1,6 +1,6 @@
-import { GestaoFinanceiraDB } from "../repository/gestaoFinanceiraRepository.js";
-import type { gestaoFinanceiraDto } from "../Dtos/gestaoFinanceiraDto.js";
-import { prisma } from "../prisma.js";
+import { GestaoFinanceiraDB } from "../repository/gestaoFinanceiraRepository";
+import type { gestaoFinanceiraDto } from "../Dtos/gestaoFinanceiraDto";
+import { prisma } from "../prisma";
 const gestaoFinanceiraDB = new GestaoFinanceiraDB();
 
 export class GestaoFinanceiraService {

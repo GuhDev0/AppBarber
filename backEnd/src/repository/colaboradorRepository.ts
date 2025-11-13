@@ -1,5 +1,5 @@
-import { prisma } from "../prisma.js";
-import type { ColaboradorDto } from "../Dtos/colaboradorDto.js";
+import { prisma } from "../prisma";
+import type { ColaboradorDto } from "../Dtos/colaboradorDto";
 
 export class ColaboradorDB {
   saveColaborador = async (colaboradorDto: ColaboradorDto) => {

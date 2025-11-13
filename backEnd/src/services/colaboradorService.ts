@@ -1,7 +1,7 @@
-import { ColaboradorDB } from "../repository/colaboradorRepository.js";
- import { Empresa } from "../repository/EmpresaRepository.js";
+import { ColaboradorDB } from "../repository/colaboradorRepository";
+import { Empresa } from "../repository/EmpresaRepository";
 const empresaDB = new Empresa();
-import type { ColaboradorDto } from "../Dtos/colaboradorDto.js";
+import type { ColaboradorDto } from "../Dtos/colaboradorDto";
 import bcrypt from "bcrypt"; 
 
 const colaboradorDB = new ColaboradorDB();

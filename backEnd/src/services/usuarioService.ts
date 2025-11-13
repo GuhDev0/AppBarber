@@ -1,8 +1,8 @@
-import type { loginDto } from "../Dtos/loginDto.js";
-import type usuarioDto from "../Dtos/usuarioDto.js";
-import UsuarioRepository from "../repository/usuarioRepository.js";
-import { Empresa } from "../repository/EmpresaRepository.js";
-import { EmpresaService } from "./EmpresaService.js";
+import type { loginDto } from "../Dtos/loginDto";
+import type usuarioDto from "../Dtos/usuarioDto";
+import UsuarioRepository from "../repository/usuarioRepository";
+import { Empresa } from "../repository/EmpresaRepository";
+import { EmpresaService } from "./EmpresaService";
 const usuarioDb = new UsuarioRepository();
 const empresaServicee = new EmpresaService();
 

@@ -1,5 +1,5 @@
-// import { PrismaClient } from "../../generated/prisma/index.js";
-// import type { ServicoDto } from "../Dtos/servicoDto.js"
+// import { PrismaClient } from "../../generated/prisma/index";
+// import type { ServicoDto } from "../Dtos/servicoDto"
 
 // const prisma = new PrismaClient()
 

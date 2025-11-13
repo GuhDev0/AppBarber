@@ -1,6 +1,9 @@
-import { Analise } from "../repository/analise.js";
-const analiseDB = new Analise();
-export class AnaliseService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnaliseService = void 0;
+const analise_1 = require("../repository/analise");
+const analiseDB = new analise_1.Analise();
+class AnaliseService {
     analiseCompletaPorColaborador = async (empresaId, colaboradorId) => {
         try {
             const analisePorColaborador = await analiseDB.analiseCompletaPorColaborador(empresaId, colaboradorId);
@@ -14,4 +17,18 @@ export class AnaliseService {
             throw new Error("Erro ao buscar Analise do colaborador");
         }
     };
+    analiseCompletoPorEmpresaService = async (empresaId) => {
+        try {
+            const analisePorEmpresa = await analiseDB.analiseCompletaDoEstabelecimento(empresaId);
+            if (!analisePorEmpresa) {
+                throw new Error("Não foi possivel");
+            }
+            return analisePorEmpresa;
+        }
+        catch (error) {
+            console.error(error.message);
+            throw new Error("Erro ao buscar Analise da empresa");
+        }
+    };
 }
+exports.AnaliseService = AnaliseService;

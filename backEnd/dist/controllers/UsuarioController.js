@@ -1,8 +1,11 @@
-import { UsuarioService } from "../services/usuarioService.js";
-import { EmpresaService } from "../services/EmpresaService.js";
-const userService = new UsuarioService();
-const empresaService = new EmpresaService();
-export class UserController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserController = void 0;
+const usuarioService_1 = require("../services/usuarioService");
+const EmpresaService_1 = require("../services/EmpresaService");
+const userService = new usuarioService_1.UsuarioService();
+const empresaService = new EmpresaService_1.EmpresaService();
+class UserController {
     postCreateUser = async (req, res) => {
         const dataRequest = req.body;
         try {
@@ -14,3 +17,4 @@ export class UserController {
         }
     };
 }
+exports.UserController = UserController;

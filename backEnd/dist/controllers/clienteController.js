@@ -1,6 +1,9 @@
-import { ClienteService } from "../services/clienteService.js";
-const clienteService = new ClienteService();
-export class ClienteController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ClienteController = void 0;
+const clienteService_1 = require("../services/clienteService");
+const clienteService = new clienteService_1.ClienteService();
+class ClienteController {
     criarClienteController = async (req, res) => {
         if (!req.user) {
             return res.status(401).json("Token Invalido");
@@ -55,3 +58,4 @@ export class ClienteController {
         }
     };
 }
+exports.ClienteController = ClienteController;

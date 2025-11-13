@@ -1,5 +1,5 @@
-import type { serviceDTO } from "../Dtos/ServiceDTO.js";
-import { prisma } from "../prisma.js";
+import type { serviceDTO } from "../Dtos/ServiceDTO";
+import { prisma } from "../prisma";
 
 export class ServiceRepository {
 

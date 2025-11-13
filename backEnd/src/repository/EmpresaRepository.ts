@@ -1,6 +1,6 @@
 
-import type { empresaDto } from "../Dtos/empresaDto.js";
-import { prisma } from '../prisma.js';
+import type { empresaDto } from "../Dtos/empresaDto";
+import { prisma } from '../prisma';
 
 export class Empresa {
     RegistraEmpresa = async (empresaDto: empresaDto) => {

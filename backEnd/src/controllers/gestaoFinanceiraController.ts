@@ -1,5 +1,5 @@
-import { Empresa } from "../repository/EmpresaRepository.js";
-import { GestaoFinanceiraService } from "../services/gestaoFinanceiraService.js";
+import { Empresa } from "../repository/EmpresaRepository";
+import { GestaoFinanceiraService } from "../services/gestaoFinanceiraService";
 import type { Request, Response } from "express";
 const gestaoFinanceiraService = new GestaoFinanceiraService()
 

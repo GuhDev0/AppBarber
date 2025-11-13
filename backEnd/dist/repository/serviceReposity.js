@@ -1,7 +1,10 @@
-import { prisma } from "../prisma.js";
-export class ServiceRepository {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServiceRepository = void 0;
+const prisma_1 = require("../prisma");
+class ServiceRepository {
     createdServiceRepository = async (serviceDTO, empresaId, usuarioId, colaboradorId) => {
-        const saveServiceDB = await prisma.servico.create({
+        const saveServiceDB = await prisma_1.prisma.servico.create({
             data: {
                 tipoDoServico: serviceDTO.tipoDoServico,
                 valorDoServico: serviceDTO.valorDoServico,
@@ -20,7 +23,7 @@ export class ServiceRepository {
     };
     findListService = async (empresaId) => {
         try {
-            const list = await prisma.servico.findMany({
+            const list = await prisma_1.prisma.servico.findMany({
                 where: { empresaId },
                 include: {
                     colaborador: true,
@@ -35,7 +38,7 @@ export class ServiceRepository {
         }
     };
     deleteService = async (serviceId) => {
-        const deleteService = await prisma.servico.delete({
+        const deleteService = await prisma_1.prisma.servico.delete({
             where: {
                 id: serviceId
             }
@@ -43,3 +46,4 @@ export class ServiceRepository {
         return deleteService;
     };
 }
+exports.ServiceRepository = ServiceRepository;

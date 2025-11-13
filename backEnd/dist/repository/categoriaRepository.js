@@ -1,8 +1,11 @@
-import { prisma } from "../prisma.js";
-export class CategoriaRepository {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CategoriaRepository = void 0;
+const prisma_1 = require("../prisma");
+class CategoriaRepository {
     listDeCategoria = async (empresaId) => {
         try {
-            const list = await prisma.categoria.findMany({
+            const list = await prisma_1.prisma.categoria.findMany({
                 where: {
                     empresaId: empresaId
                 }, include: {
@@ -17,3 +20,4 @@ export class CategoriaRepository {
         }
     };
 }
+exports.CategoriaRepository = CategoriaRepository;

@@ -1,6 +1,7 @@
-// import { PrismaClient } from "../../generated/prisma/index.js";
-// import type { ServicoDto } from "../Dtos/servicoDto.js"
-export {};
+"use strict";
+// import { PrismaClient } from "../../generated/prisma/index";
+// import type { ServicoDto } from "../Dtos/servicoDto"
+Object.defineProperty(exports, "__esModule", { value: true });
 // const prisma = new PrismaClient()
 // export class AgendamentoBarberRepositry {
 //     adicionarServicoNoDb = async (servicoDto: ServicoDto, usuarioId: number) => {

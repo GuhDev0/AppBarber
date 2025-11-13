@@ -1,6 +1,9 @@
-import { EmpresaService } from "../services/EmpresaService.js";
-const empresaService = new EmpresaService();
-export class EmpresaController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EmpresaController = void 0;
+const EmpresaService_1 = require("../services/EmpresaService");
+const empresaService = new EmpresaService_1.EmpresaService();
+class EmpresaController {
     empresaCreate = async (req, res) => {
         const empresaReq = req.body;
         try {
@@ -38,3 +41,4 @@ export class EmpresaController {
         }
     };
 }
+exports.EmpresaController = EmpresaController;

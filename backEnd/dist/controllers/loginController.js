@@ -1,6 +1,9 @@
-import { LoginService } from "../services/loginService.js";
-const loginService = new LoginService();
-export class LoginController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LoginController = void 0;
+const loginService_1 = require("../services/loginService");
+const loginService = new loginService_1.LoginService();
+class LoginController {
     login = async (req, res) => {
         const requisiçãoLogin = req.body;
         try {
@@ -13,3 +16,4 @@ export class LoginController {
         }
     };
 }
+exports.LoginController = LoginController;

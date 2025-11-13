@@ -1,5 +1,5 @@
-import { ClienteRepository } from "../repository/clienteRepository.js";
-import type { ClienteDto } from "../Dtos/clienteDto.js";
+import { ClienteRepository } from "../repository/clienteRepository";
+import type { ClienteDto } from "../Dtos/clienteDto";
 const clienteRepositoryDB = new ClienteRepository()
 
 export class ClienteService {

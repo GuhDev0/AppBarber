@@ -1,4 +1,4 @@
-import { ColaboradorDB } from "../repository/colaboradorRepository.js";
+import { ColaboradorDB } from "../repository/colaboradorRepository";
 
 const colaborador = new ColaboradorDB()
 

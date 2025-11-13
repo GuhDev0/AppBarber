@@ -1,5 +1,5 @@
-import type { empresaDto } from "../Dtos/empresaDto.js";
-import { Empresa } from "../repository/EmpresaRepository.js";
+import type { empresaDto } from "../Dtos/empresaDto";
+import { Empresa } from "../repository/EmpresaRepository";
 
 const empresaDB = new Empresa();
 

@@ -1,14 +1,17 @@
-import { GestaoFinanceiraDB } from "../repository/gestaoFinanceiraRepository.js";
-import { prisma } from "../prisma.js";
-const gestaoFinanceiraDB = new GestaoFinanceiraDB();
-export class GestaoFinanceiraService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GestaoFinanceiraService = void 0;
+const gestaoFinanceiraRepository_1 = require("../repository/gestaoFinanceiraRepository");
+const prisma_1 = require("../prisma");
+const gestaoFinanceiraDB = new gestaoFinanceiraRepository_1.GestaoFinanceiraDB();
+class GestaoFinanceiraService {
     saveLancamentoService = async (gtDto, empresaId) => {
         try {
-            let categoria = await prisma.categoria.findFirst({
+            let categoria = await prisma_1.prisma.categoria.findFirst({
                 where: { nomeCategoria: gtDto.nomeCategoria }
             });
             if (!categoria) {
-                categoria = await prisma.categoria.create({
+                categoria = await prisma_1.prisma.categoria.create({
                     data: { nomeCategoria: gtDto.nomeCategoria, empresaId: empresaId }
                 });
             }
@@ -47,3 +50,4 @@ export class GestaoFinanceiraService {
         }
     };
 }
+exports.GestaoFinanceiraService = GestaoFinanceiraService;

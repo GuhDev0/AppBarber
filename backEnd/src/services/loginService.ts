@@ -1,5 +1,5 @@
-import { LoginRepository } from "../repository/loginRepository.js"
-import type { loginDto } from "../Dtos/loginDto.js";
+import { LoginRepository } from "../repository/loginRepository"
+import type { loginDto } from "../Dtos/loginDto";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import bcrypt from "bcrypt"

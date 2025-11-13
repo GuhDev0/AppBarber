@@ -1,4 +1,4 @@
-import { CategoriaRepository } from "../repository/categoriaRepository.js";
+import { CategoriaRepository } from "../repository/categoriaRepository";
 
 const categoriaDB = new CategoriaRepository
 

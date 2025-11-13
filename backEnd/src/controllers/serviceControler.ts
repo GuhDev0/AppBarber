@@ -1,6 +1,6 @@
-import { ServiceService } from "../services/ServiceService.js";
+import { ServiceService } from "../services/ServiceService";
 import type { Request, Response } from "express";
-import { ColaboradorService } from "../services/colaboradorService.js";
+import { ColaboradorService } from "../services/colaboradorService";
 const serviceService = new ServiceService()
 const colaboradorService = new ColaboradorService()
 export class ServiceController {

@@ -1,6 +1,9 @@
-import { Empresa } from "../repository/EmpresaRepository.js";
-const empresaDB = new Empresa();
-export class EmpresaService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EmpresaService = void 0;
+const EmpresaRepository_1 = require("../repository/EmpresaRepository");
+const empresaDB = new EmpresaRepository_1.Empresa();
+class EmpresaService {
     createEmpresaService = async (empresaDto) => {
         const empresa = await empresaDB.RegistraEmpresa(empresaDto);
         return empresa;
@@ -20,3 +23,4 @@ export class EmpresaService {
         }
     };
 }
+exports.EmpresaService = EmpresaService;
