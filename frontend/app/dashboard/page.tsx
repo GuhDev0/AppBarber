@@ -95,7 +95,7 @@ export default function Dashboard() {
     async function fetchValorTotal() {
       try {
         const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-        const response = await fetch("http://localhost:3000/appBarber/buscarAnaliseEstabelecimento", {
+        const response = await fetch("https://gestorappbarber.onrender.com/appBarber/buscarAnaliseEstabelecimento", {
           method: "GET",
           headers: {
             'Authorization': `Bearer ${token}`
