@@ -28,7 +28,7 @@ const listaDeMes = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
-const COLORS = [ "#ff6a00", "#edf119ff", "#FF8042", "#A020F0", "#FF1493"];
+const COLORS = ["#ff6a00", "#edf119ff", "#FF8042", "#A020F0", "#FF1493"];
 
 export default function Dashboard() {
   const [userData, setUserData] = useState<any>(null);
@@ -39,20 +39,7 @@ export default function Dashboard() {
   const [graficoData, setGraficoData] = useState<{ mes: string; valor: number }[]>([]);
   const [pizzaGrafico, setPizzaGrafico] = useState<{ name: string, value: number }[]>([]);
 
-  // Função para buscar serviços
-  const listaDeServicos = async () => {
-    const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-    try {
-      const response = await fetch("http://localhost:3003/appBarber/findListServices", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await response.json();
-      setServicos(data.services);
-    } catch (error) {
-      console.error("Erro ao buscar serviços:", error);
-    }
-  };
+
 
   useEffect(() => {
     const dadosPorMes = listaDeMes.map((mes, index) => {
@@ -86,14 +73,6 @@ export default function Dashboard() {
   }, [servicos]);
 
 
-
-
-  // Fetch de serviços ao carregar o componente
-  useEffect(() => {
-    listaDeServicos();
-  }, []);
-
-  // Valida token e usuário
   useEffect(() => {
     const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
     if (!token) {
@@ -115,10 +94,18 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchValorTotal() {
       try {
-        const response = await fetch("http://localhost:5000/analise");
+        const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+        const response = await fetch("http://localhost:3000/appBarber/buscarAnaliseEstabelecimento", {
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
         const data = await response.json();
-        setTotalDeServicos(data.total_de_servicos);
-        setReceitaDos30D(data.receita_30_dias);
+        setTotalDeServicos(data.totalDeServico30D);
+        setReceitaDos30D(data.receitaTotal30D);
+        setServicos(data.list);
       } catch (error: any) {
         console.error('Erro ao buscar valor de serviço', error);
       }
@@ -136,14 +123,15 @@ export default function Dashboard() {
             titulo={"Total de Serviços"}
             subTitulo={"Serviços realizados este mês"}
             valor={totalDeServicos}
-            icon={<FaMoneyCheckAlt  color="#ff6b00"/>}
+            icon={<FaMoneyCheckAlt color="#ff6b00" />}
           />
           <CardAnalytics
             titulo={"Receita Mensal"}
             subTitulo={"Total de receita neste mês"}
-            valor={receitaDos30D.toLocaleString("pt-br", { style: 'currency', currency: "BRL" })}
-            icon={<IoAnalyticsSharp color="#ff6b00"   />}
+            valor={(receitaDos30D ?? 0).toLocaleString("pt-BR", { style: 'currency', currency: "BRL" })}
+            icon={<IoAnalyticsSharp color="#ff6b00" />}
           />
+
         </div>
       </div>
 
