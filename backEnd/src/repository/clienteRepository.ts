@@ -1,52 +1,56 @@
-import type { ClienteDto } from "../Dtos/clienteDto"
+import type { ClienteDto } from "../Dtos/clienteDto";
 import { prisma } from "../prisma";
 
 export class ClienteRepository {
+  // Cria um cliente
   criarCliente = async (clienteDto: ClienteDto, empresaId: number) => {
-    const cliente = await prisma.cliente.create({
+    return await prisma.cliente.create({
       data: {
         nome: clienteDto.nome,
         sobrenome: clienteDto.Sobrenome,
         email: clienteDto.email,
         telefone: clienteDto.telefone,
         empresaId
+      },
+      select: {
+        id: true,
+        nome: true,
+        sobrenome: true,
+        email: true,
+        telefone: true
       }
-    })
-    return cliente
+    });
+  };
 
-  }
-
+  // Busca lista de clientes de uma empresa
   buscarListaDeClientes = async (empresaId: number) => {
-
-    const lista = await prisma.cliente.findMany({
-      where: {
-        empresaId: empresaId
-      },include:{
-        servico:true
+    const lista  = await prisma.cliente.findMany({
+      where: { empresaId },
+      select: {
+        id: true,
+        nome: true,
+        sobrenome: true,
+        email: true,
+        telefone: true,
+        servico: {
+          select: { id: true,  valorDoServico: true } 
+        }
       }
-    })
-    return lista
-  }
+    });
+    console.log(lista);
+    return lista;
+      };
 
- async deleteClientePeloId(empresaId: number, id: number) {
-  try {
-    const cliente = await prisma.cliente.findFirst({
-      where: { empresaId, id: id}
+  // Deleta cliente pelo ID de forma eficiente
+  deleteClientePeloId = async (empresaId: number, id: number) => {
+    const deletado = await prisma.cliente.deleteMany({
+      where: { empresaId, id }
     });
 
-    if (!cliente) {
+    if (deletado.count === 0) {
       throw new Error("Cliente não encontrado para esta empresa.");
     }
 
-    await prisma.cliente.delete({
-      where: { id: id}
-    });
-
     return { mensagem: "Cliente deletado com sucesso." };
-    
-  } catch (error:any) {
-    throw new Error(error.message || "Erro ao deletar cliente.");
-  }
-}
-
+  };
 }

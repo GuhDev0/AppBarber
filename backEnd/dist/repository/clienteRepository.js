@@ -3,44 +3,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClienteRepository = void 0;
 const prisma_1 = require("../prisma");
 class ClienteRepository {
+    // Cria um cliente
     criarCliente = async (clienteDto, empresaId) => {
-        const cliente = await prisma_1.prisma.cliente.create({
+        return await prisma_1.prisma.cliente.create({
             data: {
                 nome: clienteDto.nome,
                 sobrenome: clienteDto.Sobrenome,
                 email: clienteDto.email,
                 telefone: clienteDto.telefone,
                 empresaId
+            },
+            select: {
+                id: true,
+                nome: true,
+                sobrenome: true,
+                email: true,
+                telefone: true
             }
         });
-        return cliente;
     };
+    // Busca lista de clientes de uma empresa
     buscarListaDeClientes = async (empresaId) => {
         const lista = await prisma_1.prisma.cliente.findMany({
-            where: {
-                empresaId: empresaId
-            }, include: {
-                servico: true
+            where: { empresaId },
+            select: {
+                id: true,
+                nome: true,
+                sobrenome: true,
+                email: true,
+                telefone: true,
+                servico: {
+                    select: { id: true, valorDoServico: true }
+                }
             }
         });
+        console.log(lista);
         return lista;
     };
-    async deleteClientePeloId(empresaId, id) {
-        try {
-            const cliente = await prisma_1.prisma.cliente.findFirst({
-                where: { empresaId, id: id }
-            });
-            if (!cliente) {
-                throw new Error("Cliente não encontrado para esta empresa.");
-            }
-            await prisma_1.prisma.cliente.delete({
-                where: { id: id }
-            });
-            return { mensagem: "Cliente deletado com sucesso." };
+    // Deleta cliente pelo ID de forma eficiente
+    deleteClientePeloId = async (empresaId, id) => {
+        const deletado = await prisma_1.prisma.cliente.deleteMany({
+            where: { empresaId, id }
+        });
+        if (deletado.count === 0) {
+            throw new Error("Cliente não encontrado para esta empresa.");
         }
-        catch (error) {
-            throw new Error(error.message || "Erro ao deletar cliente.");
-        }
-    }
+        return { mensagem: "Cliente deletado com sucesso." };
+    };
 }
 exports.ClienteRepository = ClienteRepository;
