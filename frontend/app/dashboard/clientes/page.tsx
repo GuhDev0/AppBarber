@@ -46,12 +46,12 @@ export default function Clientes() {
         return;
       }
 
-  const data = await res.json();
-  // Backend may return an array or an object; handle both shapes
-  if (Array.isArray(data)) setClientes(data);
-  else if (data.lista) setClientes(data.lista);
-  else if (data.clientes) setClientes(data.clientes);
-  else setClientes([]);
+      const data = await res.json();
+      // Backend may return an array or an object; handle both shapes
+      if (Array.isArray(data)) setClientes(data);
+      else if (data.lista) setClientes(data.lista);
+      else if (data.clientes) setClientes(data.clientes);
+      else setClientes([]);
     } catch (err) {
       console.error("Erro ao carregar clientes");
     }
@@ -121,6 +121,7 @@ export default function Clientes() {
       const res = await fetch(`https://gestorappbarber.onrender.com/appBarber/deletarCliente/${id}`, {
         method: "DELETE",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });

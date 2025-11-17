@@ -262,7 +262,7 @@ export default function ControleDeServicos() {
     if (!token) return alert("Usuário não autenticado!");
 
     try {
-      const response = await fetch(`http://localhost:3003/appBarber/deleteService/${id}`, {
+      const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/deleteService/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

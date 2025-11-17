@@ -17,7 +17,7 @@ interface Colaborador {
 
 interface ColaboradorDto {
   nomeCompleto: string;
-  dataNascimento: string; 
+  dataNascimento: string;
   email: string;
   tel: string;
   avatar?: string;
@@ -119,7 +119,7 @@ export default function AbaColaboradores() {
       return;
     }
 
-   
+
     const payload: ColaboradorDto = {
       nomeCompleto: formData.nomeCompleto,
       dataNascimento: dataNascimentoObj.toISOString(),
@@ -175,119 +175,128 @@ export default function AbaColaboradores() {
     try {
       const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/deleteColaborador/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+
       });
 
-      if (!response.ok) throw new Error("Erro ao deletar colaborador");
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Erro ao deletar colaborador:", data);
+        alert(data.mensagem || "Erro ao deletar colaborador");
+        return;
+      }
 
-      setColaboradores((prev) => prev.filter((c) => c.id !== id));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+        setColaboradores((prev) => prev.filter((c) => c.id !== id));
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Colaboradores</h2>
-        <button className={styles.addBtn} onClick={handleAbrirFormulario}>
-          {mostrarFormulario ? "Fechar Formulário" : "Adicionar Colaborador"}
-        </button>
-      </div>
+    return (
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h2>Colaboradores</h2>
+          <button className={styles.addBtn} onClick={handleAbrirFormulario}>
+            {mostrarFormulario ? "Fechar Formulário" : "Adicionar Colaborador"}
+          </button>
+        </div>
 
-      {mostrarFormulario && (
-        <form
-          className={`${styles.form} ${styles.formCompact}`}
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleRegistrar();
-          }}
-        >
-          <input
-            type="text"
-            name="nomeCompleto"
-            placeholder="Nome Completo"
-            value={formData.nomeCompleto}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="date"
-            name="dataNascimento"
-            placeholder="Data de Nascimento"
-            value={formData.dataNascimento}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="tel"
-            name="tel"
-            placeholder="Telefone"
-            value={formData.tel}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="avatar"
-            placeholder="URL do Avatar (opcional)"
-            value={formData.avatar}
-            onChange={handleChange}
-          />
-          <div className={styles.formBtns}>
-            <button type="submit" className={styles.primaryBtn}>
-              Registrar
-            </button>
-            <button
-              type="button"
-              className={styles.secondaryBtn}
-              onClick={() => setMostrarFormulario(false)}
-            >
-              Fechar
-            </button>
-          </div>
-        </form>
-      )}
-
-      <div className={styles.cardsContainer}>
-        {colaboradores.length === 0 && <p>Nenhum colaborador registrado.</p>}
-        {colaboradores.map((c) => (
-          <div key={c.id} className={styles.card}>
-            <div className={styles.avatarContainer}>
-              {c.avatar ? (
-                <img src={c.avatar} alt="Avatar" className={styles.avatar} />
-              ) : (
-                <RxAvatar size={80} className={styles.avatarPlaceholder} />
-              )}
+        {mostrarFormulario && (
+          <form
+            className={`${styles.form} ${styles.formCompact}`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleRegistrar();
+            }}
+          >
+            <input
+              type="text"
+              name="nomeCompleto"
+              placeholder="Nome Completo"
+              value={formData.nomeCompleto}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="date"
+              name="dataNascimento"
+              placeholder="Data de Nascimento"
+              value={formData.dataNascimento}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="tel"
+              name="tel"
+              placeholder="Telefone"
+              value={formData.tel}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="avatar"
+              placeholder="URL do Avatar (opcional)"
+              value={formData.avatar}
+              onChange={handleChange}
+            />
+            <div className={styles.formBtns}>
+              <button type="submit" className={styles.primaryBtn}>
+                Registrar
+              </button>
+              <button
+                type="button"
+                className={styles.secondaryBtn}
+                onClick={() => setMostrarFormulario(false)}
+              >
+                Fechar
+              </button>
             </div>
+          </form>
+        )}
 
-            <div className={styles.editAvatar}>
-              <AiOutlineEdit size={20} onClick={() => handleEditAvatar(c.id)} />
+        <div className={styles.cardsContainer}>
+          {colaboradores.length === 0 && <p>Nenhum colaborador registrado.</p>}
+          {colaboradores.map((c) => (
+            <div key={c.id} className={styles.card}>
+              <div className={styles.avatarContainer}>
+                {c.avatar ? (
+                  <img src={c.avatar} alt="Avatar" className={styles.avatar} />
+                ) : (
+                  <RxAvatar size={80} className={styles.avatarPlaceholder} />
+                )}
+              </div>
+
+              <div className={styles.editAvatar}>
+                <AiOutlineEdit size={20} onClick={() => handleEditAvatar(c.id)} />
+              </div>
+
+              <p><strong>Nome:</strong> {c.nomeCompleto}</p>
+              <p><strong>Email:</strong> {c.email}</p>
+              <p>
+                <strong>Telefone:</strong>{" "}
+                {c.tel
+                  ? c.tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3")
+                  : "Sem telefone"}
+              </p>
+
+              <button className={styles.deleteBtn} onClick={() => handleDelete(c.id)}>
+                Deletar
+              </button>
             </div>
-
-            <p><strong>Nome:</strong> {c.nomeCompleto}</p>
-            <p><strong>Email:</strong> {c.email}</p>
-            <p>
-              <strong>Telefone:</strong>{" "}
-              {c.tel
-                ? c.tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3")
-                : "Sem telefone"}
-            </p>
-
-            <button className={styles.deleteBtn} onClick={() => handleDelete(c.id)}>
-              Deletar
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
