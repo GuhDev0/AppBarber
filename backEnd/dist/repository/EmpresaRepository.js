@@ -16,7 +16,7 @@ class Empresa {
         return empresa;
     };
     findByIdEmpresa = async (idParam) => {
-        const findId = await prisma_1.prisma.empresa.findUnique({
+        const findId = await prisma_1.prisma.empresa.findFirst({
             where: {
                 id: idParam
             }
@@ -39,6 +39,24 @@ class Empresa {
             throw new Error("Nao possivel buscar lista de empresa");
             console.log(error.message);
         }
+    };
+    findByCPNJ = async (cnpj) => {
+        const empresaCNPJ = await prisma_1.prisma.empresa.findUnique({
+            where: { cnpj }
+        });
+        return empresaCNPJ;
+    };
+    findByNome = async (nomeDaEmpresa) => {
+        const empresaNome = await prisma_1.prisma.empresa.findUnique({
+            where: { nomeDaEmpresa }
+        });
+        return empresaNome;
+    };
+    findByEmail = async (email) => {
+        const empresaEmail = await prisma_1.prisma.empresa.findUnique({
+            where: { email }
+        });
+        return empresaEmail;
     };
 }
 exports.Empresa = Empresa;

@@ -45,4 +45,24 @@ export class Empresa {
                 console.log(error.message)
         }
     }
+    findByCPNJ = async (cnpj: string) => {
+        const empresaCNPJ = await prisma.empresa.findUnique({
+            where: { cnpj }
+        })
+        return empresaCNPJ
+    }
+
+    findByNome = async (nomeDaEmpresa: string) => {
+        const empresaNome = await prisma.empresa.findUnique({
+            where: { nomeDaEmpresa }
+        })
+        return empresaNome
+    }
+
+    findByEmail = async (email: string) => {
+        const empresaEmail = await prisma.empresa.findFirst({
+            where: { email }
+        })
+        return empresaEmail
+    }
 }

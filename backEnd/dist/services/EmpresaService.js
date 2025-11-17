@@ -1,25 +1,42 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmpresaService = void 0;
+const empresaDto_1 = require("../Dtos/empresaDto"); // importa o Zod schema
 const EmpresaRepository_1 = require("../repository/EmpresaRepository");
 const empresaDB = new EmpresaRepository_1.Empresa();
 class EmpresaService {
-    createEmpresaService = async (empresaDto) => {
-        const empresa = await empresaDB.RegistraEmpresa(empresaDto);
+    createEmpresaService = async (dados) => {
+        const parsed = empresaDto_1.empresaDto.safeParse(dados);
+        if (!parsed.success) {
+            const erros = parsed.error.issues.map(i => i.message).join(", ");
+            throw new Error(erros);
+        }
+        //validando cnpj unico
+        const existeCNPJ = await empresaDB.findByCPNJ(parsed.data.cnpj);
+        if (existeCNPJ) {
+            throw new Error("CNPJ já cadastrado.");
+        }
+        //validando nome unico
+        const existeNomeDaEmpresa = await empresaDB.findByNome(parsed.data.nomeDaEmpresa);
+        if (existeNomeDaEmpresa) {
+            throw new Error("Nome da empresa já cadastrado.");
+        }
+        const validData = parsed.data;
+        const empresa = await empresaDB.RegistraEmpresa(validData);
         return empresa;
     };
     empresaFindByIdService = async (id) => {
-        const empresaId = await empresaDB.findByIdEmpresa(id);
-        return empresaId;
+        const empresa = await empresaDB.findByIdEmpresa(id);
+        return empresa;
     };
     listaDeEmpresaService = async () => {
         try {
-            const listaDB = empresaDB.buscarListaDeEmpresas();
+            const listaDB = await empresaDB.buscarListaDeEmpresas();
             return listaDB;
         }
         catch (error) {
-            throw new Error("Erro busca a lista de empresas no banco");
             console.error(error.message);
+            throw new Error("Erro ao buscar a lista de empresas no banco");
         }
     };
 }

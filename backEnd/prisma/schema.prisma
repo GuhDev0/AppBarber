@@ -90,7 +90,7 @@ model Empresa {
   id               Int                @id @default(autoincrement())
   nomeDaEmpresa    String             @unique
   cnpj             String             @unique
-  email            String
+  email            String             @unique
   telefone         String
   endereco         String
   categorias       Categoria[]
