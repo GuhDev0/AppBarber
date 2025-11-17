@@ -29,17 +29,21 @@ class ColaboradorDB {
         });
     };
     deleteColaboradorId = async (empresaId, id) => {
+        // Verifica se o colaborador existe
         const colaborador = await prisma_1.prisma.colaborador.findFirst({
             where: { id, empresaId },
         });
         if (!colaborador)
             throw new Error("Usuário não pertence a essa empresa");
         console.log("Colaborador deletado com sucesso", id);
-        await prisma_1.prisma.servico.deleteMany({
-            where: { colaboradorId: id },
-        });
-        return await prisma_1.prisma.colaborador.delete({
-            where: { id },
+        return await prisma_1.prisma.$transaction(async (tx) => {
+            await tx.servico.deleteMany({
+                where: { colaboradorId: id },
+            });
+            const deleted = await tx.colaborador.delete({
+                where: { id },
+            });
+            return deleted;
         });
     };
 }

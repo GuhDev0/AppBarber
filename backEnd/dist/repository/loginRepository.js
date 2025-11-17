@@ -6,11 +6,17 @@ class LoginRepository {
     findByEmail = async (loginDto) => {
         const usuario = await prisma_1.prisma.usuario.findUnique({
             where: { email: loginDto.loginEmail },
-            include: { empresa: true },
+            select: {
+                id: true,
+                nomeCompleto: true,
+                senha: true,
+                telefone: true,
+                tipoDaConta: true,
+                empresaId: true,
+                email: true,
+                empresa: { select: { nomeDaEmpresa: true } }
+            }
         });
-        if (!usuario) {
-            throw new Error("Usuario não encontrado");
-        }
         return usuario;
     };
 }

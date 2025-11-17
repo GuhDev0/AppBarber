@@ -31,23 +31,28 @@ export class ColaboradorDB {
   };
 
   deleteColaboradorId = async (empresaId: number, id: number) => {
-  const colaborador = await prisma.colaborador.findFirst({
-    where: { id, empresaId },
-  });
+    // Verifica se o colaborador existe
+    const colaborador = await prisma.colaborador.findFirst({
+      where: { id, empresaId },
+    });
 
-  if (!colaborador) throw new Error("Usuário não pertence a essa empresa");
+    if (!colaborador) throw new Error("Usuário não pertence a essa empresa");
 
-  console.log("Colaborador deletado com sucesso", id);
+    console.log("Colaborador deletado com sucesso", id);
 
   
-  await prisma.servico.deleteMany({
-    where: { colaboradorId: id },
-  });
+    return await prisma.$transaction(async (tx) => {
+     
+      await tx.servico.deleteMany({
+        where: { colaboradorId: id },
+      });
 
- 
-  return await prisma.colaborador.delete({
-    where: { id },
-  });
-};
+      
+      const deleted = await tx.colaborador.delete({
+        where: { id },
+      });
 
+      return deleted;
+    });
+  };
 }

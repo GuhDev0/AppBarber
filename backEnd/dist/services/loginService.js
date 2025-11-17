@@ -32,7 +32,7 @@ class LoginService {
                 empresaId: usuario.empresaId,
                 nameEmpresa: usuario.empresa.nomeDaEmpresa,
             };
-            const token = jsonwebtoken_1.default.sign(payload, cs, { expiresIn: "1h" });
+            const token = jsonwebtoken_1.default.sign(payload, cs, { expiresIn: "24h" });
             const { senha, ...usuarioSemSenha } = usuario;
             return { token, usuario: usuarioSemSenha };
         }
