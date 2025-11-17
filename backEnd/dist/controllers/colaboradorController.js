@@ -63,7 +63,7 @@ class ColaboradorController {
             return res.status(200).json({ mensagem: "Colaborador deletado com sucesso", deletado });
         }
         catch (erro) {
-            return res.status(500).json({ mensagem: "Erro ao deletar colaborador", erro });
+            return res.status(500).json({ mensagem: "Erro ao deletar colaborador", error: erro.message });
         }
     };
 }
