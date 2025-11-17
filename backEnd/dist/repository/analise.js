@@ -53,7 +53,9 @@ class Analise {
                 select: {
                     id: true,
                     valorDoServico: true,
-                    data: true
+                    data: true,
+                    tipoDoServico: true,
+                    hora: true,
                 }
             });
             function formatDate(days) {
@@ -76,7 +78,8 @@ class Analise {
             return {
                 totalDeServico30D,
                 receitaTotal30D,
-                total_de_Servico
+                total_de_Servico,
+                list
             };
         }
         catch (error) {

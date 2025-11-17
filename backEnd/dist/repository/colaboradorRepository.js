@@ -34,7 +34,13 @@ class ColaboradorDB {
         });
         if (!colaborador)
             throw new Error("Usuário não pertence a essa empresa");
-        return await prisma_1.prisma.colaborador.delete({ where: { id } });
+        console.log("Colaborador deletado com sucesso", id);
+        await prisma_1.prisma.servico.deleteMany({
+            where: { colaboradorId: id },
+        });
+        return await prisma_1.prisma.colaborador.delete({
+            where: { id },
+        });
     };
 }
 exports.ColaboradorDB = ColaboradorDB;
