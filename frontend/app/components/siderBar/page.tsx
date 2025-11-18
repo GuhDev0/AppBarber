@@ -78,15 +78,7 @@ export default function NavBar() {
                 <span>Clientes</span>
               </Link>
             </li>
-            <li>
-              <Link
-                href="/dashboard/pagamento"
-                className={`${style.navLink} ${pathname === "/dashboard/pagamento" ? style.active : ""}`}
-              >
-                <FaMoneyBill1Wave size={18} />
-                <span>Pagamentos</span>
-              </Link>
-            </li>
+           
             <li>
               <Link
                 href="/dashboard/colaboradores"
