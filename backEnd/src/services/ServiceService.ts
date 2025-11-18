@@ -1,5 +1,6 @@
 import { ServiceRepository } from "../repository/serviceReposity";
 import type { serviceDTO } from "../Dtos/ServiceDTO";
+
 const serviceReposity = new ServiceRepository()
 
 
@@ -11,7 +12,8 @@ export class ServiceService {
             if (!save?.id) {
                 throw new Error("Serviço não foi salvo corretamente.");
             }
-
+           
+              
             console.log(save);
             return save;
         } catch (error) {

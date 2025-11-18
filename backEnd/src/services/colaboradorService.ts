@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 const colaboradorDB = new ColaboradorDB();
 
 export class ColaboradorService {
-  gerarSenhaAleatoria = (tamanho = 8) => {
+   gerarSenhaAleatoria = (tamanho = 8) => {
     const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
     let senha = "";
     for (let i = 0; i < tamanho; i++) {
@@ -21,7 +21,7 @@ export class ColaboradorService {
 
 saveColaboradorService = async (colaboradorDto: ColaboradorDto) => {
   try {
-    // defensive validation: ensure required fields are present
+    
     if (!colaboradorDto.nomeCompleto || typeof colaboradorDto.nomeCompleto !== 'string') {
       throw new Error('nomeCompleto é obrigatório');
     }

@@ -21,15 +21,15 @@ model Usuario {
 }
 
 model Cliente {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  telefone  String
-  empresaId Int
-  nome      String
-  sobrenome String
-  empresa   Empresa   @relation(fields: [empresaId], references: [id])
-  servico   Servico[]
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  telefone     String
+  empresaId    Int
+  nomeCompleto String
+  empresa      Empresa   @relation(fields: [empresaId], references: [id])
+  servico      Servico[]
 }
+
 
 model GestaoFinanceira {
   id                 Int            @id @default(autoincrement())

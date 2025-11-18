@@ -1,21 +1,37 @@
-import type { loginDto } from "../Dtos/loginDto";
 import type usuarioDto from "../Dtos/usuarioDto";
 import UsuarioRepository from "../repository/usuarioRepository";
-import { Empresa } from "../repository/EmpresaRepository";
-import { EmpresaService } from "./EmpresaService";
+import { ColaboradorService } from "./colaboradorService";
+import type { ColaboradorDto } from "../Dtos/colaboradorDto";
+import { ClienteService } from "./clienteService";
+import { ClienteDto } from "../Dtos/clienteDto";
 const usuarioDb = new UsuarioRepository();
-const empresaServicee = new EmpresaService();
-
-
+const colaboradorService = new ColaboradorService();
+const clienteService = new ClienteService();
 
 export class UsuarioService {
 
-
-   usuarioRegisterService = async (UsuarioDto: usuarioDto, empresaId: number) => {
+  usuarioRegisterService = async (UsuarioDto: usuarioDto, empresaId: number) => {
+    try {
       
-      const user = (await usuarioDb.registrarUsuario(UsuarioDto, empresaId))
-      return user
-   }
+      const user = await usuarioDb.registrarUsuario(UsuarioDto, empresaId);
 
+      
+      const adminDto: ColaboradorDto = {
+        nomeCompleto: "ADMIN",
+        email: UsuarioDto.email,
+        dataNascimento: "",
+        empresaId: empresaId,
+        tel: UsuarioDto.telefone,
+        senha: "",          
+        avatar: ""
+      };
+   
+      const adminColaborador = await colaboradorService.saveColaboradorService(adminDto);
 
+      return { user }; 
+    } catch (error: any) {
+      console.error("Erro ao registrar usuário:", error.message);
+      throw new Error(error.message);
+    }
+  };
 }

@@ -41,8 +41,8 @@ export class Empresa {
             })
             return lista
         } catch (error: any) {
-                throw new Error("Nao possivel buscar lista de empresa")
-                console.log(error.message)
+            throw new Error("Nao possivel buscar lista de empresa")
+            console.log(error.message)
         }
     }
     findByCPNJ = async (cnpj: string) => {
@@ -60,9 +60,26 @@ export class Empresa {
     }
 
     findByEmail = async (email: string) => {
-        const empresaEmail = await prisma.empresa.findFirst({
+        const empresaEmail = await prisma.empresa.findUnique({
             where: { email }
         })
         return empresaEmail
+    }
+
+    findByCNPJ = async (cnpj: string) => {
+        try {
+            const empresaCNPJ = await prisma.empresa.findUnique({
+                where: { cnpj }
+                ,select: {
+                    id:true,
+                    nomeDaEmpresa:true,
+                    cnpj:true,
+                }
+            })
+            return empresaCNPJ   
+        } catch (error: any) {
+            throw new Error("Não foi possivel buscar empresa por CNPJ")
+        }
+
     }
 }

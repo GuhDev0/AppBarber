@@ -32,6 +32,7 @@ router.post('/saveLancamento',autheController.authentication,gestaoFinanceiraCon
 router.post("/saveColaborador",colaboradorController.saveColaborador)
 router.post("/registraCatalagoService", autheController.authentication,servicoConfigController.registraCatalagoServicoControler)
 router.post("/cadastroDeCliente",autheController.authentication,clienteController.criarClienteController)
+router.get("/verificaEmpresaCnpj", empresaController.verificaEmpresaPorCnpj)
 
 router.get('/buscarAnaliseEstabelecimento', autheController.authentication, analiseController.analisePorEmpresa)
 router.get("/dashboart",autheController.authentication)
@@ -43,6 +44,7 @@ router.get("/listCATEGORIA",autheController.authentication,categoriaController.l
 router.get("/listDeCatalagoDeServico",autheController.authentication,servicoConfigController.buscarListaDeControler)
 router.get("/listaDeClientes",autheController.authentication,clienteController.listaDeClienteController)
 router.get("/listaDeEmpresas", autheController.authentication , empresaController.listaDeEmpresasController)
+
 
 router.delete('/deleteService/:id',serviceControler.deleteServiceController)
 router.delete("/deleteLancamento/:id",autheController.authentication,gestaoFinanceiraController.deleteLancamento)

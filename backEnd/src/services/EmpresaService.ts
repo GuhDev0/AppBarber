@@ -19,7 +19,7 @@ export class EmpresaService {
     }
 
     //validando nome unico
-    const existeNomeDaEmpresa =  await empresaDB.findByNome(parsed.data.nomeDaEmpresa);
+    const existeNomeDaEmpresa = await empresaDB.findByNome(parsed.data.nomeDaEmpresa);
     if (existeNomeDaEmpresa) {
       throw new Error("Nome da empresa já cadastrado.");
     }
@@ -47,4 +47,18 @@ export class EmpresaService {
       throw new Error("Erro ao buscar a lista de empresas no banco");
     }
   };
+  existeEmpresaPorCNPJService = async (cnpj: string) => {
+    try {
+      const empresa = await empresaDB.findByCPNJ(cnpj);
+     if(!empresa){
+      return null
+     }
+     return empresa
+    } catch (error: any) {
+      console.error(error.message);
+      console.error(error.message);
+      throw new Error("Erro ao verificar existência de empresa por CNPJ");
+    }
+
+  }
 }

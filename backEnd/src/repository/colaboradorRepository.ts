@@ -3,18 +3,21 @@ import type { ColaboradorDto } from "../Dtos/colaboradorDto";
 
 export class ColaboradorDB {
   saveColaborador = async (colaboradorDto: ColaboradorDto) => {
-    return await prisma.colaborador.create({
-      data: {
-        nomeCompleto: colaboradorDto.nomeCompleto,
-        email: colaboradorDto.email,
-        dataDeNascimento: new Date(colaboradorDto.dataNascimento),
-        tel: colaboradorDto.tel,
-        senha: colaboradorDto.senha,
-        empresaId: colaboradorDto.empresaId,
-        avatar: colaboradorDto.avatar,
-      },
-    });
-  };
+  return await prisma.colaborador.create({
+    data: {
+      nomeCompleto: colaboradorDto.nomeCompleto,
+      email: colaboradorDto.email,
+      dataDeNascimento: colaboradorDto.dataNascimento
+  ? new Date(colaboradorDto.dataNascimento)
+  : new Date("2000-01-01"), 
+      tel: colaboradorDto.tel,
+      senha: colaboradorDto.senha,
+      empresaId: colaboradorDto.empresaId,
+      avatar: colaboradorDto.avatar,
+    },
+  });
+};
+
 
   buscarListaDeColaboradores = async (empresaId: number) => {
     return await prisma.colaborador.findMany({
@@ -40,14 +43,14 @@ export class ColaboradorDB {
 
     console.log("Colaborador deletado com sucesso", id);
 
-  
+
     return await prisma.$transaction(async (tx) => {
-     
+
       await tx.servico.deleteMany({
         where: { colaboradorId: id },
       });
 
-      
+
       const deleted = await tx.colaborador.delete({
         where: { id },
       });
