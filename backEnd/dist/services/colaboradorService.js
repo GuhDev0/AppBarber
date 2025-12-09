@@ -21,7 +21,6 @@ class ColaboradorService {
     };
     saveColaboradorService = async (colaboradorDto) => {
         try {
-            // defensive validation: ensure required fields are present
             if (!colaboradorDto.nomeCompleto || typeof colaboradorDto.nomeCompleto !== 'string') {
                 throw new Error('nomeCompleto é obrigatório');
             }

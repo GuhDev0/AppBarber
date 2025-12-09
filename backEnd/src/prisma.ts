@@ -1,18 +1,17 @@
+// prisma.ts
+import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+dotenv.config({ path: "c:/Users/Guh/Desktop/appBarber/backEnd/.env" });
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: ["error", "warn"],
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL + "?pgbouncer=true"
-      }
-    }
-  });
+const datasourceUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.DATABASE_URL
+    : process.env.DIRECT_URL;
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// Opcional: garantir ssl desativado no local (se sua DIRECT_URL não tiver sslmode)
+const prisma = new PrismaClient({
+  datasourceUrl,
+});
+
+export { prisma };

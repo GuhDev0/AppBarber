@@ -21,6 +21,10 @@ class EmpresaService {
         if (existeNomeDaEmpresa) {
             throw new Error("Nome da empresa já cadastrado.");
         }
+        const existeEmail = await empresaDB.findByEmail(parsed.data.email);
+        if (existeEmail) {
+            throw new Error("Email já cadastrado.");
+        }
         const validData = parsed.data;
         const empresa = await empresaDB.RegistraEmpresa(validData);
         return empresa;
@@ -37,6 +41,20 @@ class EmpresaService {
         catch (error) {
             console.error(error.message);
             throw new Error("Erro ao buscar a lista de empresas no banco");
+        }
+    };
+    existeEmpresaPorCNPJService = async (cnpj) => {
+        try {
+            const empresa = await empresaDB.findByCPNJ(cnpj);
+            if (!empresa) {
+                return null;
+            }
+            return empresa;
+        }
+        catch (error) {
+            console.error(error.message);
+            console.error(error.message);
+            throw new Error("Erro ao verificar existência de empresa por CNPJ");
         }
     };
 }

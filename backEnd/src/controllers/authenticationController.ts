@@ -8,7 +8,7 @@ export interface UsuarioTokenPayload {
   role: string;
 }
 
-// Extendendo o Request pra incluir o usuário
+
 declare global {
   namespace Express {
     interface Request {
@@ -25,13 +25,13 @@ export class AutheController {
       return res.status(401).json({ mensagem: "Token não fornecido" });
     }
 
-    // Remove o "Bearer " se existir
+    
     const token = tokenAuthe.startsWith("Bearer ")
       ? tokenAuthe.slice(7)
       : tokenAuthe;
 
     try {
-      // Decodifica o token
+     
       const decoded = jwt.verify(
         token,
         process.env.CHAVE_SECRETA as string

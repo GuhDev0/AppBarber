@@ -8,7 +8,9 @@ class ColaboradorDB {
             data: {
                 nomeCompleto: colaboradorDto.nomeCompleto,
                 email: colaboradorDto.email,
-                dataDeNascimento: new Date(colaboradorDto.dataNascimento),
+                dataDeNascimento: colaboradorDto.dataNascimento
+                    ? new Date(colaboradorDto.dataNascimento)
+                    : new Date("2000-01-01"),
                 tel: colaboradorDto.tel,
                 senha: colaboradorDto.senha,
                 empresaId: colaboradorDto.empresaId,

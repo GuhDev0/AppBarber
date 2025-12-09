@@ -10,7 +10,6 @@ class Analise {
                 select: {
                     id: true,
                     valorDoServico: true,
-                    clienteId: true,
                     data: true,
                     colaborador: { select: { nomeCompleto: true } },
                     servicoConfig: { select: { comissao: true } },
@@ -23,12 +22,35 @@ class Analise {
                         valorTotal: 0,
                         valorTotalComissao: 0,
                         totalDeServicoRealizado: 0,
+                        valorTotal1a15: 0,
+                        valorTotalComissao1a15: 0,
+                        totalDeServico1a15: 0,
+                        valorTotal16a30: 0,
+                        valorTotalComissao16a30: 0,
+                        totalDeServico16a30: 0,
                     },
                 ];
             }
+            // --- Geral ---
             const receitaTotal = list.reduce((c, s) => c + s.valorDoServico, 0);
             const receitaTotalComComissao = list.reduce((c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100), 0);
             const total_de_Servico = list.length;
+            // --- Do dia 1 ao 15 ---
+            const lista1a15 = list.filter(s => {
+                const dia = new Date(s.data).getDate();
+                return dia >= 1 && dia <= 15;
+            });
+            const valorTotal1a15 = lista1a15.reduce((c, s) => c + s.valorDoServico, 0);
+            const valorTotalComissao1a15 = lista1a15.reduce((c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100), 0);
+            const totalDeServico1a15 = lista1a15.length;
+            // --- Do dia 16 ao 30/31 ---
+            const lista16a30 = list.filter(s => {
+                const dia = new Date(s.data).getDate();
+                return dia >= 16; // até o fim do mês
+            });
+            const valorTotal16a30 = lista16a30.reduce((c, s) => c + s.valorDoServico, 0);
+            const valorTotalComissao16a30 = lista16a30.reduce((c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100), 0);
+            const totalDeServico16a30 = lista16a30.length;
             const nome = list[0]?.colaborador?.nomeCompleto;
             return [
                 {
@@ -36,6 +58,12 @@ class Analise {
                     valorTotal: receitaTotal,
                     valorTotalComissao: receitaTotalComComissao,
                     totalDeServicoRealizado: total_de_Servico,
+                    valorTotal1a15,
+                    valorTotalComissao1a15,
+                    totalDeServico1a15,
+                    valorTotal16a30,
+                    valorTotalComissao16a30,
+                    totalDeServico16a30,
                 },
             ];
         }

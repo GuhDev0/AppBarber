@@ -7,7 +7,7 @@ export class ClienteRepository {
     return await prisma.cliente.create({
       data: {
         nome: clienteDto.nome,
-        sobrenome: clienteDto.Sobrenome,
+        Sobrenome: clienteDto.Sobrenome,
         email: clienteDto.email,
         telefone: clienteDto.telefone,
         empresaId
@@ -15,7 +15,7 @@ export class ClienteRepository {
       select: {
         id: true,
         nome: true,
-        sobrenome: true,
+        Sobrenome: true,
         email: true,
         telefone: true
       }
@@ -29,7 +29,7 @@ export class ClienteRepository {
       select: {
         id: true,
         nome: true,
-        sobrenome: true,
+        Sobrenome: true,
         email: true,
         telefone: true,
         servico: {

@@ -16,7 +16,7 @@ class Empresa {
         return empresa;
     };
     findByIdEmpresa = async (idParam) => {
-        const findId = await prisma_1.prisma.empresa.findFirst({
+        const findId = await prisma_1.prisma.empresa.findUnique({
             where: {
                 id: idParam
             }
@@ -57,6 +57,22 @@ class Empresa {
             where: { email }
         });
         return empresaEmail;
+    };
+    findByCNPJ = async (cnpj) => {
+        try {
+            const empresaCNPJ = await prisma_1.prisma.empresa.findUnique({
+                where: { cnpj },
+                select: {
+                    id: true,
+                    nomeDaEmpresa: true,
+                    cnpj: true,
+                }
+            });
+            return empresaCNPJ;
+        }
+        catch (error) {
+            throw new Error("Não foi possivel buscar empresa por CNPJ");
+        }
     };
 }
 exports.Empresa = Empresa;

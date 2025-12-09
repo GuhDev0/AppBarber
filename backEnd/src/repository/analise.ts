@@ -5,6 +5,13 @@ type AnaliseColaborador = {
   valorTotal: number;
   valorTotalComissao: number;
   totalDeServicoRealizado: number;
+  valorTotal1a15: number;
+  valorTotalComissao1a15: number;
+  totalDeServico1a15: number;
+  valorTotal16a30: number;
+  valorTotalComissao16a30: number;
+  totalDeServico16a30: number;
+  totalPorMes: { [mes: string]: number };
 };
 
 export class Analise {
@@ -18,47 +25,78 @@ export class Analise {
         select: {
           id: true,
           valorDoServico: true,
-          clienteId: true,
           data: true,
           colaborador: { select: { nomeCompleto: true } },
           servicoConfig: { select: { comissao: true } },
         },
       });
 
-      if (list.length === 0) {
-        return [
-          {
-            nomeDoColaborador: "Sem serviços",
-            valorTotal: 0,
-            valorTotalComissao: 0,
-            totalDeServicoRealizado: 0,
-          },
-        ];
-      }
 
-      const receitaTotal = list.reduce(
-        (c: number, s: { valorDoServico: number }) => c + s.valorDoServico,
-        0
-      );
+      const totalPorMes: { [mes: string]: number } = {};
 
+      // Agrupa por mês
+      list.forEach((s) => {
+        const data = new Date(s.data);
+        const mes = `${data.getFullYear()}-${data.getMonth() + 1}`; // ex: "2025-12"
+        const comissao = s.valorDoServico * (s.servicoConfig.comissao / 100);
+
+        if (!totalPorMes[mes]) totalPorMes[mes] = 0;
+        totalPorMes[mes] += comissao;
+      });
+
+
+      // --- Geral ---
+      const receitaTotal = list.reduce((c, s) => c + s.valorDoServico, 0);
       const receitaTotalComComissao = list.reduce(
-        (c: number, s: { valorDoServico: number; servicoConfig: { comissao: number } }) =>
-          c + s.valorDoServico * (s.servicoConfig.comissao / 100),
+        (c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100),
         0
       );
-
-
       const total_de_Servico = list.length;
+
+      // --- Do dia 1 ao 15 ---
+      const lista1a15 = list.filter(s => {
+        const dia = new Date(s.data).getDate();
+        return dia >= 1 && dia <= 15;
+      });
+
+      const valorTotal1a15 = lista1a15.reduce((c, s) => c + s.valorDoServico, 0);
+      const valorTotalComissao1a15 = lista1a15.reduce(
+        (c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100),
+        0
+      );
+      const totalDeServico1a15 = lista1a15.length;
+
+      // --- Do dia 16 ao 30/31 ---
+      const lista16a30 = list.filter(s => {
+        const dia = new Date(s.data).getDate();
+        return dia >= 16; // até o fim do mês
+      });
+
+      const valorTotal16a30 = lista16a30.reduce((c, s) => c + s.valorDoServico, 0);
+      const valorTotalComissao16a30 = lista16a30.reduce(
+        (c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100),
+        0
+      );
+      const totalDeServico16a30 = lista16a30.length;
+
       const nome = list[0]?.colaborador?.nomeCompleto;
 
-      return [
-        {
-          nomeDoColaborador: nome,
-          valorTotal: receitaTotal,
-          valorTotalComissao: receitaTotalComComissao,
-          totalDeServicoRealizado: total_de_Servico,
-        },
-      ];
+
+
+      return [{
+  nomeDoColaborador: nome,
+  valorTotal: receitaTotal,
+  valorTotalComissao: receitaTotalComComissao,
+  totalDeServicoRealizado: total_de_Servico,
+  valorTotal1a15,
+  valorTotalComissao1a15,
+  totalDeServico1a15,
+  valorTotal16a30,
+  valorTotalComissao16a30,
+  totalDeServico16a30,
+  totalPorMes, 
+}];
+
     } catch (error) {
       if (error instanceof Error) {
         console.error("Erro na análise:", error.message);
@@ -66,7 +104,6 @@ export class Analise {
       return [];
     }
   }
-
   analiseCompletaDoEstabelecimento = async (empresaId: number) => {
     try {
       const list = await prisma.servico.findMany({

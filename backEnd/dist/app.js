@@ -12,15 +12,15 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 dotenv_1.default.config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.use("/appBarber", router_1.default);
 app.get("/", (_req, res) => {
     console.log("DATABASE_URL em runtime:", process.env.DATABASE_URL);
-    res.send("Backend online 🚀");
+    res.send("Backend online ");
 });
 try {
-    app.listen(3000, () => {
-        console.log("Servidor Aberto ! 3000");
+    app.listen(port, () => {
+        console.log(`Servidor Aberto ! ${port}`);
     });
 }
 catch (err) {

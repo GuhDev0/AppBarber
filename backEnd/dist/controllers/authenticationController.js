@@ -11,12 +11,10 @@ class AutheController {
         if (!tokenAuthe) {
             return res.status(401).json({ mensagem: "Token não fornecido" });
         }
-        // Remove o "Bearer " se existir
         const token = tokenAuthe.startsWith("Bearer ")
             ? tokenAuthe.slice(7)
             : tokenAuthe;
         try {
-            // Decodifica o token
             const decoded = jsonwebtoken_1.default.verify(token, process.env.CHAVE_SECRETA);
             req.user = decoded;
             next();

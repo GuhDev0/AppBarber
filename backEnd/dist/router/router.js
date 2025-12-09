@@ -32,7 +32,9 @@ router.post('/saveLancamento', autheController.authentication, gestaoFinanceiraC
 router.post("/saveColaborador", colaboradorController.saveColaborador);
 router.post("/registraCatalagoService", autheController.authentication, servicoConfigController.registraCatalagoServicoControler);
 router.post("/cadastroDeCliente", autheController.authentication, clienteController.criarClienteController);
+router.get("/verificaEmpresaCnpj", empresaController.verificaEmpresaPorCnpj);
 router.get('/buscarAnaliseEstabelecimento', autheController.authentication, analiseController.analisePorEmpresa);
+router.get('/buscarAnalisePorColaborador', autheController.authentication, analiseController.analisePorColaborador);
 router.get("/dashboart", autheController.authentication);
 router.get('/findListServices', autheController.authentication, serviceControler.findByIdListService);
 router.get('/findByEmpresaId/:id', empresaController.buscarPeloId);

@@ -59,12 +59,12 @@ export class Empresa {
         return empresaNome
     }
 
-    findByEmail = async (email: string) => {
-        const empresaEmail = await prisma.empresa.findUnique({
-            where: { email }
-        })
-        return empresaEmail
-    }
+   findByEmail = async (email: string) => {
+    const empresaEmail = await prisma.empresa.findUnique({
+        where: { email }
+    })
+    return empresaEmail
+}
 
     findByCNPJ = async (cnpj: string) => {
         try {

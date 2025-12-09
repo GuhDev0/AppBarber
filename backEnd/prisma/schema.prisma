@@ -3,9 +3,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DIRECT_URL")
+ 
 }
+
 
 model Usuario {
   id           Int       @id @default(autoincrement())
@@ -25,7 +27,8 @@ model Cliente {
   email        String    @unique
   telefone     String
   empresaId    Int
-  nomeCompleto String
+  nome String
+  Sobrenome String
   empresa      Empresa   @relation(fields: [empresaId], references: [id])
   servico      Servico[]
 }

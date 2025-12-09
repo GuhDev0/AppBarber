@@ -11,7 +11,7 @@ class EmpresaController {
             return res.status(201).json(empresaCreate);
         }
         catch (error) {
-            return res.status(500).json({ mensagem: error.message });
+            return res.status(400).json({ error: error.message });
         }
     };
     buscarPeloId = async (req, res) => {
@@ -38,6 +38,23 @@ class EmpresaController {
         }
         catch (error) {
             res.status(500).json({ error: error.mensagem });
+        }
+    };
+    verificaEmpresaPorCnpj = async (req, res) => {
+        const cnpj = req.query.cnpj;
+        if (!cnpj) {
+            return res.status(400).json({ mensagem: "CNPJ é obrigatório" });
+        }
+        try {
+            const empresa = await empresaService.existeEmpresaPorCNPJService(cnpj);
+            if (!empresa) {
+                return res.status(404).json({ mensagem: "Empresa não encontrada" });
+            }
+            return res.status(200).json({ empresa });
+        }
+        catch (error) {
+            console.error("Erro ao verificar empresa por CNPJ:", error.message);
+            res.status(500).json({ mensagem: error.message });
         }
     };
 }
