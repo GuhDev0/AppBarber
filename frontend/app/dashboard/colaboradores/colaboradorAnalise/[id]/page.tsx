@@ -93,6 +93,7 @@ export default function ColaboradorAnalise() {
             currency: "BRL",
           })}
           icon={<FaMoneyBill1Wave color="#ff6b00" />}
+          subTitulo=""
         />
         <CardAnalytics
           titulo="Valor comissão 16D a 30D"
@@ -101,6 +102,7 @@ export default function ColaboradorAnalise() {
             currency: "BRL",
           })}
           icon={<FaMoneyBill1Wave color="#ff6b00" />}
+          subTitulo=""
         />
         <CardAnalytics
           titulo="Valor Total"
@@ -109,6 +111,7 @@ export default function ColaboradorAnalise() {
             currency: "BRL",
           })}
           icon={<FaMoneyBill1Wave color="#ff6b00" />}
+        subTitulo=""
         />
       </div>
 
