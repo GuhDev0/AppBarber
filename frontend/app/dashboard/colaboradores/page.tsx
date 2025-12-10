@@ -69,7 +69,7 @@ export default function AbaColaboradores() {
 
   const fetchColaboradores = async (token: string) => {
     try {
-      const response = await fetch(`http://localhost:3001/appBarber/listColaboradores`, {
+      const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/listColaboradores`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
