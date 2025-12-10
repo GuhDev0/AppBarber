@@ -78,7 +78,7 @@ export default function NavBar() {
                 <span>Clientes</span>
               </Link>
             </li>
-           
+            
             <li>
               <Link
                 href="/dashboard/colaboradores"

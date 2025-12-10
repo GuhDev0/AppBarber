@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { RxAvatar } from "react-icons/rx";
+import { useRouter } from "next/navigation"
 import { AiOutlineEdit } from "react-icons/ai";
 import styles from "./AbaColaboradores.module.css";
 
@@ -24,7 +25,9 @@ interface ColaboradorDto {
   empresaId?: number;
 }
 
+
 export default function AbaColaboradores() {
+  const router = useRouter()
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
   const [userData, setUserData] = useState<any>({});
@@ -66,7 +69,7 @@ export default function AbaColaboradores() {
 
   const fetchColaboradores = async (token: string) => {
     try {
-      const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/listColaboradores`, {
+      const response = await fetch(`http://localhost:3001/appBarber/listColaboradores`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -92,6 +95,9 @@ export default function AbaColaboradores() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  const pageColaborador = (id: number) => {
+ router.push(`/dashboard/colaboradores/colaboradorAnalise/${id}`);
+};
 
   const handleAbrirFormulario = () => setMostrarFormulario(!mostrarFormulario);
 
@@ -293,6 +299,9 @@ export default function AbaColaboradores() {
 
               <button className={styles.deleteBtn} onClick={() => handleDelete(c.id)}>
                 Deletar
+              </button>
+              <button className={styles.deleteBtn} onClick={() => pageColaborador(c.id)}>
+                  Informações 
               </button>
             </div>
           ))}

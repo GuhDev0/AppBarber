@@ -18,7 +18,7 @@ interface ColaboradorDto {
   empresaId: number
   avatar?: string
 }
-const urlEmpresaPorCNPJ = "http://localhost:3000/appBarber/verificaEmpresaCnpj"
+const urlEmpresaPorCNPJ = "https://gestorappbarber.onrender.com/appBarber/verificaEmpresaCnpj"
 const urlBuscarEmpresa = "https://gestorappbarber.onrender.com/appBarber/buscarEmpresaPorCNPJ"
 const urlRegisterColaborador = "https://gestorappbarber.onrender.com/appBarber/saveColaborador"
 
