@@ -34,7 +34,7 @@ router.post("/registraCatalagoService", autheController.authentication, servicoC
 router.post("/cadastroDeCliente", autheController.authentication, clienteController.criarClienteController);
 router.get("/verificaEmpresaCnpj", empresaController.verificaEmpresaPorCnpj);
 router.get('/buscarAnaliseEstabelecimento', autheController.authentication, analiseController.analisePorEmpresa);
-router.get('/buscarAnalisePorColaborador', autheController.authentication, analiseController.analisePorColaborador);
+router.get('/buscarAnalisePorColaborador/:id', autheController.authentication, analiseController.analisePorColaborador);
 router.get("/dashboart", autheController.authentication);
 router.get('/findListServices', autheController.authentication, serviceControler.findByIdListService);
 router.get('/findByEmpresaId/:id', empresaController.buscarPeloId);

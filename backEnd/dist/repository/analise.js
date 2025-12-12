@@ -12,25 +12,19 @@ class Analise {
                     valorDoServico: true,
                     data: true,
                     colaborador: { select: { nomeCompleto: true } },
-                    servicoConfig: { select: { comissao: true } },
+                    servicoConfig: { select: { comissao: true, tipo: true } },
                 },
             });
-            if (list.length === 0) {
-                return [
-                    {
-                        nomeDoColaborador: "Sem serviços",
-                        valorTotal: 0,
-                        valorTotalComissao: 0,
-                        totalDeServicoRealizado: 0,
-                        valorTotal1a15: 0,
-                        valorTotalComissao1a15: 0,
-                        totalDeServico1a15: 0,
-                        valorTotal16a30: 0,
-                        valorTotalComissao16a30: 0,
-                        totalDeServico16a30: 0,
-                    },
-                ];
-            }
+            const totalPorMes = {};
+            // Agrupa por mês
+            list.forEach((s) => {
+                const data = new Date(s.data);
+                const mes = `${data.getFullYear()}-${data.getMonth() + 1}`; // ex: "2025-12"
+                const comissao = s.valorDoServico * (s.servicoConfig.comissao / 100);
+                if (!totalPorMes[mes])
+                    totalPorMes[mes] = 0;
+                totalPorMes[mes] += comissao;
+            });
             // --- Geral ---
             const receitaTotal = list.reduce((c, s) => c + s.valorDoServico, 0);
             const receitaTotalComComissao = list.reduce((c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100), 0);
@@ -48,12 +42,13 @@ class Analise {
                 const dia = new Date(s.data).getDate();
                 return dia >= 16; // até o fim do mês
             });
+            const lista16a30FiltradaPorTipo = lista16a30.filter(s => s.servicoConfig.tipo == "Pacote");
             const valorTotal16a30 = lista16a30.reduce((c, s) => c + s.valorDoServico, 0);
             const valorTotalComissao16a30 = lista16a30.reduce((c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100), 0);
             const totalDeServico16a30 = lista16a30.length;
             const nome = list[0]?.colaborador?.nomeCompleto;
-            return [
-                {
+            console.log(lista16a30FiltradaPorTipo);
+            return [{
                     nomeDoColaborador: nome,
                     valorTotal: receitaTotal,
                     valorTotalComissao: receitaTotalComComissao,
@@ -64,8 +59,8 @@ class Analise {
                     valorTotal16a30,
                     valorTotalComissao16a30,
                     totalDeServico16a30,
-                },
-            ];
+                    totalPorMes,
+                }];
         }
         catch (error) {
             if (error instanceof Error) {

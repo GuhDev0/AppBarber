@@ -7,8 +7,7 @@ const analiseDB = new analise_1.Analise();
 class Teste {
     retornaLista = async (empresaId, colaboradorId) => {
         try {
-            const lista = await analise.analiseCompletaPorColaborador(empresaId, colaboradorId);
-            return lista;
+            await analise.analiseCompletaPorColaborador(empresaId, colaboradorId);
         }
         catch (error) {
             console.error(error.message);

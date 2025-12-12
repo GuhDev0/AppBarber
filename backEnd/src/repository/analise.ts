@@ -27,24 +27,19 @@ export class Analise {
           valorDoServico: true,
           data: true,
           colaborador: { select: { nomeCompleto: true } },
-          servicoConfig: { select: { comissao: true } },
+          servicoConfig: { select: { comissao: true, tipo: true } },
         },
       });
-
-
       const totalPorMes: { [mes: string]: number } = {};
-
       // Agrupa por mês
       list.forEach((s) => {
         const data = new Date(s.data);
-        const mes = `${data.getFullYear()}-${data.getMonth() + 1}`; // ex: "2025-12"
+        const mes = `${data.getFullYear()}-${data.getMonth() + 1}`;
         const comissao = s.valorDoServico * (s.servicoConfig.comissao / 100);
 
         if (!totalPorMes[mes]) totalPorMes[mes] = 0;
         totalPorMes[mes] += comissao;
       });
-
-
       // --- Geral ---
       const receitaTotal = list.reduce((c, s) => c + s.valorDoServico, 0);
       const receitaTotalComComissao = list.reduce(
@@ -58,44 +53,71 @@ export class Analise {
         const dia = new Date(s.data).getDate();
         return dia >= 1 && dia <= 15;
       });
+      const valorPacotes1a15 = lista1a15.reduce((c, s) => {
+        if (s.servicoConfig.tipo !== "Pacote") return c;
+        const parcela = (s.valorDoServico / 2) / 4;
+        return c + parcela;
+      }, 0);
 
-      const valorTotal1a15 = lista1a15.reduce((c, s) => c + s.valorDoServico, 0);
-      const valorTotalComissao1a15 = lista1a15.reduce(
-        (c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100),
-        0
-      );
-      const totalDeServico1a15 = lista1a15.length;
+      const valorNormal1a15 = lista1a15.reduce((c, s) => {
+        if (s.servicoConfig.tipo === "Pacote") return c;
+        return c + s.valorDoServico;
+      }, 0);
+
+      const valorTotalComissao1a15 = lista1a15.reduce((c, s) => {
+        if (s.servicoConfig.tipo === "Pacote") {
+          const parcela = (s.valorDoServico / 2) / 4;
+          return c + parcela;
+        }
+        return c + (s.valorDoServico * (s.servicoConfig.comissao / 100));
+      }, 0);
+
+
 
       // --- Do dia 16 ao 30/31 ---
       const lista16a30 = list.filter(s => {
         const dia = new Date(s.data).getDate();
         return dia >= 16; // até o fim do mês
       });
+      const valorPacotes16a30 = lista16a30.reduce((c, s) => {
+        if (s.servicoConfig.tipo !== "Pacote") return c;
+        const parcela = (s.valorDoServico / 2) / 4;
+        return c + parcela;
+      }, 0);
+      const valorNormal16a30 = lista16a30.reduce((c, s) => {
+        if (s.servicoConfig.tipo === "Pacote") return c;
+        return c + s.valorDoServico;
+      }, 0);
 
-      const valorTotal16a30 = lista16a30.reduce((c, s) => c + s.valorDoServico, 0);
-      const valorTotalComissao16a30 = lista16a30.reduce(
-        (c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100),
-        0
-      );
-      const totalDeServico16a30 = lista16a30.length;
+      const valorTotalComissao16a30 = lista16a30.reduce((c, s) => {
+        if (s.servicoConfig.tipo === "Pacote") {
+          const parcela = (s.valorDoServico / 2) / 4;
+          return c + parcela;
+        }
+        return c + (s.valorDoServico * (s.servicoConfig.comissao / 100));
+      }, 0);
+
+
+
 
       const nome = list[0]?.colaborador?.nomeCompleto;
-
+      const totalDeServico1a15 = lista1a15.length;
+      const totalDeServico16a30 = lista16a30.length;
 
 
       return [{
-  nomeDoColaborador: nome,
-  valorTotal: receitaTotal,
-  valorTotalComissao: receitaTotalComComissao,
-  totalDeServicoRealizado: total_de_Servico,
-  valorTotal1a15,
-  valorTotalComissao1a15,
-  totalDeServico1a15,
-  valorTotal16a30,
-  valorTotalComissao16a30,
-  totalDeServico16a30,
-  totalPorMes, 
-}];
+        nomeDoColaborador: nome,
+        valorTotal: receitaTotal,
+        valorTotalComissao: receitaTotalComComissao,
+        totalDeServicoRealizado: total_de_Servico,
+        valorTotal1a15:totalDeServico1a15,
+        valorTotalComissao1a15,
+        totalDeServico1a15,
+        valorTotal16a30:totalDeServico16a30,
+        valorTotalComissao16a30,
+        totalDeServico16a30,
+        totalPorMes,
+      }];
 
     } catch (error) {
       if (error instanceof Error) {
