@@ -121,13 +121,13 @@ export default function Dashboard() {
         <div className={styles.containerCardAnalytics}>
           <CardAnalytics
             titulo={"Total de Serviços"}
-            subTitulo={"Serviços realizados este mês"}
+            subTitulo={""}
             valor={totalDeServicos}
             icon={<FaMoneyCheckAlt color="#ff6b00" />}
           />
           <CardAnalytics
             titulo={"Receita Mensal"}
-            subTitulo={"Total de receita neste mês"}
+            subTitulo={""}
             valor={(receitaDos30D ?? 0).toLocaleString("pt-BR", { style: 'currency', currency: "BRL" })}
             icon={<IoAnalyticsSharp color="#ff6b00" />}
           />

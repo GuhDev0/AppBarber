@@ -1,8 +1,10 @@
+/* Header e títulos */
 .containerServicoHeader {
-  display: flex;            
-  justify-content: space-between; 
-  align-items: center;      
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .title {
@@ -17,42 +19,49 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .actions button:hover {
   background-color: #e65c00;
 }
 
-    .formCompact {
-    max-width: 400px; 
-    padding: 12px; 
-    gap: 8px; 
-    }
+/* Formulário compacto */
+.formCompact {
+  max-width: 400px;
+  padding: 12px;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-    .formCompact input,
-    .formCompact select {
-    padding: 6px; 
-    font-size: 0.9rem;
-    }
+.formCompact input,
+.formCompact select {
+  padding: 6px;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+}
 
+/* Botões principais e secundários */
+.primaryBtn,
+.secondaryBtn {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
 
-    .primaryBtn, .secondaryBtn {
-    padding: 8px 16px;
-    border: none;
-    cursor: pointer;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-    }
+.primaryBtn {
+  background-color: #ff6a00;
+  color: white;
+}
 
-    .primaryBtn {
-    background-color: #ff6a00;
-    color: white;
-    }
-
-    .primaryBtn:hover {
-    background-color: #e65c00;
-    }
+.primaryBtn:hover {
+  background-color: #e65c00;
+}
 
 .secondaryBtn {
   background-color: #ddd;
@@ -64,6 +73,7 @@
   background-color: #ccc;
 }
 
+/* Filtros */
 .filtros {
   display: flex;
   gap: 10px;
@@ -79,16 +89,24 @@
   background-color: #ccc;
   box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
   transition: 300ms ease-in-out;
+  flex: 1 1 150px;
+  min-width: 120px;
+  box-sizing: border-box;
 }
-.containerTitle{
+
+/* Títulos de seção */
+.containerTitle {
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
+  flex-wrap: wrap;
 }
-.containerTitle h2{
+
+.containerTitle h2 {
   color: #fff;
 }
 
+/* Formulário completo */
 .form {
   display: flex;
   flex-direction: column;
@@ -98,12 +116,17 @@
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.form input, .form select {
+.form input,
+.form select {
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .formBtns {
@@ -111,8 +134,10 @@
   justify-content: flex-start;
   gap: 10px;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 
+/* Tabela */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -122,7 +147,8 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.table th, .table td {
+.table th,
+.table td {
   padding: 10px 12px;
   text-align: left;
   border-bottom: 1px solid #eee;
@@ -142,8 +168,50 @@
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .deleteBtn:hover {
   background-color: #c0392b;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .filtros input {
+    flex: 1 1 120px;
+  }
+
+  .containerServicoHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .containerServicoHeader,
+  .containerTitle {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .formCompact {
+    max-width: 100%;
+  }
+
+  .formBtns {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filtros input {
+    flex: 1 1 100%;
+  }
+
+  .formBtns {
+    gap: 4px;
+  }
 }

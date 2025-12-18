@@ -182,8 +182,8 @@ export default function ControleDeServicos() {
       ...prev,
       [name]:
         name === "valorDoServico" ||
-        name === "colaboradorId" ||
-        name === "clienteId"
+          name === "colaboradorId" ||
+          name === "clienteId"
           ? Number(value)
           : value,
     }));
@@ -327,13 +327,16 @@ export default function ControleDeServicos() {
         </thead>
         <tbody>
           {servicosFiltrados.length > 0 ? (
-            servicosFiltrados.map((servico) => (
+            servicosFiltrados.sort((a, b) => b.data.localeCompare(a.data)).map((servico) => (
               <tr key={servico.id}>
                 <td>{getNomeDoServico(servico)}</td>
                 <td>{Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(servico.valorDoServico)}</td>
                 <td>{servico.colaborador?.nomeCompleto || ""}</td>
                 <td>{listaDeClientes.find(c => c.id === servico.clienteId)?.nome || ""}{" "}{listaDeClientes.find(c => c.id === servico.clienteId)?.sobrenome || ""}</td>
-                <td>{new Date(servico.data).toLocaleDateString("pt-BR")} - {servico.hora.slice(0, 5)}</td>
+                <td>
+                  {servico.data.split("T")[0].split("-").reverse().join("/")}
+
+                </td>
                 <td>{getTipoDeServico(servico)}</td>
                 <td><button className={styles.deleteBtn} onClick={() => deleteService(servico.id)}>Deletar</button></td>
               </tr>

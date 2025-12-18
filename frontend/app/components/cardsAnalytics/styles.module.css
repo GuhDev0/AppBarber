@@ -86,10 +86,13 @@
 }
 
 /* Responsividade */
-@media (max-width: 480px) {
-  .cardAnalytics {
+@media (max-width: 600px) {
+ .cardAnalytics {
+    width: 100%;          /* ocupa a largura do celular */
+    max-width: 170px;     /* limita um tamanho confortável */
     padding: 15px;
-    height: auto; /* se o conteúdo precisar quebrar linha */
+    height: auto;         /* deixa crescer conforme o conteúdo */
+    overflow-wrap: break-word;
   }
 
   .valor {

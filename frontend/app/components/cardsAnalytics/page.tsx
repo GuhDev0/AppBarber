@@ -18,7 +18,7 @@ export default function CardAnalytics({ titulo, valor, descricao, icon,subTitulo
       <p className={styles.subText}>{subTitulo}</p>
       <div className={styles.valor}>{valor}</div>
       <div className={styles.informationAnalytics}>
-        <p>{descricao || '+8 desde o mês passado'}</p>
+        <p>{descricao || ''}</p>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import styles from "./styles.module.css"
 interface Cliente {
   id?: number;
   nome: string;
-  sobrenome: string;
+  Sobrenome: string;
   telefone: string;
   email: string;
 }
@@ -17,7 +17,7 @@ export default function Clientes() {
   const [userData, setUserData] = useState<any>({});
   const [formData, setFormData] = useState<Cliente>({
     nome: "",
-    sobrenome: "",
+    Sobrenome: "",
     telefone: "",
     email: "",
   });
@@ -83,7 +83,7 @@ export default function Clientes() {
         },
         body: JSON.stringify({
           nome: formData.nome,
-          Sobrenome: formData.sobrenome,
+          Sobrenome: formData.Sobrenome,
           email: formData.email,
           telefone: formData.telefone,
         }),
@@ -100,7 +100,7 @@ export default function Clientes() {
       fetchClientes();
       setMostrarFormulario(false);
 
-      setFormData({ nome: "", sobrenome: "", telefone: "", email: "" });
+      setFormData({ nome: "", Sobrenome: "", telefone: "", email: "" });
     } catch {
       alert("Erro ao registrar cliente");
     }
@@ -162,9 +162,9 @@ export default function Clientes() {
 
           <input
             type="text"
-            name="sobrenome"
+            name="Sobrenome"
             placeholder="Sobrenome"
-            value={formData.sobrenome}
+            value={formData.Sobrenome}
             onChange={handleChange}
             required
           />
@@ -218,7 +218,7 @@ export default function Clientes() {
             clientes.map((cliente) => (
               <tr key={cliente.id}>
                 <td>{cliente.nome}</td>
-                <td>{cliente.sobrenome}</td>
+                <td>{cliente.Sobrenome}</td>
                 <td>{cliente.telefone}</td>
                 <td>{cliente.email}</td>
                 <td>

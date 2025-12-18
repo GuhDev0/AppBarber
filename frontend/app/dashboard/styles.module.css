@@ -121,3 +121,19 @@
     .dashboard_Title p {
         color: #a6a6a6;
     }
+
+
+    @media(max-width:600px){
+        .containerCardAnalytics {
+            display: flex;
+            
+            
+        }
+    }
+    
+
+
+
+
+
+    

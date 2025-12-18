@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { TiThMenuOutline ,TiTimesOutline} from "react-icons/ti";
 import { FaMoneyBill1Wave } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import {
@@ -31,7 +32,7 @@ export default function NavBar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Pega o token de localStorage ou sessionStorage
+
     const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
     if (!token) return;
     const dados = parseJwt(token);
@@ -39,10 +40,10 @@ export default function NavBar() {
   }, []);
 
   return (
-    <aside className={style.sidebar}>
+    <aside className={`${style.sidebar}`}>
       <div className={style.sidebarTop}>
-        <div className={style.sidebarHeader}>
-          <Scissors className={style.logoIcon} size={22} />
+        <div className={style.sidebarHeader}> 
+            <Scissors className={style.logoIcon} size={22} />
           <h2 className={style.sidebarTitle}>
             {userData?.nameEmpresa || "Barber Shop"}
           </h2>
@@ -78,7 +79,7 @@ export default function NavBar() {
                 <span>Clientes</span>
               </Link>
             </li>
-            
+
             <li>
               <Link
                 href="/dashboard/colaboradores"
@@ -109,7 +110,7 @@ export default function NavBar() {
         <li>
           <Link href="/login" className={`${style.navLink} ${style.logout}`}>
             <LogOut size={18} />
-            <span>Sair</span>
+            <span >Sair</span>
           </Link>
         </li>
       </div>

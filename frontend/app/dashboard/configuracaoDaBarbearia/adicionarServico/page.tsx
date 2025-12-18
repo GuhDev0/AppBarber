@@ -4,13 +4,12 @@ import { useState, useEffect } from "react";
 
 interface ServicoDto {
   id?: number;
-  nome: string; // Corrigido para compatibilidade com o backend
+  nome: string; 
   tipo: string;
   preco: number;
   comissao: number;
 }
 
-// 🔹 Helper para resgatar token
 function getAuthHeaders() {
   const token =
     localStorage.getItem("userToken") || sessionStorage.getItem("userToken");

@@ -10,15 +10,36 @@ font-optical-sizing: auto;
     font-style: normal;
 }
 
-html,
-body {
-    min-height: 100%;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  background-color: #13161b;
+  
 }
+
+
 
 .mainContainer {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 200px;
-    /* mesmo valor do width da sidebar */
+    margin-left: 200px; /* sidebar desktop */
+    transition: margin 0.3s ease; /* animação suave se mudar */
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .mainContainer {
+        margin-left: 100px; /* se houver sidebar menor */
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .mainContainer {
+    margin-left: 40px; /* sidebar menor que 50px, content ocupa 100% */
+    flex-direction: column;
+  }
 }

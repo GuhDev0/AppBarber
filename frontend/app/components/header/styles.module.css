@@ -9,7 +9,13 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   font-family: Arial, sans-serif;
   height: 69px;
+  width: 100%;       
+  max-width: 100vw;  
+  top: 0;
+  left: 0;    
+  box-sizing: border-box; 
 }
+
 
 .loading {
   padding: 1rem 1.5rem;
@@ -59,3 +65,19 @@
   font-size: 0.85rem;
   color: #ccc;
 }
+.buttonToogle{
+  display: none;
+}
+
+@media(max-width:600px){
+  
+  .left h1{
+    display: none;
+  }
+  .buttonToogle{
+    display: block;
+  }
+  
+}
+
+

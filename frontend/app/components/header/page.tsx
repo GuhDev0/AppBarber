@@ -3,6 +3,8 @@
 import styles from "./styles.module.css";
 import { IoSearchSharp } from "react-icons/io5";
 import { IoMdNotifications, IoMdNotificationsOff } from "react-icons/io";
+import NavBar from "../siderBar/page";
+
 import { useState } from "react";
 type HeaderProps = {
   userData?: { name?: string; email?: string };
@@ -10,7 +12,7 @@ type HeaderProps = {
 
 export default function Header({ userData }: HeaderProps) {
   const [notification, setNotification] = useState(true);
-
+  
   return (
     <header className={styles.header}>
       <div className={styles.left}>
