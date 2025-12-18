@@ -1,3 +1,4 @@
+import { number } from "zod";
 import { prisma } from "../prisma";
 
 type AnaliseColaborador = {
@@ -42,10 +43,6 @@ export class Analise {
       });
       // --- Geral ---
       const receitaTotal = list.reduce((c, s) => c + s.valorDoServico, 0);
-      const receitaTotalComComissao = list.reduce(
-        (c, s) => c + s.valorDoServico * (s.servicoConfig.comissao / 100),
-        0
-      );
       const total_de_Servico = list.length;
 
       // --- Do dia 1 ao 15 ---
@@ -99,7 +96,7 @@ export class Analise {
 
 
 
-
+        const valorTotalEmComissao = valorTotalComissao1a15 + valorTotalComissao16a30  
       const nome = list[0]?.colaborador?.nomeCompleto;
       const totalDeServico1a15 = lista1a15.length;
       const totalDeServico16a30 = lista16a30.length;
@@ -108,7 +105,7 @@ export class Analise {
       return [{
         nomeDoColaborador: nome,
         valorTotal: receitaTotal,
-        valorTotalComissao: receitaTotalComComissao,
+        valorTotalComissao: valorTotalEmComissao,
         totalDeServicoRealizado: total_de_Servico,
         valorTotal1a15:totalDeServico1a15,
         valorTotalComissao1a15,
