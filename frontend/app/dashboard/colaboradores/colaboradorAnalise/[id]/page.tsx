@@ -131,7 +131,7 @@ export default function ColaboradorAnalise() {
                 }
               />
               <Legend />
-              <Bar dataKey="totalComissao" fill="#00C49F" />
+              <Bar dataKey="valorTotalComissao" fill="#00C49F" />
             </BarChart>
           </ResponsiveContainer>
         </div>
