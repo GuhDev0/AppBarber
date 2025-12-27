@@ -19,6 +19,7 @@ type ListaDeAnalise = {
 type ListaDeAnalisePorMesItem = {
   mes: string;
   totalComissao: number;
+  
 };
 
 export default function ColaboradorAnalise() {
@@ -53,7 +54,7 @@ export default function ColaboradorAnalise() {
 
       const colaborador = dados[0];
 
-
+      
       setListaDeAnalise({
         valorTotal: colaborador.valorTotal,
         valorTotalComissao: colaborador.valorTotalComissao,
@@ -131,7 +132,7 @@ export default function ColaboradorAnalise() {
                 }
               />
               <Legend />
-              <Bar dataKey="valorTotalComissao" fill="#00C49F" />
+              <Bar dataKey="totalComissao" fill="#00C49F" />
             </BarChart>
           </ResponsiveContainer>
         </div>
