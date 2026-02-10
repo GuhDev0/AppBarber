@@ -90,16 +90,19 @@ export default function Dashboard() {
             titulo="Ticket Médio"
             valor={userData?.analise?.ticket_medio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             icon={<FaChartLine size={20} color="#ff6a00" />}
+            subTitulo=""
           />
           <CardAnalytics
             titulo="Faturamento Mensal"
             valor={filtraFaturamentoMesAtual?.[0]?.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || "R$ 0,00"}
             icon={<FaMoneyBill1Wave size={20} color="#ff6a00" />}
+            subTitulo=""
           />
           <CardAnalytics
             titulo="Total de Serviços"
             valor={userData?.analise?.filtrarTotalDeServicosBarbeariaMesAtual?.[0]?.totalDeServicos || 0}
             icon={<FaUsers size={20} color="#ff6a00" />}
+            subTitulo=""
           />
         </header>
 
