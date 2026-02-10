@@ -14,7 +14,7 @@ export default function Dashboard() {
 
   const requisicao_analycisBarberia = async (token: string) => {
     try {
-      const response = await fetch('http://localhost:8000/analise/barbearia', {
+      const response = await fetch('https://appbarber-api-analise.onrender.com/analise/barbearia', {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
