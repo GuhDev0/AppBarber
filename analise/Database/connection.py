@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
+from dotenv import load_dotenv
+import os
 
-DATABASE_URL = (
-    "postgresql://postgres.yyzxdrwzzdqroseiqkpo:"
-    "cHbmqdBA3ave5M7Q@aws-0-us-west-2.pooler.supabase.com:5432/postgres"
-)
+load_dotenv()
+DATABASE_URL = os.getenv("URL_DB")
 
 engine = create_engine(DATABASE_URL)
 
