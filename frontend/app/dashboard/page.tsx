@@ -1,14 +1,11 @@
 
-
-
-
 'use client';
 import { useEffect, useState } from "react";
 import ClientWrapper from "../components/ClientWrapper";
 import CardAnalytics from "../components/cardsAnalytics/page";
 import Carregamento from "../components/carragamento/page";
 import GraficoEmBarraEmpilhada from "../components/graficos/barraEmpilhada/page";
-import { FaMoneyBill1Wave, FaChartLine, FaUsers } from "react-icons/fa6"; // Novos ícones
+import { FaMoneyBill1Wave, FaChartLine, FaUsers } from "react-icons/fa6"; 
 import styles from "./styles.module.css";
 
 export default function Dashboard() {
