@@ -1,192 +1,159 @@
+
+
+
+
 'use client';
 import { useEffect, useState } from "react";
-import styles from "./styles.module.css";
 import ClientWrapper from "../components/ClientWrapper";
-import { IoAnalyticsSharp } from "react-icons/io5";
 import CardAnalytics from "../components/cardsAnalytics/page";
-import { ResponsiveContainer, Pie, PieChart, Tooltip, Line, LineChart, XAxis, YAxis, Cell, CartesianGrid, Legend } from 'recharts';
-import { FaScissors } from "react-icons/fa6";
 import Carregamento from "../components/carragamento/page";
-import { FaMoneyCheckAlt } from "react-icons/fa"
-
-function parseJwt(token: string) {
-  try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch {
-    return null;
-  }
-}
-
-interface listaDeServico {
-  tipoDoServico: string,
-  valorDoServico: number,
-  data: string,
-  hora: string,
-}
-
-const listaDeMes = [
-  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-];
-const COLORS = ["#ff6a00", "#edf119ff", "#FF8042", "#A020F0", "#FF1493"];
+import GraficoEmBarraEmpilhada from "../components/graficos/barraEmpilhada/page";
+import { FaMoneyBill1Wave, FaChartLine, FaUsers } from "react-icons/fa6"; // Novos ícones
+import styles from "./styles.module.css";
 
 export default function Dashboard() {
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [totalDeServicos, setTotalDeServicos] = useState<number>(0);
-  const [receitaDos30D, setReceitaDos30D] = useState<number>(0);
-  const [servicos, setServicos] = useState<listaDeServico[]>([]);
-  const [graficoData, setGraficoData] = useState<{ mes: string; valor: number }[]>([]);
-  const [pizzaGrafico, setPizzaGrafico] = useState<{ name: string, value: number }[]>([]);
 
-
-
-  useEffect(() => {
-    const dadosPorMes = listaDeMes.map((mes, index) => {
-      const total = servicos
-        .filter((s) => {
-          const date = new Date(s.data);
-          return !isNaN(date.getTime()) && date.getMonth() === index;
-        })
-        .reduce((acc, s) => acc + s.valorDoServico, 0);
-
-      return { mes, valor: total };
-    });
-    setGraficoData(dadosPorMes);
-  }, [servicos]);
-
-  useEffect(() => {
-    if (Array.isArray(servicos) && servicos.length > 0) {
-      const agrupado: Record<string, number> = {};
-
-      servicos.forEach((s) => {
-        agrupado[s.tipoDoServico] = (agrupado[s.tipoDoServico] || 0) + 1;
+  const requisicao_analycisBarberia = async (token: string) => {
+    try {
+      const response = await fetch('http://localhost:8000/analise/barbearia', {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
-      const data = Object.entries(agrupado).map(([name, value]) => ({
-        name,
-        value,
-      }));
+      if (!response.ok) throw new Error("Erro ao buscar dados");
 
-      setPizzaGrafico(data);
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-  }, [servicos]);
-
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
+    const token =
+      localStorage.getItem('userToken') ||
+      sessionStorage.getItem('userToken');
+
     if (!token) {
-      window.location.href = '/login';
+      setLoading(false);
       return;
     }
-    const payload = parseJwt(token);
-    if (!payload || (payload.exp && Date.now() >= payload.exp * 1000)) {
-      localStorage.removeItem('userToken');
-      sessionStorage.removeItem('userToken');
-      window.location.href = '/login';
-      return;
-    }
-    setUserData(payload);
-    setLoading(false);
+
+    requisicao_analycisBarberia(token);
   }, []);
 
-
-  useEffect(() => {
-    async function fetchValorTotal() {
-      try {
-        const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
-        const response = await fetch("https://gestorappbarber.onrender.com/appBarber/buscarAnaliseEstabelecimento", {
-          method: "GET",
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        const data = await response.json();
-        setTotalDeServicos(data.totalDeServico30D);
-        setReceitaDos30D(data.receitaTotal30D);
-        setServicos(data.list);
-      } catch (error: any) {
-        console.error('Erro ao buscar valor de serviço', error);
-      }
-    }
-    fetchValorTotal();
-  }, []);
 
   if (loading) return <Carregamento />;
 
+  const filtraFaturamentoMesAtual = userData?.analise?.faturamento_mensal.filter((item: any) => {
+    const dataFaturamento = new Date(item.data);
+    const dataAtual = new Date();
+    return (dataFaturamento.getMonth() === dataAtual.getMonth() && dataFaturamento.getFullYear() === dataAtual.getFullYear());
+  });
+
+  const filtraAtendimentoColaboradorRankMesAtual = userData?.analise?.atendimento_colaborador_rank.filter((item: any) => {
+    const dataAtendimento = new Date(item.data);
+    const dataAtual = new Date();
+    return (dataAtendimento.getMonth() === dataAtual.getMonth() && dataAtendimento.getFullYear() === dataAtual.getFullYear());
+  });
+
+  const filtrarTotalDeServicosBarbeariaMesAtual = userData?.analise?.total_servicos_barbearia.filter((item: any) => {
+    const dataServico = new Date(item.data);
+    const dataAtual = new Date();
+    return (dataServico.getMonth() === dataAtual.getMonth() && dataServico.getFullYear() === dataAtual.getFullYear());
+  });
+
+
+  const filtraServicoMaisRealizadoMesAtual = userData?.analise?.servico_mais_realizado_por_mes.filter((item: any) => {
+    const dataServico = new Date(item.data);
+    const dataAtual = new Date();
+
+    return (dataServico.getMonth() === dataAtual.getMonth() && dataServico.getFullYear() === dataAtual.getFullYear());
+  });
+    
+
+  const top6ServicosMaisRealizados = filtraServicoMaisRealizadoMesAtual?.slice(0, 6); 
+
   return (
     <ClientWrapper>
-      <div className={styles.headerAnalytics}>
-        <div className={styles.containerCardAnalytics}>
+      <div className={styles.container}>
+        {/* Header com os 3 Cards Principais */}
+        <header className={styles.dashboardHeader}>
           <CardAnalytics
-            titulo={"Total de Serviços"}
-            subTitulo={""}
-            valor={totalDeServicos}
-            icon={<FaMoneyCheckAlt color="#ff6b00" />}
+            titulo="Ticket Médio"
+            valor={userData?.analise?.ticket_medio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            icon={<FaChartLine size={20} color="#ff6a00" />}
           />
           <CardAnalytics
-            titulo={"Receita Mensal"}
-            subTitulo={""}
-            valor={(receitaDos30D ?? 0).toLocaleString("pt-BR", { style: 'currency', currency: "BRL" })}
-            icon={<IoAnalyticsSharp color="#ff6b00" />}
+            titulo="Faturamento Mensal"
+            valor={filtraFaturamentoMesAtual?.[0]?.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || "R$ 0,00"}
+            icon={<FaMoneyBill1Wave size={20} color="#ff6a00" />}
           />
+          <CardAnalytics
+            titulo="Total de Serviços"
+            valor={userData?.analise?.filtrarTotalDeServicosBarbeariaMesAtual?.[0]?.totalDeServicos || 0}
+            icon={<FaUsers size={20} color="#ff6a00" />}
+          />
+        </header>
 
-        </div>
-      </div>
-
-      <div className={styles.containerGraficos} >
-        <div className={`${styles.linha}`}>
-          <div className={styles.linha_container_title}>
-            <div className={styles.linha_title}>
-              <i><IoAnalyticsSharp size={24} /></i>
-              <h3>Receita</h3>
+        {/* Grid Principal: Gráfico e Ranking */}
+        <main className={styles.dashboardGrid}>
+          <section className={styles.chartSection}>
+            <h2 className={styles.sectionTitle}>Serviços Mais Realizados</h2>
+            <div className={styles.chartContainer}>
+             
+              <GraficoEmBarraEmpilhada
+                data={top6ServicosMaisRealizados}
+                name="tipoDoServico"
+                value="quantidade"
+                
+              />
             </div>
-            <p>Receita mensal por serviços</p>
-          </div>
+          </section>
 
-          <ResponsiveContainer width="80%" height={300}>
-            <LineChart data={graficoData}>
-              <Line type="monotone" dataKey="valor" stroke="#d84b05" />
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="mes" stroke="#fff" />
-              <YAxis stroke="#fff" />
-              <Tooltip formatter={(value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} />
-              <Legend />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-
-        <div className={`${styles.pizza}`}>
-          <div className={styles.pizza_container_title}>
-            <div className={styles.container_tilte}>
-              <i><FaScissors width={24} height={24} /></i>
-              <h3>Serviço</h3>
+          <section className={styles.rankingSection}>
+            <div className={styles.rankingHeader}>
+              <h2 className={styles.sectionTitle}>Ranking de Atendimento</h2>
             </div>
-            <p>Distribuição por tipo</p>
-          </div>
 
-          <PieChart width={350} height={300}>
-            <Pie
-              data={pizzaGrafico}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              label={({ name, value }) => `${name}: ${value}`}
-            >
-              {pizzaGrafico.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip formatter={(value: number) => `${value} serviços`} />
-            <Legend />
-          </PieChart>
-        </div>
+            <div className={styles.rankingTableWrapper}>
+              <div className={styles.rankingTableWrapper}>
+                <table className={styles.rankingTable}>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>COLABORADOR</th>
+                      <th style={{ textAlign: 'right' }}>ATENDIMENTOS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtraAtendimentoColaboradorRankMesAtual.map((item: any, index: number) => (
+                      <tr key={index}>
+                        <td>
+                          <span className={`${styles.rankBadge} ${styles[`rank${index + 1}`]}`}>
+                            {index + 1}
+                          </span>
+                        </td>
+                        <td className={styles.colaboradorName}>{item.nomeCompleto}</td>
+                        <td className={styles.totalAtendimentos}>{item.totalDeAtendimento}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
 
+
+          </section>
+        </main>
       </div>
     </ClientWrapper>
   );

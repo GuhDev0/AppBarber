@@ -1,7 +1,7 @@
 /* CardAnalytics.module.css */
 
 .cardAnalytics {
-  background-color: #1a1d23;
+  background-color: #161616;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 20px;
@@ -88,10 +88,10 @@
 /* Responsividade */
 @media (max-width: 600px) {
  .cardAnalytics {
-    width: 100%;          /* ocupa a largura do celular */
-    max-width: 170px;     /* limita um tamanho confortável */
+    width: 100%;          
+    max-width: 170px;     
     padding: 15px;
-    height: auto;         /* deixa crescer conforme o conteúdo */
+    height: auto;         
     overflow-wrap: break-word;
   }
 

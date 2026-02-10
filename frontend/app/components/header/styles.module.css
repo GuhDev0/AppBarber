@@ -77,6 +77,13 @@
   .buttonToogle{
     display: block;
   }
+  .header{
+    max-width: 360px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    
+  }
   
 }
 

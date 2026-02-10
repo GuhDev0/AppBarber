@@ -43,7 +43,7 @@ export default function NavBar() {
     <aside className={`${style.sidebar}`}>
       <div className={style.sidebarTop}>
         <div className={style.sidebarHeader}> 
-            <Scissors className={style.logoIcon} size={22} />
+            <Scissors className={style.logoIcon}  size={22} />
           <h2 className={style.sidebarTitle}>
             {userData?.nameEmpresa || "Barber Shop"}
           </h2>

@@ -19,6 +19,7 @@
     "recharts": "^3.4.1"
   },
   "devDependencies": {
+    "@recharts/devtools": "^0.0.8",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^20.14.2",
     "@types/react": "^19.2.2",

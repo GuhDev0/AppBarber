@@ -85,8 +85,6 @@ export class Analise {
         return c + (s.valorDoServico * (s.servicoConfig.comissao / 100));
       }, 0);
 
-
-
       // --- Do dia 16 ao 30/31 ---
 
       const valorPacotes16a30 = lista16a30.reduce((c, s) => {
@@ -136,6 +134,8 @@ export class Analise {
       return [];
     }
   }
+
+  
   analiseCompletaDoEstabelecimento = async (empresaId: number) => {
     try {
       const list = await prisma.servico.findMany({
@@ -155,8 +155,12 @@ export class Analise {
         date.setHours(0, 0, 0, 0);
         return date;
       }
+      
+      
+
 
       const date30days = formatDate(30);
+      
       const listaDoultimos30DSerivcos = list.filter(servico => {
         const servicoDate = new Date(servico.data);
         return servicoDate >= date30days;

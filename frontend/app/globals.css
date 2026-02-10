@@ -27,7 +27,8 @@ html, body {
     flex-direction: column;
     margin-left: 200px; /* sidebar desktop */
     transition: margin 0.3s ease; /* animação suave se mudar */
-}
+  
+  }
 
 /* Tablet */
 @media (max-width: 900px) {
@@ -42,4 +43,5 @@ html, body {
     margin-left: 40px; /* sidebar menor que 50px, content ocupa 100% */
     flex-direction: column;
   }
+ 
 }

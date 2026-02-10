@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/header/page";
 import NavBar from "../components/siderBar/page";
 import Carregamento from "../components/carragamento/page";
-
+import styles from "./styles.module.css"
 function parseJwt(token: string) {
   try {
     return JSON.parse(atob(token.split('.')[1]));
@@ -60,7 +60,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <NavBar />
       <div className="mainContainer">
         <Header userData={userData || undefined} />
-        <main style={{ flex: 1, padding: '20px', backgroundColor: '#13161bff' }}>
+        <main className={styles.main}  style={{ flex: 1, padding: '20px', backgroundColor: '#13161bff' }}>
           {children}
         </main>
       </div>
