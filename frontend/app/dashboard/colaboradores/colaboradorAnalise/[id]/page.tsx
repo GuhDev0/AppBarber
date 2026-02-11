@@ -122,19 +122,6 @@ export default function ColaboradorAnalise() {
             <h3>Comissão por Mês</h3>
             <p>Receita mensal por comissão</p>
           </div>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={listaDeAnalisePorMes}>
-              <XAxis dataKey="mes" stroke="#fff" />
-              <YAxis stroke="#fff" />
-              <Tooltip
-                formatter={(value: number) =>
-                  value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
-                }
-              />
-              <Legend />
-              <Bar dataKey="totalComissao" fill="#00C49F" />
-            </BarChart>
-          </ResponsiveContainer>
         </div>
       </div>
     </div>

@@ -1,7 +1,8 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from controller.analiseBarberiaControler import router
+from controller.analiseBarbeariaControler import router
+
 
 app = FastAPI()
 
