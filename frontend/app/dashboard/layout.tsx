@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import Header from "../components/header/page";
-import NavBar from "../components/siderBar/page";
-import Carregamento from "../components/carragamento/page";
+import Header from "../components/header/header";
+import NavBar from "../components/siderBar/siderBar";
+import Carregamento from "../components/carragamento/carregamento";
 import styles from "./styles.module.css"
 function parseJwt(token: string) {
   try {

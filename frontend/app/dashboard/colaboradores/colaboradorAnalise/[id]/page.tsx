@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
-import CardAnalytics from "@/app/components/cardsAnalytics/page";
+import CardAnalytics from "@/app/components/cardsAnalytics/cards";
 import { FaMoneyBill1Wave } from "react-icons/fa6";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 

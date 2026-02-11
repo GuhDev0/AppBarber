@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./styles.module.css"
-import CardAnalytics from "@/app/components/cardsAnalytics/page"
+import CardAnalytics from "@/app/components/cardsAnalytics/cards"
 import { useState, useEffect } from "react";
 
 interface barbeariaAnalytics {

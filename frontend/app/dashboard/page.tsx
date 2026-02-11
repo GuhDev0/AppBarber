@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from "react";
 import ClientWrapper from "../components/ClientWrapper";
-import CardAnalytics from "../components/cardsAnalytics/page";
-import Carregamento from "../components/carragamento/page";
-import GraficoEmBarraEmpilhada from "../components/graficos/barraEmpilhada/page";
+import CardAnalytics from "../components/cardsAnalytics/cards";
+import Carregamento from "../components/carragamento/carregamento";
+import GraficoEmBarraEmpilhada from "../components/graficos/barraEmpilhada/grafico";
 import { FaMoneyBill1Wave, FaChartLine, FaUsers } from "react-icons/fa6"; 
 import styles from "./styles.module.css";
 
@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   const requisicao_analycisBarberia = async (token: string) => {
     try {
-      const response = await fetch('https://appbarber-api-analise.onrender.com/analise/barbearia', {
+      const response = await fetch('http://localhost:8000/analise/barbearia', {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -21,6 +21,7 @@ export default function Dashboard() {
         },
       });
 
+      console.log("Resposta da API:", response.status);
       if (!response.ok) throw new Error("Erro ao buscar dados");
 
       const data = await response.json();

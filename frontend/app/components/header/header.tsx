@@ -3,7 +3,7 @@
 import styles from "./styles.module.css";
 import { IoSearchSharp } from "react-icons/io5";
 import { IoMdNotifications, IoMdNotificationsOff } from "react-icons/io";
-import NavBar from "../siderBar/page";
+import NavBar from "../siderBar/siderBar";
 
 import { useState } from "react";
 type HeaderProps = {
