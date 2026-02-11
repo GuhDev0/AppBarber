@@ -11,6 +11,7 @@ app.add_middleware(
     allow_origins=["http://localhost:3000",
                    "https://app-barber-three.vercel.app"],  
     allow_credentials=True,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_methods=["*"],
     allow_headers=["*"],
 )
