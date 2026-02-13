@@ -12,6 +12,7 @@ dotenv.config();
 const port = process.env.PORT || 3001;
 
 
+
 app.use("/appBarber", router)
 app.get("/", (_req: Request, res: Response) => {
   console.log("DATABASE_URL em runtime:", process.env.DATABASE_URL);
@@ -20,7 +21,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 try {
   app.listen(port, () => {
-    console.log(`Servidor Aberto ! ${port}`);
+    console.log(`Servidor Aberto ! ${port} ${process.env.DATABASE_URL} ${process.env.DIRECT_URL}`);
   });
 } catch (err) {
   console.error("Erro ao iniciar servidor:", err);

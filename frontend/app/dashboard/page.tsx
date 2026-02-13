@@ -85,7 +85,7 @@ export default function Dashboard() {
         <header className={styles.dashboardHeader}>
           <CardAnalytics
             titulo="Ticket Médio"
-            valor={userData?.analise?.ticket_medio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            valor={userData?.analise?.ticket_medio ? userData?.analise?.ticket_medio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : "R$ 0,00"}
             icon={<FaChartLine size={20} color="#ff6a00" />}
             subTitulo=""
           />
