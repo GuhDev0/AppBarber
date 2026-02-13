@@ -10,7 +10,7 @@ import styles from "./styles.module.css";
 export default function Dashboard() {
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
+   const dataAtual = new Date();
   const requisicao_analycisBarberia = async (token: string) => {
     try {
       const response = await fetch('https://appbarber-analise.onrender.com/analise/barbearia', {
@@ -51,26 +51,23 @@ export default function Dashboard() {
 
   const filtraFaturamentoMesAtual = userData?.analise?.faturamento_mensal.filter((item: any) => {
     const dataFaturamento = new Date(item.data);
-    const dataAtual = new Date();
     return (dataFaturamento.getMonth() === dataAtual.getMonth() && dataFaturamento.getFullYear() === dataAtual.getFullYear());
   });
 
   const filtraAtendimentoColaboradorRankMesAtual = userData?.analise?.atendimento_colaborador_rank.filter((item: any) => {
     const dataAtendimento = new Date(item.data);
-    const dataAtual = new Date();
     return (dataAtendimento.getMonth() === dataAtual.getMonth() && dataAtendimento.getFullYear() === dataAtual.getFullYear());
   });
 
   const filtrarTotalDeServicosBarbeariaMesAtual = userData?.analise?.total_servicos_barbearia.filter((item: any) => {
     const dataServico = new Date(item.data);
-    const dataAtual = new Date();
     return (dataServico.getMonth() === dataAtual.getMonth() && dataServico.getFullYear() === dataAtual.getFullYear());
   });
 
 
   const filtraServicoMaisRealizadoMesAtual = userData?.analise?.servico_mais_realizado_por_mes.filter((item: any) => {
     const dataServico = new Date(item.data);
-    const dataAtual = new Date();
+   
 
     return (dataServico.getMonth() === dataAtual.getMonth() && dataServico.getFullYear() === dataAtual.getFullYear());
   });
@@ -97,7 +94,7 @@ export default function Dashboard() {
           />
           <CardAnalytics
             titulo="Total de Serviços"
-            valor={userData?.analise?.filtrarTotalDeServicosBarbeariaMesAtual?.[0]?.totalDeServicos || 0}
+            valor={filtrarTotalDeServicosBarbeariaMesAtual?.[0]?.totalDeServicos || 0}
             icon={<FaUsers size={20} color="#ff6a00" />}
             subTitulo=""
           />
@@ -110,7 +107,7 @@ export default function Dashboard() {
             <div className={styles.chartContainer}>
              
               <GraficoEmBarraEmpilhada
-                data={top6ServicosMaisRealizados}
+                data={top6ServicosMaisRealizados || []}
                 name="tipoDoServico"
                 value="quantidade"
                 
@@ -134,7 +131,7 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filtraAtendimentoColaboradorRankMesAtual.map((item: any, index: number) => (
+                    {filtraAtendimentoColaboradorRankMesAtual?.map((item: any, index: number) => (
                       <tr key={index}>
                         <td>
                           <span className={`${styles.rankBadge} ${styles[`rank${index + 1}`]}`}>
