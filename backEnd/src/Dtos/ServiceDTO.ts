@@ -2,7 +2,7 @@ export type serviceDTO = {
     tipoDoServico: string,
     categoriaDeServico:string,
     valorDoServico: number,
-    data:  string,
+    data:  Date,
     hora:string,
     colaboradorId:number,
     servicoConfigId:number,

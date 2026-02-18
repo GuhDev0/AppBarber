@@ -1,15 +1,21 @@
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 
-dotenv.config(); 
+dotenv.config();
 
-const datasourceUrl =
-  process.env.NODE_ENV === "production"
-    ? process.env.DATABASE_URL
-    : process.env.DIRECT_URL;
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
-const prisma = new PrismaClient({
-  datasourceUrl,
-});
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    datasourceUrl:
+      process.env.NODE_ENV === "production"
+        ? process.env.DATABASE_URL
+        : process.env.DIRECT_URL,
+  });
 
-export { prisma };
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}

@@ -21,7 +21,7 @@ export default function Dashboard() {
         },
       });
 
-      console.log("Resposta da API:", response.status);
+      
       if (!response.ok) throw new Error("Erro ao buscar dados");
 
       const data = await response.json();
@@ -49,34 +49,32 @@ export default function Dashboard() {
 
   if (loading) return <Carregamento />;
 
-  const filtraFaturamentoMesAtual = userData?.analise?.faturamento_mensal.filter((item: any) => {
-    const dataFaturamento = new Date(item.data);
-    return (dataFaturamento.getMonth() === dataAtual.getMonth() && dataFaturamento.getFullYear() === dataAtual.getFullYear());
-  });
-
-  const filtraAtendimentoColaboradorRankMesAtual = userData?.analise?.atendimento_colaborador_rank.filter((item: any) => {
-    const dataAtendimento = new Date(item.data);
-    return (dataAtendimento.getMonth() === dataAtual.getMonth() && dataAtendimento.getFullYear() === dataAtual.getFullYear());
-  });
-
-  const filtrarTotalDeServicosBarbeariaMesAtual = userData?.analise?.total_servicos_barbearia.filter((item: any) => {
-    const dataServico = new Date(item.data);
-    return (dataServico.getMonth() === dataAtual.getMonth() && dataServico.getFullYear() === dataAtual.getFullYear());
-  });
+const faturamentoMensal = userData?.analise?.faturamento_mensal ?? [];
+const rankingMensal = userData?.analise?.atendimento_colaborador_rank ?? [];
+const totalServicosMensal = userData?.analise?.total_servicos_barbearia ?? [];
+const servicosMaisRealizados = userData?.analise?.servico_mais_realizado_por_mes ?? [];
 
 
-  const filtraServicoMaisRealizadoMesAtual = userData?.analise?.servico_mais_realizado_por_mes.filter((item: any) => {
-    const dataServico = new Date(item.data);
-   
+  const mesAtualConvertido = dataAtual.toISOString().slice(0, 7); 
 
-    return (dataServico.getMonth() === dataAtual.getMonth() && dataServico.getFullYear() === dataAtual.getFullYear());
-  });
+ const filtraFaturamentoMesAtual = faturamentoMensal.filter(
+  (item: any) => item.data ===    mesAtualConvertido
+);
+
+  const filtraAtendimentoColaboradorRankMesAtual = rankingMensal.filter((item: any) => item.data === mesAtualConvertido);
+
+  const filtrarTotalDeServicosBarbeariaMesAtual = totalServicosMensal.filter((item: any) =>item.data === mesAtualConvertido);
+
+
+  const filtraServicoMaisRealizadoMesAtual = servicosMaisRealizados.filter((item: any) => item.data === mesAtualConvertido);
     
 
-  const top6ServicosMaisRealizados = filtraServicoMaisRealizadoMesAtual?.slice(0, 6); 
+const top6ServicosMaisRealizados = filtraServicoMaisRealizadoMesAtual?.slice(0, 6); 
 
   return (
     <ClientWrapper>
+      
+
       <div className={styles.container}>
         {/* Header com os 3 Cards Principais */}
         <header className={styles.dashboardHeader}>
@@ -110,7 +108,6 @@ export default function Dashboard() {
                 data={top6ServicosMaisRealizados || []}
                 name="tipoDoServico"
                 value="quantidade"
-                
               />
             </div>
           </section>

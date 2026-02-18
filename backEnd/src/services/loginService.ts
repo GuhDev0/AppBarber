@@ -26,7 +26,6 @@ export class LoginService {
                 telefone:usuario.telefone,
                 email:usuario.email,
                 role: usuario.tipoDaConta,
-                //Empresa
                 empresaId:usuario.empresaId,
                 nameEmpresa:usuario.empresa.nomeDaEmpresa,
 

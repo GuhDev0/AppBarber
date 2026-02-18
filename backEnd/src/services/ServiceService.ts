@@ -9,6 +9,10 @@ export class ServiceService {
         try {
             const save = await serviceReposity.createdServiceRepository(serviceDTO, empresaId, usuarioId, colaboradorId);
 
+            if(save){
+                save.data = new Date(save.data);
+            }
+
             if (!save?.id) {
                 throw new Error("Serviço não foi salvo corretamente.");
             }
