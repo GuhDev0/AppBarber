@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import styles from "./styles.module.css";
+import{ api }from "../lib/api";
 import Login_Register from "../login_register/page";
+import { useRouter } from "next/navigation";
 import Link from 'next/link';
 
 export default function Login() {
@@ -10,41 +12,42 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [lembrar, setLembrar] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const response = await fetch("https://gestorappbarber.onrender.com/appBarber/login", {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ loginEmail: email, loginSenha: password })
-      });
+  try {
+    const response = await api.post("/login", 
+      {
+      loginEmail: email,
+      loginSenha: password,
+    });
 
-      if (!response.ok) {
-        alert('Credenciais inválidas.');
-        setLoading(false);
-        return;
-      }
+    const usuario = response.data.usuario;
 
-      const data = await response.json();
-
-      if (data.token) {
-        if (lembrar) localStorage.setItem('userToken', data.token);
-        else sessionStorage.setItem('userToken', data.token);
-
-        // Redireciona somente no cliente
-        window.location.href = '/dashboard';
-      } else {
-        alert('Erro ao fazer login.');
-      }
-    } catch (err) {
-      alert('Erro de conexão com o servidor.');
-    } finally {
-      setLoading(false);
+    console.log(response.data)
+    
+    if (usuario?.tipoDaConta === "ADMIN") {
+      router.push("/dono");
+    } else {
+      router.push("/colaborador/dashboard");
     }
+
+  } catch (error: any) {
+    console.error("Erro no login:", error.message);
+
+    if (error.response?.status === 401) {
+      alert("Credenciais inválidas.");
+    } else {
+      alert("Erro ao conectar com o servidor.");
+    }
+  } finally {
+    setLoading(false);
   }
+};
+
 
   return (
     
@@ -85,7 +88,7 @@ export default function Login() {
           </button>
           <p>
             Não tem uma conta? <Link href={"/login_register"}>Registre aqui !</Link>
-         
+
           </p>
 
         </form>

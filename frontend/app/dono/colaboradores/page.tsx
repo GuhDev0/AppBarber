@@ -5,6 +5,7 @@ import { RxAvatar } from "react-icons/rx";
 import { useRouter } from "next/navigation"
 import { AiOutlineEdit } from "react-icons/ai";
 import styles from "./AbaColaboradores.module.css";
+import { api } from "@/app/lib/api";
 
 interface Colaborador {
   id: number;
@@ -28,6 +29,7 @@ interface ColaboradorDto {
 
 export default function AbaColaboradores() {
   const router = useRouter()
+   
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
   const [userData, setUserData] = useState<any>({});
@@ -40,54 +42,15 @@ export default function AbaColaboradores() {
     empresaId: undefined,
   });
 
-  const parseJwt = (token: string) => {
-    try {
-      return JSON.parse(atob(token.split(".")[1]));
-    } catch {
-      return null;
-    }
-  };
+  
 
-  useEffect(() => {
-    const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-    if (!token) {
-      window.location.href = "/login";
-      return;
-    }
-
-    const dados = parseJwt(token);
-    if (!dados || (dados.exp && Date.now() >= dados.exp * 1000)) {
-      localStorage.removeItem("userToken");
-      sessionStorage.removeItem("userToken");
-      window.location.href = "/login";
-      return;
-    }
-
-    setUserData(dados);
-    fetchColaboradores(token);
-  }, []);
-
-  const fetchColaboradores = async (token: string) => {
-    try {
-      const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/listColaboradores`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json();
-
-      const lista = Array.isArray(data.list) ? data.list : [];
-      const colaboradoresNormalizados = lista.map((c: any) => ({
-        id: c.id,
-        nomeCompleto: c.nomeCompleto || "",
-        dataNascimento: c.dataNascimento || "",
-        email: c.email || "",
-        tel: c.tel || "",
-        avatar: c.avatar || "",
-        totalServicos: c.totalServicos || 0,
-      }));
-
-      setColaboradores(colaboradoresNormalizados);
-    } catch (error) {
-      console.error("Erro ao buscar colaboradores:", error);
+  const fetchColaboradores = async () => {
+    try{
+      const response = await api.get('/colaborador/listaDeColaboradores')
+      console.log(response.data)
+      setColaboradores(response.data)
+    }catch(error:any){
+      console.log("Error ao buscar lista de colaborador" , error.message)
     }
   };
 
@@ -111,95 +74,35 @@ export default function AbaColaboradores() {
   };
 
   const handleRegistrar = async () => {
-    const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-    if (!token || !userData) return;
-
-    if (!formData.nomeCompleto || !formData.dataNascimento || !formData.email || !formData.tel) {
-      alert("Preencha todos os campos obrigatórios!");
-      return;
-    }
-
-    const dataNascimentoObj = new Date(formData.dataNascimento);
-    if (isNaN(dataNascimentoObj.getTime())) {
-      alert("Data de nascimento inválida!");
-      return;
-    }
-
-
-    const payload: ColaboradorDto = {
-      nomeCompleto: formData.nomeCompleto,
-      dataNascimento: dataNascimentoObj.toISOString(),
-      email: formData.email,
-      tel: formData.tel,
-      avatar: formData.avatar,
-      empresaId: userData?.empresaId,
-    };
-
-    try {
-      const response = await fetch("https://gestorappbarber.onrender.com/appBarber/saveColaborador", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        console.error("Erro ao registrar colaborador:", data);
-        alert(data.message || data.mensagem || "Erro ao registrar colaborador");
-        return;
-      }
-
-      // backend may return { colaborador: {...} } or the object directly
-      const saved: any = data.colaborador ?? data;
-
-      const novoColaborador: Colaborador = {
-        id: saved.id,
-        nomeCompleto: saved.nomeCompleto,
-        dataNascimento: saved.dataNascimento ?? payload.dataNascimento,
-        email: saved.email,
-        tel: saved.tel,
-        avatar: saved.avatar,
-        totalServicos: saved.totalServicos ?? 0,
-      };
-
-      setColaboradores((prev) => [...prev, novoColaborador]);
-
-      setFormData({ nomeCompleto: "", dataNascimento: "", email: "", tel: "", avatar: "", empresaId: undefined });
-      setMostrarFormulario(false);
-    } catch (error) {
-      console.error("Erro no cadastro:", error);
-    }
+     try {
+       const response = await api.post<Colaborador>(
+         "/colaborador/registrarColaborador",
+         formData
+       );
+       
+       const novoColaborador = response.data;
+       console.log(novoColaborador)
+       
+      setColaboradores((prev) => [novoColaborador, ...prev]); 
+       await fetchColaboradores();}
+       catch(error:any){
+        alert("Desculpa mas não foi possivel registra colaborador")
+        console.log("error Ao Registra Colaborador", error.message)
+       }
   };
 
-  const handleDelete = async (id: number) => {
-    const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-    if (!token) return;
-
-    try {
-      const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/deleteColaborador/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        }
-
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        console.error("Erro ao deletar colaborador:", data);
-        alert(data.mensagem || "Erro ao deletar colaborador");
-        return;
-      }
-
-        setColaboradores((prev) => prev.filter((c) => c.id !== id));
-      } catch (error) {
+  const handleDelete = async (id:number) => {
+    try{
+      await api.delete(`/colaborador/deleteColaborador/${id}`);
+      await fetchColaboradores()
+    }
+       catch (error) {
         console.error(error);
       }
     };
+     useEffect(() => {
+      fetchColaboradores()
+     }, []);
 
     return (
       <div className={styles.container}>
@@ -288,7 +191,7 @@ export default function AbaColaboradores() {
                 <AiOutlineEdit size={20} onClick={() => handleEditAvatar(c.id)} />
               </div>
 
-              <p><strong>Nome:</strong> {c.nomeCompleto}</p>
+              <p><strong>Nome:</strong> {c?.nomeCompleto}</p>
               <p><strong>Email:</strong> {c.email}</p>
               <p>
                 <strong>Telefone:</strong>{" "}

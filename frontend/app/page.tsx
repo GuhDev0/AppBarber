@@ -1,12 +1,10 @@
-'use client';
 
+
+
+import { redirect } from 'next/navigation';
 import ClientWrapper from './components/ClientWrapper';
-import Login from './login/page';
+import Login from "@/app/login/page";
 
 export default function Home() {
-  return (
-    <ClientWrapper>
-      <Login />
-    </ClientWrapper>
-  );
+  redirect('/login');
 }

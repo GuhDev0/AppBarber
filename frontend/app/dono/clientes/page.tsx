@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./styles.module.css"
-
+import styles from "../styles/ClientesStyle.module.css"
+import { api } from "@/app/lib/api";
+import Carregamento from "@/app/components/carragamento/carregamento";
 interface Cliente {
   id?: number;
   nome: string;
@@ -12,7 +13,7 @@ interface Cliente {
 }
 
 export default function Clientes() {
-  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [listaDeClientes, setlistaDeClientes] = useState<Cliente[]>([]);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [userData, setUserData] = useState<any>({});
   const [formData, setFormData] = useState<Cliente>({
@@ -22,44 +23,18 @@ export default function Clientes() {
     email: "",
   });
 
+ 
+
   // FUNÇÃO PARA BUSCAR CLIENTES
-  const fetchClientes = async () => {
-    try {
-      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-      if (!token) {
-        // No token available — user should log in
-        console.warn("Token ausente ao buscar clientes. Redirecionando para login.");
-        window.location.href = "/login";
-        return;
-      }
-
-      const res = await fetch("https://gestorappbarber.onrender.com/appBarber/listaDeClientes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) {
-        const errorBody = await res.json().catch(() => ({}));
-        console.error("Erro ao buscar clientes:", res.status, errorBody);
-        alert(errorBody.mensagem || "Erro ao carregar clientes");
-        return;
-      }
-
-      const data = await res.json();
-      // Backend may return an array or an object; handle both shapes
-      if (Array.isArray(data)) setClientes(data);
-      else if (data.lista) setClientes(data.lista);
-      else if (data.clientes) setClientes(data.clientes);
-      else setClientes([]);
-    } catch (err) {
-      console.error("Erro ao carregar clientes");
-    }
-  };
-
-  useEffect(() => {
-    fetchClientes();
-  }, []);
+ const buscarListaDeClientes = async () =>{
+   
+   try{
+   const response = await api.get('/cliente/listaDeClientes')
+    setlistaDeClientes(response.data)
+   }catch(error:any){
+     console.log(error.message)
+   }
+ }
 
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -67,76 +42,37 @@ export default function Clientes() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    try {
-      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-      if (!token) {
-        alert("Sua sessão expirou. Faça login novamente.");
-        window.location.href = "/login";
-        return;
-      }
+    try{
+    alert("Deseja Realmente deletar Esse cliente da lista ?")     
+        const response = await api.post<Cliente>(
+            "/cliente/registraCliente",
+            formData
+        )
 
-      const res = await fetch("https://gestorappbarber.onrender.com/appBarber/cadastroDeCliente", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          nome: formData.nome,
-          Sobrenome: formData.Sobrenome,
-          email: formData.email,
-          telefone: formData.telefone,
-        }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        console.error("Erro ao registrar cliente:", res.status, err);
-        alert(err.mensagem || "Erro ao registrar cliente");
-        return;
-      }
-
-      // Only refresh and clear on success
-      fetchClientes();
-      setMostrarFormulario(false);
+       const novoCliente = response.data
+       
+        setlistaDeClientes((prev) => [novoCliente, ...prev]);
 
       setFormData({ nome: "", Sobrenome: "", telefone: "", email: "" });
+      await buscarListaDeClientes()
     } catch {
       alert("Erro ao registrar cliente");
     }
   };
 
-  const handleDelete = async (id: number | undefined) => {
-    if (!id) return;
-    if (!confirm("Deseja realmente excluir este cliente?")) return;
+  const deleteCliente = async (id: number) => {
+  try {
+    await api.delete(`/cliente/deleteCliente/${id}`);
+    await buscarListaDeClientes()
+  } catch (error) {
+    console.error("Erro ao deletar:", error);
+  }
+};
 
-    try {
-      const token = localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-      if (!token) {
-        alert("Sua sessão expirou. Faça login novamente.");
-        window.location.href = "/login";
-        return;
-      }
-
-      const res = await fetch(`https://gestorappbarber.onrender.com/appBarber/deletarCliente/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        alert(err.mensagem || "Erro ao excluir cliente");
-        return;
-      }
-
-      fetchClientes();
-    } catch {
-      alert("Erro ao excluir cliente");
-    }
-  };
+  useEffect(() => {
+   buscarListaDeClientes()
+  }, []);   
+  
 
   return (
     <div className={styles.containerFinanceiro}>
@@ -214,8 +150,8 @@ export default function Clientes() {
         </thead>
 
         <tbody>
-          {clientes.length > 0 ? (
-            clientes.map((cliente) => (
+          {listaDeClientes.length > 0 ? (
+            listaDeClientes.map((cliente) => (
               <tr key={cliente.id}>
                 <td>{cliente.nome}</td>
                 <td>{cliente.Sobrenome}</td>
@@ -224,7 +160,7 @@ export default function Clientes() {
                 <td>
                   <button
                     className={styles.deleteBtnFinanceiro}
-                    onClick={() => handleDelete(cliente.id)}
+                    onClick={() => deleteCliente(Number(cliente.id))}
                   >
                     Deletar
                   </button>

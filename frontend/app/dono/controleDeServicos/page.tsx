@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
-
+import { api } from "@/app/lib/api";
 interface Service {
   id?: number;
   tipoDoServico: string;
@@ -55,9 +55,10 @@ function formatTimeForInput(date: Date) {
 export default function ControleDeServicos() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [servicos, setServicos] = useState<Service[]>([]);
-  const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
+  const [listaDeColaboradores, setListaDeColaboradores] = useState<Colaborador[]>([]);
   const [catalagoDeSERVICOS, setCatalagoDeSERVICOS] = useState<ListaDeServico[]>([]);
   const [listaDeClientes, setListaDeClientes] = useState<listaDeClientes[]>([]);
+  
   const now = new Date();
   const [formData, setFormData] = useState<Service>({
     tipoDoServico: "",
@@ -73,95 +74,38 @@ export default function ControleDeServicos() {
   const [filtroColaborador, setFiltroColaborador] = useState("");
   const [filtroData, setFiltroData] = useState("");
 
-  const URL_SAVE = "https://gestorappbarber.onrender.com/appBarber/serviceSave";
-  const URL_LIST = "https://gestorappbarber.onrender.com/appBarber/findListServices";
-  const URL_COLABS = "https://gestorappbarber.onrender.com/appBarber/listColaboradores";
-  const URL_listDeServico = "https://gestorappbarber.onrender.com/appBarber/listDeCatalagoDeServico";
-  const URL_listClientes = "https://gestorappbarber.onrender.com/appBarber/listaDeClientes";
 
-  const getToken = (): string | null => {
-    return localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-  };
 
-  // Buscar serviços
-  const fetchServices = async (token?: string) => {
-    const validToken: string | null = token || getToken();
-    if (!validToken) return;
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-      const response = await fetch(URL_LIST, {
-        headers: { Authorization: `Bearer ${validToken}` },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setServicos(Array.isArray(data.services) ? data.services : []);
-      }
-    } catch (error: any) {
-      console.error("Erro ao buscar serviços:", error.message);
-    }
-  };
+  try {
+    const response = await api.post<Service>(
+      "/servicos/registraServico",
+      formData
+    );
 
-  // Buscar colaboradores
-  const fetchColaboradores = async (token?: string) => {
-    const validToken = token || getToken();
-    if (!validToken) return;
+    const novoServico = response.data;
 
-    try {
-      const response = await fetch(URL_COLABS, {
-        headers: { Authorization: `Bearer ${validToken}` },
-      });
-      if (!response.ok) throw new Error("Erro ao buscar colaboradores");
-      const data = await response.json();
-      setColaboradores(Array.isArray(data.list) ? data.list : Array.isArray(data) ? data : []);
-    } catch (error: any) {
-      console.error("Erro ao buscar colaboradores:", error.message);
-    }
-  };
+    
+    setServicos((prev) => [novoServico, ...prev]);
 
-  // Buscar catálogo de serviços
-  const fetchCatalagoDeServicos = async (token?: string) => {
-    const validToken = token || getToken();
-    if (!validToken) return;
+    await listaDeServicos();
+    setFormData({
+      tipoDoServico: "",
+      valorDoServico: 0,
+      colaboradorId: 0,
+      data: formatDateForInput(new Date()),
+      hora: formatTimeForInput(new Date()),
+      servicoConfigId: 0,
+      clienteId: 0,
+    });
 
-    try {
-      const response = await fetch(URL_listDeServico, {
-        headers: { Authorization: `Bearer ${validToken}`, "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      setCatalagoDeSERVICOS(Array.isArray(data.lista) ? data.lista : []);
-    } catch (error: any) {
-      console.error("Erro ao buscar catálogo:", error.message);
-    }
-  };
-
-  // Buscar clientes
-  const findListCustomer = async () => {
-    const token = getToken();
-    if (!token) return;
-
-    try {
-      const response = await fetch(URL_listClientes, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json();
-      setListaDeClientes(Array.isArray(data) ? data : data.list || []);
-    } catch (error) {
-      console.error("Erro ao buscar clientes:", error);
-    }
-  };
-
-  useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      window.location.href = "/login";
-      return;
-    }
-
-    fetchServices(token);
-    fetchColaboradores(token);
-    fetchCatalagoDeServicos(token);
-    findListCustomer();
-  }, []);
+  } catch (error: any) {
+    console.error("Erro ao registrar serviço:", error.message);
+    alert("Erro ao registrar serviço");
+  }
+};
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -189,64 +133,65 @@ export default function ControleDeServicos() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = getToken();
-    if (!token) return alert("Usuário não autenticado!");
 
-    if (!formData.servicoConfigId) return alert("Selecione um serviço do catálogo.");
-    if (!formData.data || !formData.hora) return alert("Preencha data e hora.");
+  /*AREA DE SERVIÇOS*/
 
-    // Se nenhum colaborador for selecionado, atribui ao dono
-    const colaboradorId = formData.colaboradorId || 1; // 1 = dono
-    const payload = { ...formData, colaboradorId };
+  const listaDeServicos = async () => {
+  try {
+    const response = await api.get("/servicos/listaDeServico"); 
+    
+    setServicos(response.data);
 
-    try {
-      const response = await fetch(URL_SAVE, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      });
+  } catch (error: any) {
+    console.error("Erro ao buscar serviços:", error.message);
+  }
+};
 
-      if (response.ok) {
-        const newService = await response.json();
-        setServicos((prev) => [...prev, newService]);
-        const now = new Date();
-        setFormData({
-          tipoDoServico: "",
-          valorDoServico: 0,
-          colaboradorId: 0,
-          data: formatDateForInput(now),
-          hora: formatTimeForInput(now),
-          servicoConfigId: 0,
-          clienteId: 0,
-        });
-        setMostrarFormulario(false);
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        alert(errorData.message || "Erro ao registrar serviço");
-      }
-    } catch (error: any) {
-      console.error("Erro ao salvar serviço:", error.message);
-      alert("Erro de conexão ao salvar serviço.");
-    }
-  };
+ const deleteService = async (id: number) => {
+  try {
+    
+    await api.delete(`/servicos/deleteDeServico/${id}`);
+    await listaDeServicos(); 
+  } catch (error) {
+    console.error("Erro ao deletar:", error);
+  }
+};
 
-  const deleteService = async (id?: number) => {
-    if (!id) return;
-    const token = getToken();
-    if (!token) return alert("Usuário não autenticado!");
 
-    try {
-      const response = await fetch(`https://gestorappbarber.onrender.com/appBarber/deleteService/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (response.ok) setServicos((prev) => prev.filter((s) => s.id !== id));
-    } catch (error: any) {
-      console.error("Erro ao deletar serviço:", error.message);
-    }
-  };
+ /*AREA DE CATALAGO DE SERVIÇO*/ 
+ 
+const listaDeCatalago = async () =>{
+  try{
+    const response = await api.get(`/catalagoDeServicos/catalago`)
+     setCatalagoDeSERVICOS(response.data)
+  }catch(error:any){
+    console.log(error.message)
+  }
+}
+
+/* LISTA DE CLIENTES*/
+const buscarListaDeClientes = async () =>{
+  
+  try{
+  const response = await api.get('/cliente/listaDeClientes')
+  setListaDeClientes(response.data)  
+  }catch(error:any){
+    console.log(error.message)
+  }
+}
+
+
+/* LISTA DE COLABORADOR*/
+
+const buscarListaDeColaboradores = async () =>{
+   try{
+  const response = await api.get('/colaborador/listaDeColaboradores')
+  console.log(response.data)
+  setListaDeColaboradores(response.data)
+  }catch(error:any){
+    console.log(error.message)
+  }
+}
 
   const servicosFiltrados = servicos.filter((s) => {
     const tipoOk = s.tipoDoServico.toLowerCase().includes(filtroServico.toLowerCase());
@@ -261,6 +206,14 @@ export default function ControleDeServicos() {
   const getTipoDeServico = (servico: Service) => {
     return catalagoDeSERVICOS.find((c) => String(c.id) === String(servico.servicoConfigId))?.tipo || "-";
   };
+
+
+  useEffect(() => {
+    listaDeServicos()
+    buscarListaDeClientes()
+    listaDeCatalago()
+    buscarListaDeColaboradores()
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -299,7 +252,7 @@ export default function ControleDeServicos() {
 
           <select name="colaboradorId" value={formData.colaboradorId || ""} onChange={handleChange}>
             <option value="">Seleciona o colaborador</option>
-            {colaboradores.map((c) => <option key={c.id} value={c.id}>{c.nomeCompleto}</option>)}
+            {listaDeColaboradores.map((c) => <option key={c.id} value={c.id}>{c.nomeCompleto}</option>)}
           </select>
 
           <input type="date" name="data" value={formData.data} onChange={handleChange} required />
@@ -338,7 +291,7 @@ export default function ControleDeServicos() {
 
                 </td>
                 <td>{getTipoDeServico(servico)}</td>
-                <td><button className={styles.deleteBtn} onClick={() => deleteService(servico.id)}>Deletar</button></td>
+                <td><button className={styles.deleteBtn} onClick={() => deleteService(Number(servico.id))}>Deletar</button></td>
               </tr>
             ))
           ) : (
