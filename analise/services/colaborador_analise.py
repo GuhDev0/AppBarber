@@ -3,6 +3,15 @@ from Database.connection import get_engine
 from datetime import datetime
 import numpy as np
 
+dias = {
+    "Monday": "Segunda-feira",
+    "Tuesday": "Terça-feira",
+    "Wednesday": "Quarta-feira",
+    "Thursday": "Quinta-feira",
+    "Friday": "Sexta-feira",
+    "Saturday": "Sábado",
+    "Sunday": "Domingo"
+}
 
 def analise_colaborador_service(colaborador_id: int, emprasaId):
     engine = get_engine()
@@ -76,7 +85,7 @@ def analise_colaborador_service(colaborador_id: int, emprasaId):
     
     
     #dia da semana
-    df_agrupado["dia_semana"] = df_agrupado["data"].dt.day_name(locale="pt_BR")
+    df_agrupado["dia_semana"] = df_agrupado["data"].dt.day_name().map(dias)
     faturamento_por_dia_mes_atual = (
         df_agrupado[df_agrupado["data"].dt.to_period("M") == hoje.to_period("M")]
         .groupby("dia_semana")["valor_liquido"]
