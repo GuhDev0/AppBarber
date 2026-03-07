@@ -56,7 +56,7 @@ def analise_colaborador_service(colaborador_id: int, emprasaId):
 
     
     df_agrupado["valor_liquido"] = np.where(
-        df_agrupado["tipoDoServico"] == "Pacote",
+        df_agrupado["tipo"] == "Pacote",
         df_agrupado["valorDoServico"] * (df_agrupado["comissao"] / 100) / 4,
         df_agrupado["valorDoServico"] * (df_agrupado["comissao"] / 100)
     )
@@ -76,7 +76,7 @@ def analise_colaborador_service(colaborador_id: int, emprasaId):
     
     
     #dia da semana
-    df_agrupado["dia_semana"] = df_agrupado["data"].dt.day_name()
+    df_agrupado["dia_semana"] = df_agrupado["data"].dt.day_name(locale="pt_BR")
     faturamento_por_dia_mes_atual = (
         df_agrupado[df_agrupado["data"].dt.to_period("M") == hoje.to_period("M")]
         .groupby("dia_semana")["valor_liquido"]
@@ -87,12 +87,8 @@ def analise_colaborador_service(colaborador_id: int, emprasaId):
     
     
     
-    
-    print("Faturamento líquido de 1 a 15:", soma_1_15_liquido)
-    print("Faturamento líquido de 16 ao fim do mês:", soma_16_fim_liquido)
-    print("Faturamento líquido total do mês:", mesTotal_liquido)   
-    print("Faturamento por dia do mês atual:")
-    print(faturamento_por_dia_mes_atual)    
+    print(df_agrupado["tipoDoServico"].unique()) 
+    print(df_agrupado.columns)   
     return {
         "faturamento_liquido_1_15": float(soma_1_15_liquido),
         "faturamento_liquido_16_fim": float(soma_16_fim_liquido),
