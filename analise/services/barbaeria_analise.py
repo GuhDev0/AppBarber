@@ -123,9 +123,14 @@ def analise_barbearia(empresaId):
          
     )
     
+    faturamento_mensal_liquido = (
+    df_agrupado.groupby(df_agrupado["data"].dt.to_period("M"))["valor_liquido"]
+    .sum()
+    .reset_index()
+)
+
+    faturamento_mensal_liquido["data"] = faturamento_mensal_liquido["data"].dt.strftime("%Y-%m")
     
-    valorLiquido30D = df_agrupado[df_agrupado["data"].between(inicio_mes, fim_mes)]
-    somaValorLiquido30D = valorLiquido30D["valor_liquido"].sum()
     
     
     
@@ -179,7 +184,7 @@ def analise_barbearia(empresaId):
 
     resultado = {
         "faturamento_mensal": faturamento_mensal.to_dict(orient="records"),
-        "faturamento_mensal_liquido": somaValorLiquido30D,
+        "faturamento_mensal_liquido": faturamento_mensal_liquido.to_dict(orient="records"),
         "servico_mais_realizado_por_mes": servico_mais_realizado_por_mes.to_dict(orient="records"),
         "movimento_dia": movimento_dia.to_dict(orient="records"),
         "servicos_faturamento": servicos_faturamento.to_dict(orient="records"),
