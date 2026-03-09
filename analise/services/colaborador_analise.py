@@ -66,7 +66,7 @@ def analise_colaborador_service(colaborador_id: int, emprasaId):
     
     df_agrupado["valor_liquido"] = np.where(
         df_agrupado["tipo"] == "Pacote",
-        df_agrupado["valorDoServico"] * (df_agrupado["comissao"] / 100) / 4,
+        df_agrupado["valorDoServico"] * (50 / 100) / 4,
         df_agrupado["valorDoServico"] * (df_agrupado["comissao"] / 100)
     )
      

@@ -53,7 +53,7 @@ export default function NavBar() {
           <h3 className={style.sidebarSection}>Geral</h3>
           <ul className={style.sidebarList}>
             <li>
-              <Link href="/dashboard/configuracoes" className={style.navLink}>
+              <Link href="/dono/configuracaoDaBarbearia" className={style.navLink}>
                 <span>Configurações</span>
               </Link>
             </li>

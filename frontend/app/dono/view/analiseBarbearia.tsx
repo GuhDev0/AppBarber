@@ -11,7 +11,7 @@ import { api } from "@/app/lib/api";
 export default function AnalycisBarber() {
   const [analiseBarbearia, setAnaliseBarbearia] = useState<any>(null);
    const dataAtual = new Date();
-  const faturamentoMensal = analiseBarbearia?.analise?.faturamento_mensal ?? [];
+  const faturamentoMensal = analiseBarbearia?.analise?.faturamento_mensal_liquido ?? [];
   const rankingMensal = analiseBarbearia?.analise?.atendimento_colaborador_rank ?? [];
   const totalServicosMensal = analiseBarbearia?.analise?.total_servicos_barbearia ?? [];
   const servicosMaisRealizados = analiseBarbearia?.analise?.servico_mais_realizado_por_mes ?? [];

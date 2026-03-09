@@ -1,7 +1,7 @@
 import pandas as pd
 import math
 from Database.connection import get_engine
-
+import numpy as np
 
 def limpar_nan(obj):
     if isinstance(obj, dict):
@@ -13,7 +13,7 @@ def limpar_nan(obj):
     return obj
 
 
-def analise_barbearia(empresaId: int):
+def analise_barbearia(empresaId):
     engine = get_engine()
 
     # CONSULTAS SEGURAS (SEM INTERPOLAÇÃO DIRETA)
@@ -27,10 +27,26 @@ def analise_barbearia(empresaId: int):
         WHERE "empresaId" = %(empresaId)s
     """
 
+
+    df_servicoConfig = pd.read_sql(
+    '''SELECT * FROM public."ServicoConfig" WHERE "empresaId" = %(empresaId)s''',
+    engine, params={"empresaId": empresaId}
+    
+    
+)
+
     df_servico = pd.read_sql(query_services, engine, params={"empresaId": empresaId})
     df_colaboradores = pd.read_sql(query_colaboradores, engine, params={"empresaId": empresaId})
 
-    # Se não existir serviço, já retorna estrutura vazia segura
+
+     #  DATAS DINÂMICAS
+    hoje = pd.Timestamp.today()
+
+    inicio_mes = hoje.replace(day=1, hour=0, minute=0, second=0)
+    dia15 = hoje.replace(day=15, hour=23, minute=59, second=59)
+    fim_mes = (hoje + pd.offsets.MonthEnd(0)).replace(hour=23, minute=59, second=59)
+
+   
     if df_servico.empty:
         return {
             "faturamento_mensal": [],
@@ -92,7 +108,27 @@ def analise_barbearia(empresaId: int):
         .reset_index()
         .sort_values("valor", ascending=False)
     )
-
+   
+    df_agrupado = df_servico.merge(
+    df_servicoConfig,
+    left_on="servicoConfigId",
+    right_on="id",
+    how="left"
+        )   
+    
+    df_agrupado["valor_liquido"] = np.where(
+        df_agrupado["tipoDoServico"] == "Pacote",
+        df_agrupado["valor"] * 0.5 / 4,
+        df_agrupado["valor"] * 0.6  
+         
+    )
+    
+    
+    valorLiquido30D = df_agrupado[df_agrupado["data"].between(inicio_mes, fim_mes)]
+    somaValorLiquido30D = valorLiquido30D["valor_liquido"].sum()
+    
+    
+    
     # =========================
     # TICKET MÉDIO
     # =========================
@@ -143,6 +179,7 @@ def analise_barbearia(empresaId: int):
 
     resultado = {
         "faturamento_mensal": faturamento_mensal.to_dict(orient="records"),
+        "faturamento_mensal_liquido": somaValorLiquido30D,
         "servico_mais_realizado_por_mes": servico_mais_realizado_por_mes.to_dict(orient="records"),
         "movimento_dia": movimento_dia.to_dict(orient="records"),
         "servicos_faturamento": servicos_faturamento.to_dict(orient="records"),

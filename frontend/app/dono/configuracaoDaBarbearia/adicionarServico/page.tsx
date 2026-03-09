@@ -1,113 +1,73 @@
 "use client";
 import styles from "./styles.module.css";
 import { useState, useEffect } from "react";
+import { api } from "@/app/lib/api";
+import { AxiosError } from "axios";
 
 interface ServicoDto {
   id?: number;
-  nome: string; 
+  nome: string;
   tipo: string;
   preco: number;
   comissao: number;
 }
 
-function getAuthHeaders() {
-  const token =
-    localStorage.getItem("userToken") || sessionStorage.getItem("userToken");
-
-  if (!token) {
-    console.warn("Token não encontrado. Usuário pode estar deslogado.");
-  }
-
-  return {
-    Authorization: `Bearer ${token || ""}`,
-    "Content-Type": "application/json",
-  };
-}
-
-// 🔹 Verifica se o usuário está autenticado
-function isAuthenticated() {
-  return (
-    !!localStorage.getItem("userToken") ||
-    !!sessionStorage.getItem("userToken")
-  );
-}
-
 export default function AdicionarServico() {
-  const [nome, setNome] = useState(""); // era 'servico'
+  const [nome, setNome] = useState("");
   const [tipo, setTipo] = useState("");
   const [preco, setPreco] = useState(0);
   const [comissao, setComissao] = useState(0);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+
   const [listaDeServicos, setListaDeServicos] = useState<ServicoDto[]>([]);
 
   // 🔹 Redireciona se não estiver autenticado
   useEffect(() => {
-    if (!isAuthenticated()) {
-      window.location.href = "/login";
-    }
+    listaDeCatalago()
   }, []);
 
-  // 🔹 Buscar lista ao carregar
-  useEffect(() => {
-    fetch("https://gestorappbarber.onrender.com/appBarber/listDeCatalagoDeServico", {
-      headers: getAuthHeaders(),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.lista) setListaDeServicos(data.lista);
-      })
-      .catch((err) => console.error("Erro ao buscar serviços:", err));
-  }, []);
 
-  // 🔹 Registrar novo serviço
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const novoServico: ServicoDto = { nome, tipo, preco, comissao };
-
+  const listaDeCatalago = async () => {
     try {
-      const res = await fetch("https://gestorappbarber.onrender.com/appBarber/registraCatalagoService", {
-        method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify(novoServico),
-      });
-
-  const result = await res.json();
-
-      if (res.ok) {
-        setListaDeServicos((prev) => [...prev, result.dados]);
-        setNome("");
-        setTipo("");
-        setPreco(0);
-        setComissao(0);
-        setMostrarFormulario(false);
-      } else {
-        alert(result.mensagem || "Erro ao registrar serviço");
-        console.error("Detalhe do erro:", result.detalhe);
-      }
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-      alert("Erro de conexão com o servidor");
+      const response = await api.get(`/configuracao/catalago`)
+      setListaDeServicos(response.data)
+    } catch (error: any) {
+      console.log(error.message)
     }
   }
 
+  async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+
+  const novoServico = {
+    nome,
+    tipo,
+    preco,
+    comissao
+  };
+
+  try {
+
+    const response = await api.post("/configuracao/catalago", novoServico); 
+    listaDeCatalago()
+  } catch (error: any) {
+
+    console.log("STATUS:", error?.response?.status);
+    console.log("ERRO:", error?.response?.data);
+
+  }
+}
   // 🔹 Excluir serviço
-  async function handleExcluir(id?: number) {
-    if (!id) return;
-
+  async function handleExcluir(id: number) {
     try {
-      const res = await fetch(`https://gestorappbarber.onrender.com/appBarber/deletaServico/${id}`, {
-        method: "DELETE",
-        headers: getAuthHeaders(),
-      });
-
-      if (res.ok) {
-        setListaDeServicos((prev) => prev.filter((s) => s.id !== id));
-      } else {
-        console.error("Erro ao deletar serviço");
-      }
-    } catch (error) {
-      console.error("Erro na exclusão:", error);
+      await api.delete(`/configuracao/deleteServicoCatalago/${id}`)
+      listaDeCatalago()
+    } catch (error: any) {
+      const err = error as AxiosError
+      console.log(`Status ${err.response?.status}`)
+      console.log(`Error: ${err.message}`)
     }
+
   }
 
   return (
@@ -161,10 +121,10 @@ export default function AdicionarServico() {
               <tr key={s.id}>
                 <td>{s.nome}</td>
                 <td>{s.tipo}</td>
-                <td>R${s.preco.toFixed(2)}</td>
+                <td>R${s.preco}</td>
                 <td>{s.comissao}%</td>
                 <td>
-                  <button onClick={() => handleExcluir(s.id)}>Excluir</button>
+                  <button onClick={() => handleExcluir(Number(s.id))}>Excluir</button>
                 </td>
               </tr>
             ))}

@@ -44,7 +44,7 @@ export async function GET(
 
         const data = await response.json();
 
-        return NextResponse.json(data?.list);
+        return NextResponse.json(data?.analise);
     } catch (error: any) {
         console.log(error.message)
     }

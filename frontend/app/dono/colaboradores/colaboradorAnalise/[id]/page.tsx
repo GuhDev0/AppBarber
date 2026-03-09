@@ -8,7 +8,7 @@ import { FaMoneyBill1Wave } from "react-icons/fa6";
 import { MoneyFormatado } from "@/app/utils/moneyFormatado/moneyFormatado";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import BarraEmpilhada from "@/app/components/graficos/barraEmpilhada/grafico";
-
+import { api } from "@/app/lib/api";
 
 
 
@@ -24,47 +24,31 @@ export default function ColaboradorAnalise() {
   const params = useParams();
   const idNumber = Number(params.id);
 
-  const faturamento_liquido_1_15 = listaDeAnalise?.analise?.faturamento_liquido_1_15 ?? 0;
-  const faturamento_liquido_16_fim = listaDeAnalise?.analise?.faturamento_liquido_16_fim ?? 0;
-  const faturamento_total_liquido_mes = listaDeAnalise?.analise?.faturamento_total_liquido_mes ?? 0;
-const faturamento_por_dia = listaDeAnalise?.analise?.faturamento_por_dia ?? [];
+  const faturamento_liquido_1_15 = listaDeAnalise?.faturamento_liquido_1_15 ?? 0;
+  const faturamento_liquido_16_fim = listaDeAnalise?.faturamento_liquido_16_fim ?? 0;
+  const faturamento_total_liquido_mes = listaDeAnalise?.faturamento_total_liquido_mes ?? 0;
+  const faturamento_por_dia = listaDeAnalise?.faturamento_por_dia ?? [];
 
 
-const traduzirDiaSemana = (dia: string) => {
-  const diasSemana: { [key: string]: string } = {
-    "Monday": "Segunda",
-    "Tuesday": "Terça",
-    "Wednesday": "Quarta",
-    "Thursday": "Quinta",
-    "Friday": "Sexta",
-    "Saturday": "Sábado",
-    "Sunday": "Domingo"
-  };
-  return diasSemana[dia] || dia;
-}
+  const traduzirDiaSemana = (dia: string) => {
+    const diasSemana: { [key: string]: string } = {
+      "Monday": "Segunda",
+      "Tuesday": "Terça",
+      "Wednesday": "Quarta",
+      "Thursday": "Quinta",
+      "Friday": "Sexta",
+      "Saturday": "Sábado",
+      "Sunday": "Domingo"
+    };
+    return diasSemana[dia] || dia;
+  }
 
 
 
-  const buscarListaDeAnalise = async (token: string, idNumber: number) => {
+  const buscarListaDeAnalise = async () => {
     try {
-      const res = await fetch(
-        `https://appbarber-analise.onrender.com/analise/colaborador/${idNumber}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-
-
-      if (!res.ok) throw new Error("Erro na requisição");
-
-      const dados = await res.json();
-      setListaDeAnalise(dados);
-
+      const response = await api.get(`/colaborador/dashboard/${id}`)
+      setListaDeAnalise(response.data)
     } catch (error: any) {
       console.error("Erro ao buscar análise:", error.message);
     }
@@ -72,30 +56,9 @@ const traduzirDiaSemana = (dia: string) => {
 
 
   useEffect(() => {
-
-
-    if (!id) {
-
-      return;
-    }
-
-    const token =
-      localStorage.getItem("userToken") ||
-      sessionStorage.getItem("userToken");
-
-    if (!token) {
-
-      return;
-    }
-
-    const idNumber = Number(id);
-
-    if (isNaN(idNumber)) {
-      return;
-    }
-
-    buscarListaDeAnalise(token, idNumber);
-  }, [id]);
+ buscarListaDeAnalise()
+ console.log(faturamento_liquido_1_15)
+  }, []);
 
   return (
     <div className={styles.containerCardAnalytics}>

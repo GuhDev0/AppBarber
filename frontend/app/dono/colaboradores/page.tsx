@@ -59,7 +59,7 @@ export default function AbaColaboradores() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   const pageColaborador = (id: number) => {
- router.push(`/dashboard/colaboradores/colaboradorAnalise/${id}`);
+ router.push(`/dono/colaboradores/colaboradorAnalise/${id}`);
 };
 
   const handleAbrirFormulario = () => setMostrarFormulario(!mostrarFormulario);

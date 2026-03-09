@@ -162,7 +162,7 @@ export default function ControleDeServicos() {
  
 const listaDeCatalago = async () =>{
   try{
-    const response = await api.get(`/catalagoDeServicos/catalago`)
+    const response = await api.get(`/configuracao/catalago`)
      setCatalagoDeSERVICOS(response.data)
   }catch(error:any){
     console.log(error.message)
