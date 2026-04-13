@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/GuhDev0/AppBarber#readme",
   "dependencies": {
-    "lucide-react": "^0.546.0"
+    "@supabase/ssr": "^0.10.2",
+    "lucide-react": "^0.546.0",
+    "react": "^19.2.5"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",

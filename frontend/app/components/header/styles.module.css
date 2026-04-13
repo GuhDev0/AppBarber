@@ -3,32 +3,33 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 1.5rem;
-  background-color: #0D0D0D;
-  color: #fff;
-  border-bottom: 2px solid #3a3a3a;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  font-family: Arial, sans-serif;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-primary);
+  box-shadow: var(--shadow-sm);
+  font-family: "Inter", sans-serif;
   height: 69px;
   width: 100%;       
   max-width: 100vw;  
   top: 0;
   left: 0;    
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
-
 
 .loading {
   padding: 1rem 1.5rem;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .left h1 {
   font-size: 1.2rem;
   font-weight: 500;
+  color: var(--text-primary);
 }
 
 .left h1 span {
-  color: #ff6a00;
+  color: var(--accent);
   font-weight: 600;
 }
 
@@ -41,14 +42,20 @@
 .iconBtn {
   background: none;
   border: none;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 1.4rem;
   cursor: pointer;
-  transition: color 0.2s ease-in-out;
+  transition: color var(--transition-fast);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .iconBtn:hover {
-  color: #ff6a00;
+  color: var(--accent);
+  background-color: var(--bg-hover);
 }
 
 .userInfo {
@@ -59,32 +66,192 @@
 
 .userName {
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 .userEmail {
   font-size: 0.85rem;
-  color: #ccc;
+  color: var(--text-muted);
 }
-.buttonToogle{
+
+.buttonToogle {
   display: none;
 }
 
-@media(max-width:600px){
-  
-  .left h1{
-    display: none;
-  }
-  .buttonToogle{
-    display: block;
-  }
-  .header{
-    max-width: 360px;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    
-  }
-  
+.notificationBadge {
+  position: relative;
 }
 
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--error);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: var(--radius-full);
+  min-width: 16px;
+  text-align: center;
+}
 
+/* Dropdown de notificações */
+.notificationDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 320px;
+  max-height: 400px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.notificationHeader h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.markAllRead {
+  font-size: 0.8rem;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.notificationList {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notificationItem {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-secondary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.notificationItem:hover {
+  background-color: var(--bg-hover);
+}
+
+.notificationItem.unread {
+  background-color: var(--accent-light);
+}
+
+.notificationIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notificationIcon.info {
+  background-color: var(--info-bg);
+  color: var(--info);
+}
+
+.notificationIcon.success {
+  background-color: var(--success-bg);
+  color: var(--success);
+}
+
+.notificationIcon.warning {
+  background-color: var(--warning-bg);
+  color: var(--warning);
+}
+
+.notificationIcon.error {
+  background-color: var(--error-bg);
+  color: var(--error);
+}
+
+.notificationContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationTitle {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.notificationMessage {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notificationTime {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.emptyNotifications {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .notificationDropdown {
+    width: 280px;
+    right: -50px;
+  }
+}
+
+@media (max-width: 600px) {
+  .left h1 {
+    display: none;
+  }
+
+  .buttonToogle {
+    display: block;
+  }
+
+  .header {
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .userInfo {
+    display: none;
+  }
+
+  .notificationDropdown {
+    position: fixed;
+    top: 69px;
+    left: 50px;
+    right: 0;
+    width: auto;
+    border-radius: 0;
+    margin-top: 0;
+  }
+}
