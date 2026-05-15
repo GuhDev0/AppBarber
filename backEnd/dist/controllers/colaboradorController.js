@@ -6,7 +6,6 @@ const colaboradorService = new colaboradorService_1.ColaboradorService();
 class ColaboradorController {
     saveColaborador = async (req, res) => {
         const reqBody = req.body;
-        // Basic validation to avoid calling Prisma with missing required fields
         const empresaId = reqBody.empresaId ?? req.user?.empresaId;
         if (!empresaId) {
             return res.status(400).json({ mensagem: "empresaId é obrigatório" });
@@ -18,16 +17,13 @@ class ColaboradorController {
             return res.status(400).json({ mensagem: "email é obrigatório e deve ser uma string" });
         }
         try {
-            // ensure empresaId is present in the payload passed to the service
             const payload = { ...reqBody, empresaId };
-            // helpful debug log when a request fails validation/server error
             console.debug('Salvar colaborador payload:', payload);
             const save = await colaboradorService.saveColaboradorService(payload);
             res.status(201).json({ mensagem: "Registrado com sucesso", colaborador: save });
         }
         catch (error) {
             console.error('Erro ao salvar colaborador (controller):', error?.message ?? error);
-            // If it's a validation-like message from service, return 400, else 500
             const msg = error?.message ?? 'Erro interno';
             if (msg.toLowerCase().includes('empresa não encontrada') || msg.toLowerCase().includes('obrigat')) {
                 return res.status(400).json({ mensagem: msg });

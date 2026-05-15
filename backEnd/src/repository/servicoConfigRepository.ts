@@ -12,6 +12,7 @@ export class ServicoConfingRepository{
             preco:dto.preco,
             tipo:dto.tipo,
             comissao:dto.comissao,
+            duracaoDoServico:dto.duracaoDoServico,
             ativo : true,
             empresa:{
                 connect:{id:empresaId}

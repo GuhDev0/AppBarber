@@ -29,7 +29,6 @@ export default async function LayoutDashboard({ children }: { children: React.Re
         <Header userData={decoded} />
         <main
           className={styles.main}
-          style={{ flex: 1, padding: "20px", backgroundColor: "#13161bff" }}
         >
           {children}
 

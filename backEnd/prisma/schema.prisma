@@ -6,9 +6,7 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
- 
 }
-
 
 model Usuario {
   id           Int       @id @default(autoincrement())
@@ -24,20 +22,20 @@ model Usuario {
 }
 
 model Cliente {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique
-  telefone     String
-  empresaId    Int
-  nome String
-  Sobrenome String
-  empresa      Empresa   @relation(fields: [empresaId], references: [id])
-  servico      Servico[]
+  id          Int           @id @default(autoincrement())
+  email       String?       @unique
+  telefone    String?
+  empresaId   Int
+  nome        String
+  Sobrenome   String
+  Agendamento Agendamento[]
+  empresa     Empresa       @relation(fields: [empresaId], references: [id])
+  servico     Servico[]
 }
 
-
 model GestaoFinanceira {
-  id                 Int            @id @default(autoincrement())
-  data               DateTime       @default(now())
+  id                 Int      @id @default(autoincrement())
+  data               DateTime @default(now())
   hora               String
   descricao          String
   valor              Float
@@ -45,12 +43,11 @@ model GestaoFinanceira {
   servicoAssociadoId Int?
   categoriaId        Int?
   empresaId          Int
-  formaDePagamento   FormaPagamento
-  tipo               TipoFinanceiro
-  categoria          Categoria?     @relation(fields: [categoriaId], references: [id])
-  colaborador        Colaborador?   @relation(fields: [colaboradorId], references: [id])
-  empresa            Empresa        @relation(fields: [empresaId], references: [id])
-  servicoAssociado   Servico?       @relation(fields: [servicoAssociadoId], references: [id])
+
+  categoria        Categoria?   @relation(fields: [categoriaId], references: [id])
+  colaborador      Colaborador? @relation(fields: [colaboradorId], references: [id])
+  empresa          Empresa      @relation(fields: [empresaId], references: [id])
+  servicoAssociado Servico?     @relation(fields: [servicoAssociadoId], references: [id])
 }
 
 model Categoria {
@@ -72,22 +69,13 @@ model Servico {
   colaboradorId    Int
   clienteId        Int
   servicoConfigId  Int
+  duracao          Int?
   gestaoFinanceira GestaoFinanceira[]
-  pagamento        Pagamento[]
   cliente          Cliente            @relation(fields: [clienteId], references: [id])
   colaborador      Colaborador        @relation(fields: [colaboradorId], references: [id])
   empresa          Empresa            @relation(fields: [empresaId], references: [id])
   servicoConfig    ServicoConfig      @relation(fields: [servicoConfigId], references: [id])
   usuario          Usuario            @relation(fields: [usuarioId], references: [id])
-}
-
-model Pagamento {
-  id            String          @id
-  servicoId     Int
-  status        StatusPagamento
-  dataPagamento DateTime
-  observacoes   String?
-  servico       Servico         @relation(fields: [servicoId], references: [id])
 }
 
 model Empresa {
@@ -97,13 +85,16 @@ model Empresa {
   email            String             @unique
   telefone         String
   endereco         String
+  agendamento      Agendamento[]
+  BloqueioAgenda   BloqueioAgenda[]
   categorias       Categoria[]
-  clietes          Cliente[]
+  clientes         Cliente[]
   colaboradores    Colaborador[]
   gestaoFinanceira GestaoFinanceira[]
   servico          Servico[]
   ServicoConfig    ServicoConfig[]
   usuarios         Usuario[]
+  horarios         Horario[]
 }
 
 model Colaborador {
@@ -115,8 +106,11 @@ model Colaborador {
   senha            String?
   empresaId        Int
   avatar           String?
+  agendamento      Agendamento[]
+  BloqueioAgenda   BloqueioAgenda[]
   empresa          Empresa            @relation(fields: [empresaId], references: [id])
   GestaoFinanceira GestaoFinanceira[]
+  horarios         Horario[]
   servicos         Servico[]
 }
 
@@ -127,25 +121,59 @@ model ServicoConfig {
   preco              Float
   ativo              Boolean       @default(true)
   comissao           Float
+  duracaoDoServico   Int?
   empresaId          Int
+  Agendamento        Agendamento[]
   servicosRealizados Servico[]
   empresa            Empresa       @relation(fields: [empresaId], references: [id])
 }
 
-enum StatusPagamento {
-  PENDENTE
-  CANCELADO
-  PAGO
+model Horario {
+  id            Int                @id @default(autoincrement())
+  diaSemana     DiaSemana[]
+  start         DateTime
+  end           DateTime
+  colaboradorId Int?
+  empresaId     Int
+
+  criadoEm    DateTime    @default(now())
+  colaborador Colaborador? @relation(fields: [colaboradorId], references: [id])
+  empresa     Empresa     @relation(fields: [empresaId], references: [id])
 }
 
-enum TipoFinanceiro {
-  SAIDA
-}
 
-enum FormaPagamento {
-  PIX
-  DINHEIRO
-  CARTAO
+
+  model Agendamento {
+    id                Int      @id @default(autoincrement())
+    
+    start             DateTime
+    end               DateTime
+
+    clienteId       Int
+    colaboradorId   Int
+    servicoConfigId Int
+    criadoEm        DateTime  @default(now())
+    atualizadoEm    DateTime?
+
+    empresaId     Int
+    status        StatusAgendamento
+    Cliente       Cliente           @relation(fields: [clienteId], references: [id])
+    Colaborador   Colaborador       @relation(fields: [colaboradorId], references: [id])
+    Empresa       Empresa           @relation(fields: [empresaId], references: [id])
+    ServicoConfig ServicoConfig     @relation(fields: [servicoConfigId], references: [id])
+  }
+
+model BloqueioAgenda {
+  id             Int      @id @default(autoincrement())
+  start          DateTime
+  end            DateTime
+  motivo         String?
+
+  colaboradorId Int
+  empresaId     Int
+  criadoEm      DateTime    @default(now())
+  Colaborador   Colaborador @relation(fields: [colaboradorId], references: [id])
+  Empresa       Empresa     @relation(fields: [empresaId], references: [id])
 }
 
 enum TipoDeServico {
@@ -157,4 +185,21 @@ enum TipoDeServico {
 enum Role {
   USER
   ADMIN
+}
+
+enum StatusAgendamento {
+  AGENDADO
+  CONFIRMADO
+  CANCELADO
+  FINALIZADO
+}
+
+enum DiaSemana {
+  DOMINGO
+  SEGUNDA
+  TERCA
+  QUARTA
+  QUINTA
+  SEXTA
+  SABADO
 }

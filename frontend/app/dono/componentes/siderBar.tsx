@@ -5,7 +5,7 @@ import { Scissors, LayoutDashboard, BarChart3, Users, LogOut } from "lucide-reac
 export default function NavBar() {
   return (
     <aside className={style.sidebar}>
-      
+
       {/* TOPO */}
       <div className={style.sidebarTop}>
         <div className={style.sidebarHeader}>
@@ -15,15 +15,23 @@ export default function NavBar() {
 
         {/* NAVEGAÇÃO */}
         <nav className={style.sidebarNav}>
-          
+
           {/* MENU */}
           <h3 className={style.sidebarSection}>Menu</h3>
           <ul className={style.sidebarList}>
-            
+
+
             <li>
               <Link href="/dono" className={style.navLink}>
                 <LayoutDashboard size={18} />
                 <span>Dashboard</span>
+              </Link>
+            </li>
+
+            <li>
+              <Link href="/dono/agendamento" className={style.navLink}>
+                <Users size={18} />
+                <span>Agendamento</span>
               </Link>
             </li>
 
@@ -40,6 +48,7 @@ export default function NavBar() {
                 <span>Clientes</span>
               </Link>
             </li>
+
             <li>
               <Link href="/dono/colaboradores" className={style.navLink}>
                 <Users size={18} />

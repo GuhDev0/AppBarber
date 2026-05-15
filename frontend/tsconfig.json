@@ -40,7 +40,7 @@
     ".next/types/**/*.ts",
     "app/authe/autheCheck.js",
     ".next/dev/types/**/*.ts"
-  ],
+, "app/components/Calendario-bg/ListaDeEvento.ts"  ],
   "exclude": [
     "node_modules"
   ]

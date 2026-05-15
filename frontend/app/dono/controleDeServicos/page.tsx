@@ -186,7 +186,6 @@ const buscarListaDeClientes = async () =>{
 const buscarListaDeColaboradores = async () =>{
    try{
   const response = await api.get('/colaborador/listaDeColaboradores')
-  console.log(response.data)
   setListaDeColaboradores(response.data)
   }catch(error:any){
     console.log(error.message)

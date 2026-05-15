@@ -1,0 +1,270 @@
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e65c00;
+  padding-bottom: 1rem;
+}
+
+.header h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.btnEdit {
+  background-color: #e65c00;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btnEdit:hover {
+  background-color: #c94f00;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup:last-child {
+  grid-column: 1 / -1;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.formGroup input,
+.formGroup textarea {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #e65c00;
+  box-shadow: 0 0 0 3px rgba(230, 92, 0, 0.1);
+}
+
+.formActions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btnSave,
+.btnCancel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnSave {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btnSave:hover:not(:disabled) {
+  background-color: #229954;
+}
+
+.btnSave:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnCancel {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btnCancel:hover {
+  background-color: #c0392b;
+}
+
+.viewContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.infoGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.infoGroup:last-child {
+  grid-column: 1 / -1;
+}
+
+.infoGroup label {
+  font-weight: 600;
+  color: #666;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoGroup p {
+  color: #333;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.message {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Responsivo para tablets */
+@media (max-width: 1024px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  .header h3 {
+    font-size: 1.2rem;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .formGroup:last-child {
+    grid-column: auto;
+  }
+
+  .viewContainer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .infoGroup:last-child {
+    grid-column: auto;
+  }
+}
+
+/* Responsivo para smartphones */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    border-radius: 4px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .header h3 {
+    font-size: 1.1rem;
+    width: 100%;
+  }
+
+  .btnEdit {
+    width: 100%;
+    padding: 0.75rem;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .formGroup input,
+  .formGroup textarea {
+    font-size: 16px;
+  }
+
+  .formActions {
+    grid-column: auto;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .btnSave,
+  .btnCancel {
+    width: 100%;
+    padding: 0.75rem;
+    justify-content: center;
+  }
+
+  .viewContainer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .infoGroup p {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  .message {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+}

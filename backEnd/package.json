@@ -4,6 +4,10 @@
     "description": "",
     "main": "dist/app.js",
     "type": "commonjs",
+
+    "prisma": {
+        "schema": "prisma/schema.prisma"
+    },
     "scripts": {
         "dev": "ts-node-dev  src/app.ts",
         "build": "prisma generate && tsc",

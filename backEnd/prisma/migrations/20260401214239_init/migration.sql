@@ -1,17 +1,11 @@
 -- CreateEnum
-CREATE TYPE "StatusPagamento" AS ENUM ('PENDENTE', 'CANCELADO', 'PAGO');
-
--- CreateEnum
-CREATE TYPE "TipoFinanceiro" AS ENUM ('SAIDA');
-
--- CreateEnum
-CREATE TYPE "FormaPagamento" AS ENUM ('PIX', 'DINHEIRO', 'CARTAO');
-
--- CreateEnum
 CREATE TYPE "TipoDeServico" AS ENUM ('Pacote', 'Simples', 'Combo');
 
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
+
+-- CreateEnum
+CREATE TYPE "StatusAgendamento" AS ENUM ('AGENDADO', 'CONFIRMADO', 'CANCELADO', 'FINALIZADO');
 
 -- CreateTable
 CREATE TABLE "Usuario" (
@@ -30,8 +24,8 @@ CREATE TABLE "Usuario" (
 -- CreateTable
 CREATE TABLE "Cliente" (
     "id" SERIAL NOT NULL,
-    "email" TEXT NOT NULL,
-    "telefone" TEXT NOT NULL,
+    "email" TEXT,
+    "telefone" TEXT,
     "empresaId" INTEGER NOT NULL,
     "nome" TEXT NOT NULL,
     "Sobrenome" TEXT NOT NULL,
@@ -50,8 +44,6 @@ CREATE TABLE "GestaoFinanceira" (
     "servicoAssociadoId" INTEGER,
     "categoriaId" INTEGER,
     "empresaId" INTEGER NOT NULL,
-    "formaDePagamento" "FormaPagamento" NOT NULL,
-    "tipo" "TipoFinanceiro" NOT NULL,
 
     CONSTRAINT "GestaoFinanceira_pkey" PRIMARY KEY ("id")
 );
@@ -77,19 +69,9 @@ CREATE TABLE "Servico" (
     "colaboradorId" INTEGER NOT NULL,
     "clienteId" INTEGER NOT NULL,
     "servicoConfigId" INTEGER NOT NULL,
+    "duracao" INTEGER,
 
     CONSTRAINT "Servico_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Pagamento" (
-    "id" TEXT NOT NULL,
-    "servicoId" INTEGER NOT NULL,
-    "status" "StatusPagamento" NOT NULL,
-    "dataPagamento" TIMESTAMP(3) NOT NULL,
-    "observacoes" TEXT,
-
-    CONSTRAINT "Pagamento_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -126,9 +108,52 @@ CREATE TABLE "ServicoConfig" (
     "preco" DOUBLE PRECISION NOT NULL,
     "ativo" BOOLEAN NOT NULL DEFAULT true,
     "comissao" DOUBLE PRECISION NOT NULL,
+    "duracaoDoServico" INTEGER NOT NULL,
     "empresaId" INTEGER NOT NULL,
 
     CONSTRAINT "ServicoConfig_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Horario" (
+    "id" SERIAL NOT NULL,
+    "diaSemana" INTEGER NOT NULL,
+    "start" TIMESTAMP(3) NOT NULL,
+    "end" TIMESTAMP(3) NOT NULL,
+    "colaboradorId" INTEGER NOT NULL,
+    "empresaId" INTEGER NOT NULL,
+    "criadoEm" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Horario_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Agendamento" (
+    "id" SERIAL NOT NULL,
+    "start" TIMESTAMP(3) NOT NULL,
+    "end" TIMESTAMP(3) NOT NULL,
+    "clienteId" INTEGER NOT NULL,
+    "colaboradorId" INTEGER NOT NULL,
+    "servicoConfigId" INTEGER NOT NULL,
+    "criadoEm" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "atualizadoEm" TIMESTAMP(3),
+    "empresaId" INTEGER NOT NULL,
+    "status" "StatusAgendamento" NOT NULL,
+
+    CONSTRAINT "Agendamento_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BloqueioAgenda" (
+    "id" SERIAL NOT NULL,
+    "start" TIMESTAMP(3) NOT NULL,
+    "end" TIMESTAMP(3) NOT NULL,
+    "motivo" TEXT,
+    "colaboradorId" INTEGER NOT NULL,
+    "empresaId" INTEGER NOT NULL,
+    "criadoEm" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "BloqueioAgenda_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -192,10 +217,31 @@ ALTER TABLE "Servico" ADD CONSTRAINT "Servico_servicoConfigId_fkey" FOREIGN KEY 
 ALTER TABLE "Servico" ADD CONSTRAINT "Servico_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Pagamento" ADD CONSTRAINT "Pagamento_servicoId_fkey" FOREIGN KEY ("servicoId") REFERENCES "Servico"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Colaborador" ADD CONSTRAINT "Colaborador_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ServicoConfig" ADD CONSTRAINT "ServicoConfig_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Horario" ADD CONSTRAINT "Horario_colaboradorId_fkey" FOREIGN KEY ("colaboradorId") REFERENCES "Colaborador"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Horario" ADD CONSTRAINT "Horario_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Agendamento" ADD CONSTRAINT "Agendamento_clienteId_fkey" FOREIGN KEY ("clienteId") REFERENCES "Cliente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Agendamento" ADD CONSTRAINT "Agendamento_colaboradorId_fkey" FOREIGN KEY ("colaboradorId") REFERENCES "Colaborador"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Agendamento" ADD CONSTRAINT "Agendamento_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Agendamento" ADD CONSTRAINT "Agendamento_servicoConfigId_fkey" FOREIGN KEY ("servicoConfigId") REFERENCES "ServicoConfig"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BloqueioAgenda" ADD CONSTRAINT "BloqueioAgenda_colaboradorId_fkey" FOREIGN KEY ("colaboradorId") REFERENCES "Colaborador"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BloqueioAgenda" ADD CONSTRAINT "BloqueioAgenda_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

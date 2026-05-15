@@ -10,6 +10,7 @@ interface ServicoDto {
   tipo: string;
   preco: number;
   comissao: number;
+  duracaoDoServico: number;
 }
 
 export default function AdicionarServico() {
@@ -17,6 +18,7 @@ export default function AdicionarServico() {
   const [tipo, setTipo] = useState("");
   const [preco, setPreco] = useState(0);
   const [comissao, setComissao] = useState(0);
+  const [duracaoDoServico, setDuracaoDoServico] = useState(0);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
   const [listaDeServicos, setListaDeServicos] = useState<ServicoDto[]>([]);
@@ -43,7 +45,8 @@ export default function AdicionarServico() {
     nome,
     tipo,
     preco,
-    comissao
+    comissao,
+    duracaoDoServico
   };
 
   try {
@@ -71,7 +74,7 @@ export default function AdicionarServico() {
   }
 
   return (
-    <div className={styles.cabecalho_configuracaoDaBarbearia}>
+    <div className={styles.container}>
       <div className={styles.ListaDeServicos}>
         <div className={styles.cabecalho_AdicionarServico}>
           <h3>Serviços</h3>
@@ -100,6 +103,10 @@ export default function AdicionarServico() {
             <div>
               <label>Comissão</label>
               <input type="number" value={comissao} onChange={(e) => setComissao(Number(e.target.value))} />
+            </div>
+            <div>
+              <label>Duração (minutos)</label>
+              <input type="number" value={duracaoDoServico} onChange={(e) => setDuracaoDoServico(Number(e.target.value))} />
             </div>
             <button type="submit">Registrar serviço</button>
             <button type="button" onClick={() => setMostrarFormulario(false)}>Cancelar</button>
